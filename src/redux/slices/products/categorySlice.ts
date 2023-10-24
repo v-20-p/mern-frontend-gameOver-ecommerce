@@ -22,10 +22,13 @@ const initialState:CategoryState  = {
    
   }
 
-  export const fetchCategories = createAsyncThunk('product/fetchCategories', async () => {
+  export const fetchCategories = createAsyncThunk("product/fetchCategories", async () => {
     try {
-      const response = await api.get('/mock/e-commerce/categories.json');
-      return response.data;
+      const response = await api.get("/mock/e-commerce/categories.json");
+      return response.data.map((category:TypeCategories) => ({
+        ...category,
+        ischecked: false, // Ensure ischecked is set in the initial state
+      }));
     } catch (error) {
       console.log(error);
       throw error;
@@ -38,9 +41,9 @@ const initialState:CategoryState  = {
         changeHandle: (state, action) => {
             state.categories = action.payload
           },
-          filterByCategories: (state) => {
-            state.filter = state.categories.filter((category) => category.ischecked === true).map((category) => category.id);
-          
+          filterByCategories:  (state) => {
+             const filteredCatgories= state.categories.filter((category) => category.ischecked === true).map((category) => category.id);
+             state.filter=filteredCatgories
           },
         
     },
@@ -51,10 +54,6 @@ const initialState:CategoryState  = {
           })
           .addCase(fetchCategories.fulfilled, (state, action: PayloadAction<TypeCategories[]>) => {
             state.categories = action.payload
-            state.categories = state.categories.map((category) => ({
-                ...category,
-                ischecked: false
-              }))
             state.isLoading = false
           })
           .addCase(fetchCategories.rejected, (state, action) => {

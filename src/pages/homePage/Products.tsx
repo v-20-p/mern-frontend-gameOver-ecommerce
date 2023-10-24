@@ -13,6 +13,7 @@ import Category from './Category'
 const Products = () => {
   const dispatch = useDispatch<AppDispatch>()
   const productsVistor = useSelector((state: RootState) => state.productsVistorReducer)
+  const categories = useSelector((state: RootState) => state.categoryReducer)
 
 
   useEffect( () => {
@@ -27,11 +28,11 @@ const Products = () => {
       return item.name.toLowerCase().includes(searchValue)
     })
   }
-  if(productsVistor.filterProduct){
+  if(categories.filter){
 
 
     filtterdItems = productsVistor.items.filter((item) =>
-    item.categories.some((cat) => productsVistor.filterProduct.includes(cat)));
+    item.categories.some((cat) => categories.filter.includes(cat)));
   }
   
 

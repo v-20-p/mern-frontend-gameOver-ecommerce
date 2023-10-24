@@ -16,6 +16,7 @@ const Category = () => {
 
   useEffect(() => {
     dispatch(fetchCategories())
+    
   }, [])
 
   
@@ -28,9 +29,10 @@ const Category = () => {
     
     dispatch(changeHandle(updatedCategories))
     dispatch(filterByCategories())
-     console.log(filter)
+     
   }
 
+  console.log(filter)
   return (
     <div>
       {categories.map(({ id, name }) => (

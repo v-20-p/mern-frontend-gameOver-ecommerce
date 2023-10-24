@@ -21,7 +21,7 @@ export type ProductState = {
   searchTirm: string
   sortState: string
   cart: Product[]
-  filterProduct:number[]
+  
 }
 
 const initialState: ProductState = {
@@ -31,7 +31,7 @@ const initialState: ProductState = {
   searchTirm: '',
   sortState: '',
   cart: [],
-  filterProduct:[]
+
 }            
 
 export const fetchProductItem = createAsyncThunk('product/fetchProductItem', async () => {
@@ -62,9 +62,7 @@ const productVisitorSlice = createSlice({
         state.items.sort((a, b) => a.name.localeCompare(b.name)).reverse()
       else state.items
     },
-    filterByCategories: (state, action) => {
-      state.filterProduct = action.payload
-    },
+
 
     addItemCart: (state, action) => {
       const item = action.payload
@@ -95,5 +93,5 @@ const productVisitorSlice = createSlice({
   }
 })
 export default productVisitorSlice.reducer
-export const { searchProduct, sortProduct, filterByCategories, addItemCart, deleteItemCart } =
+export const { searchProduct, sortProduct, addItemCart, deleteItemCart } =
   productVisitorSlice.actions
