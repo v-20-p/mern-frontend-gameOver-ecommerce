@@ -1,42 +1,87 @@
-#root {
-  max-width: 1880px;
-  margin: 0 auto;
-  padding: 2rem;
+:root {
+  color: #e8e8e8;
+  background-color: #121315;
+}
+
+a,
+li {
+  text-decoration: none;
+  font-weight: 700;
+  color: #77818b;
+  list-style-type: none;
+  transition: all 0.3s ease-in-out;
+}
+
+ul {
+  display: flex;
+  gap: 150px;
+}
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 100px;
+}
+nav a:hover {
+  color: #e8e8e8;
+}
+nav .search-container {
+  display: flex;
+  align-items: center;
+}
+nav .search-container input[type=search] {
+  border-radius: 20px;
+  height: 40px;
+  width: 70px;
+  background-color: #18191d;
+  border-width: 0px;
+  border: none;
+  outline: none;
+  color: #e8e8e8;
+  transition: all 0.3s ease-in-out;
+}
+nav .search-container input[type=search]:focus {
+  width: 250px;
+  padding: 0 20px;
+  border-radius: 20px;
+}
+nav .search-container .icon {
+  font-size: larger;
+  position: relative;
+  right: 25px;
+  top: 5px;
+}
+nav .search-container div {
+  margin: 0 10px;
+  padding: 10px;
+  background-color: #18191d;
+  border-radius: 50%;
+  font-size: large;
+}
+
+.products-container {
+  display: grid;
+  grid-template-columns: auto auto auto auto auto auto;
+  place-items: center;
+  margin: 0 160px;
+}
+.products-container div {
+  width: 80%;
+  margin-top: 2px;
   text-align: center;
+  padding: 5px;
+}
+.products-container div img {
+  width: 100%;
+  border-radius: 10px;
+  height: 160px;
+}
+.products-container div p {
+  margin: 0;
+}
+.products-container div:hover {
+  background-color: #77818b;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
-}
+/*# sourceMappingURL=App.css.map */
