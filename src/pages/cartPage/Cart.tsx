@@ -2,10 +2,10 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '../../redux/store'
 
-import { deleteItemCart } from '../../redux/slices/products/productVisitorSlice'
+import { deleteItemCart } from '../../redux/slices/products/productsSlice'
 
 const Cart = () => {
-  const { cart } = useSelector((state: RootState) => state.productsVistorReducer)
+  const { cart } = useSelector((state: RootState) => state.productsReducer)
   const dispatch = useDispatch<AppDispatch>()
   const handleDeleteCart = (id: number) => {
     const deletedItem = cart.find((item) => item.id === id)

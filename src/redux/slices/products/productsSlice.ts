@@ -41,7 +41,7 @@ export const fetchProductItem = createAsyncThunk('product/fetchProductItem', asy
 })
 
 const productVisitorSlice = createSlice({
-  name: 'productVisitor',
+  name: 'products',
   initialState: initialState,
   reducers: {
     searchProduct: (state, action) => {
@@ -63,7 +63,18 @@ const productVisitorSlice = createSlice({
     },
     deleteItemCart: (state, action) => {
       state.cart = action.payload
+    },
+    addProduct: (state, action) => {
+      const newProduct = action.payload
+      if(newProduct){
+        state.items=[...state.items,newProduct]
+      }
+    },
+    removeProduct: (state, action: { payload: { productId: number } }) => {
+      const filteredItems = state.items.filter((product) => product.id !== action.payload.productId)
+      state.items = filteredItems
     }
+
   },
   extraReducers: (builder) => {
     builder
@@ -81,5 +92,5 @@ const productVisitorSlice = createSlice({
   }
 })
 export default productVisitorSlice.reducer
-export const { searchProduct, sortProduct, addItemCart, deleteItemCart } =
+export const { searchProduct, sortProduct, addItemCart, deleteItemCart,addProduct,removeProduct } =
   productVisitorSlice.actions

@@ -8,13 +8,13 @@ import {
   addItemCart,
   fetchProductItem,
   sortProduct
-} from '../../redux/slices/products/productVisitorSlice'
+} from '../../redux/slices/products/productsSlice'
 
 import Category from './Category'
 
 const Products = () => {
   const dispatch = useDispatch<AppDispatch>()
-  const productsVistor = useSelector((state: RootState) => state.productsVistorReducer)
+  const productsVistor = useSelector((state: RootState) => state.productsReducer)
   const categories = useSelector((state: RootState) => state.categoryReducer)
 
   useEffect(() => {
@@ -44,7 +44,9 @@ const Products = () => {
   }
   const handleAddingCart = (id: number) => {
     const itemToCart = productsVistor.items.find((product) => product.id === id)
-    if (itemToCart) dispatch(addItemCart(itemToCart))
+    if (itemToCart){
+      dispatch(addItemCart(itemToCart))
+    } 
   }
 
   return (

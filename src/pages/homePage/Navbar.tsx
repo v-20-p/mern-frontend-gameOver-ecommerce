@@ -9,13 +9,13 @@ import { AiOutlineShoppingCart } from 'react-icons/ai'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '../../redux/store'
 
-import { searchProduct } from '../../redux/slices/products/productVisitorSlice'
+import { searchProduct } from '../../redux/slices/products/productsSlice'
 import { logoutUser } from '../../redux/slices/products/usersSlice'
 
 const Navbar = () => {
   const [searchValue, setSearchValue] = useState('')
   const { userLoginData } = useSelector((state: RootState) => state.userReducer)
-  const { cart } = useSelector((state: RootState) => state.productsVistorReducer)
+  const { cart } = useSelector((state: RootState) => state.productsReducer)
   const dispatch = useDispatch<AppDispatch>()
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -78,6 +78,18 @@ const Navbar = () => {
           </Link>
           <span>{cart.length > 0 && cart.length}</span>
         </div>
+        
+          {userLoginData?.role=="admin"&& 
+          <div>
+          <Link to="/dashboard/admin">
+          admin 
+        </Link>
+        </div>
+        }
+          
+          
+        
+
       </div>
     </nav>
   )
