@@ -1,12 +1,14 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+
 import { AppDispatch, RootState } from '../../redux/store'
+
 import {
   Product,
+  addItemCart,
   fetchProductItem,
-  sortProduct,
+  sortProduct
 } from '../../redux/slices/products/productVisitorSlice'
-
 
 import Category from './Category'
 
@@ -15,30 +17,34 @@ const Products = () => {
   const productsVistor = useSelector((state: RootState) => state.productsVistorReducer)
   const categories = useSelector((state: RootState) => state.categoryReducer)
 
-
-  useEffect( () => {
+  useEffect(() => {
     dispatch(fetchProductItem())
   }, [])
 
   //searching
-  let filtterdItems: Product[] = []
+  let searchItems: Product[] = []
   if (productsVistor.searchTirm) {
-    filtterdItems = productsVistor.items.filter((item) => {
+    searchItems = productsVistor.items.filter((item) => {
       const searchValue = productsVistor.searchTirm.toString().toLowerCase()
       return item.name.toLowerCase().includes(searchValue)
     })
+    console.log(fetchProductItem)
   }
-  if(categories.filter){
 
-
+  let filtterdItems = productsVistor.items
+  if (categories.filter) {
     filtterdItems = productsVistor.items.filter((item) =>
-    item.categories.some((cat) => categories.filter.includes(cat)));
+      item.categories.some((cat) => categories.filter!.includes(cat))
+    )
   }
-  
 
   const handleSorting = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const sortingSelect = e.target.value
     dispatch(sortProduct(sortingSelect))
+  }
+  const handleAddingCart = (id: number) => {
+    const itemToCart = productsVistor.items.find((product) => product.id === id)
+    if (itemToCart) dispatch(addItemCart(itemToCart))
   }
 
   return (
@@ -46,14 +52,14 @@ const Products = () => {
       {productsVistor.isLoading && <h3> Loading products...</h3>}
       {productsVistor.searchTirm && <p> search : {productsVistor.searchTirm}</p>}
 
-      {filtterdItems.length > 0 && (
+      {searchItems.length > 0 && (
         <>
           <div className="productsVistor-container">
-            {filtterdItems.map((product) => (
+            {searchItems.map((product) => (
               <div key={product.id}>
                 <img src={product.image} alt={product.name} width="50" />
                 <p>{product.name}</p>
-                {product.categories}
+                <input type="button" value="add to cart" />
               </div>
             ))}
           </div>
@@ -73,11 +79,11 @@ const Products = () => {
       </div>
 
       <div className="products-container">
-        {productsVistor.items.map((product) => (
+        {filtterdItems.map((product) => (
           <div key={product.id}>
             <img src={product.image} alt={product.name} width="50" />
             <p>{product.name}</p>
-            {product.categories}
+            <input type="button" value="add to cart" onClick={() => handleAddingCart(product.id)} />
           </div>
         ))}
       </div>

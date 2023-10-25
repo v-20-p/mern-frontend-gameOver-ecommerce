@@ -1,29 +1,36 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { IoSearch } from "react-icons/io5";
-import { FaRegUser } from 'react-icons/fa6';
-import { AiOutlineShoppingCart } from "react-icons/ai";
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../redux/store';
-import { searchProduct } from '../../redux/slices/products/productVisitorSlice';
 
+import { IoSearch } from 'react-icons/io5'
+import { FaRegUser } from 'react-icons/fa6'
+
+import { AiOutlineShoppingCart } from 'react-icons/ai'
+
+import { useDispatch, useSelector } from 'react-redux'
+import { AppDispatch, RootState } from '../../redux/store'
+
+import { searchProduct } from '../../redux/slices/products/productVisitorSlice'
+import { logoutUser } from '../../redux/slices/products/usersSlice'
 
 const Navbar = () => {
+  const [searchValue, setSearchValue] = useState('')
+  const { userLoginData } = useSelector((state: RootState) => state.userReducer)
+  const { cart } = useSelector((state: RootState) => state.productsVistorReducer)
+  const dispatch = useDispatch<AppDispatch>()
 
-  const [searchValue, setSearchValue] = useState("")
-  
-  const dispatch=useDispatch<AppDispatch>()
-
-  const handleSearchChange=(e:React.ChangeEvent<HTMLInputElement>)=>{
-    const searchInput=e.target.value
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const searchInput = e.target.value
     setSearchValue(searchInput)
   }
-  const handleSubmit=(e:React.FormEvent<HTMLFormElement>)=>{
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     dispatch(searchProduct(searchValue))
-    setSearchValue("")
+    setSearchValue('')
   }
-
+  console.log(userLoginData)
+  const handleLogout = () => {
+    dispatch(logoutUser())
+  }
 
   return (
     <nav>
@@ -43,19 +50,34 @@ const Navbar = () => {
         </ul>
       </div>
 
-      <div className='search-container'>
-        <form action="" onSubmit={(e)=>handleSubmit(e)}>
-            <input type="search" name="searchPrpduct" value={searchValue} id="" onChange={handleSearchChange}  />
-            <IoSearch className="icon"/>
+      <div className="search-container">
+        <form action="" onSubmit={handleSubmit}>
+          <input
+            type="search"
+            name="searchPrpduct"
+            value={searchValue}
+            id=""
+            onChange={handleSearchChange}
+          />
+          <IoSearch className="icon" />
         </form>
 
-        <div >
-            <FaRegUser/>
-        </div>
-        <div>
-        <AiOutlineShoppingCart/>
-        </div>
+        {!userLoginData ? (
+          <div>
+            <Link to="login">
+              <FaRegUser />
+            </Link>
+          </div>
+        ) : (
+          <input type="button" value={'logout'} onClick={handleLogout} />
+        )}
 
+        <div>
+          <Link to="/cart">
+            <AiOutlineShoppingCart />
+          </Link>
+          <span>{cart.length > 0 && cart.length}</span>
+        </div>
       </div>
     </nav>
   )

@@ -2,7 +2,6 @@ import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
 import api from '../../../api'
 
-
 export type Product = {
   id: number
   name: string
@@ -13,7 +12,6 @@ export type Product = {
   sizes: string[]
 }
 
-
 export type ProductState = {
   items: Product[]
   error: string | undefined
@@ -21,7 +19,6 @@ export type ProductState = {
   searchTirm: string
   sortState: string
   cart: Product[]
-  
 }
 
 const initialState: ProductState = {
@@ -30,22 +27,18 @@ const initialState: ProductState = {
   isLoading: false,
   searchTirm: '',
   sortState: '',
-  cart: [],
-
-}            
+  cart: []
+}
 
 export const fetchProductItem = createAsyncThunk('product/fetchProductItem', async () => {
   try {
-    const response = await api.get('/mock/e-commerce/products.json');
-    return response.data;
+    const response = await api.get('/mock/e-commerce/products.json')
+    return response.data
   } catch (error) {
-    console.log(error);
-    throw error; 
+    console.log(error)
+    throw error
   }
-});
-
-
-
+})
 
 const productVisitorSlice = createSlice({
   name: 'productVisitor',
@@ -56,13 +49,11 @@ const productVisitorSlice = createSlice({
     },
     sortProduct: (state, action) => {
       const sortingInput = action.payload
-      if (sortingInput == 'asc') 
-      state.items.sort((a, b) => a.name.localeCompare(b.name))
+      if (sortingInput == 'asc') state.items.sort((a, b) => a.name.localeCompare(b.name))
       else if (sortingInput == 'desc')
         state.items.sort((a, b) => a.name.localeCompare(b.name)).reverse()
       else state.items
     },
-
 
     addItemCart: (state, action) => {
       const item = action.payload
@@ -71,10 +62,7 @@ const productVisitorSlice = createSlice({
       }
     },
     deleteItemCart: (state, action) => {
-      const deletedItem = action.payload
-      state.items.filter((item) => {
-        item.id !== deletedItem
-      })
+      state.cart = action.payload
     }
   },
   extraReducers: (builder) => {

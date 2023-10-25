@@ -1,8 +1,12 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '../../redux/store'
-import { TypeCategories, changeHandle, fetchCategories, filterByCategories } from '../../redux/slices/products/categorySlice'
 
+import {
+  changeHandle,
+  fetchCategories,
+  filterByCategories
+} from '../../redux/slices/products/categorySlice'
 
 type CheckedCategory = {
   ischecked: boolean
@@ -11,28 +15,23 @@ type CheckedCategory = {
 }
 
 const Category = () => {
-  const {categories,filter} = useSelector((state: RootState) => state.categoryReducer)
+  const { categories, filter } = useSelector((state: RootState) => state.categoryReducer)
   const dispatch = useDispatch<AppDispatch>()
 
   useEffect(() => {
     dispatch(fetchCategories())
-    
   }, [])
 
-  
-
-  const categoryCheckBoxHandle =  (e: React.ChangeEvent<HTMLInputElement>) => {
+  const categoryCheckBoxHandle = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { checked, id } = e.target
     const updatedCategories = categories.map((category) =>
       category.id === Number(id) ? { ...category, ischecked: checked } : category
     )
-    
+
     dispatch(changeHandle(updatedCategories))
     dispatch(filterByCategories())
-     
   }
 
-  console.log(filter)
   return (
     <div>
       {categories.map(({ id, name }) => (
