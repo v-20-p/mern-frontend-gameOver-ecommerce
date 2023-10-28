@@ -19,6 +19,7 @@ export type ProductState = {
   searchTirm: string
   sortState: string
   cart: Product[]
+  singleProduct:Product
 }
 
 const initialState: ProductState = {
@@ -27,7 +28,8 @@ const initialState: ProductState = {
   isLoading: false,
   searchTirm: '',
   sortState: '',
-  cart: []
+  cart: [],
+  singleProduct:{} as Product
 }
 
 export const fetchProductItem = createAsyncThunk('product/fetchProductItem', async () => {
@@ -82,6 +84,13 @@ const productVisitorSlice = createSlice({
       }
 
     },
+    getSingleProduct: (state, action) => {
+      const foundProduct = state.items.find((product) => product.id !== action.payload)
+      if(foundProduct){
+        state.singleProduct=foundProduct
+      }
+      
+    },
 
   },
   extraReducers: (builder) => {
@@ -100,5 +109,5 @@ const productVisitorSlice = createSlice({
   }
 })
 export default productVisitorSlice.reducer
-export const { searchProduct, sortProduct, addItemCart, deleteItemCart,addProduct,removeProduct,updateProduct } =
+export const { searchProduct, sortProduct, addItemCart, deleteItemCart,addProduct,removeProduct,updateProduct,getSingleProduct } =
   productVisitorSlice.actions

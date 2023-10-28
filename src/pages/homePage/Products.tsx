@@ -11,6 +11,7 @@ import {
 } from '../../redux/slices/products/productsSlice'
 
 import Category from './Category'
+import { Link } from 'react-router-dom'
 
 const Products = () => {
   const dispatch = useDispatch<AppDispatch>()
@@ -83,9 +84,11 @@ const Products = () => {
       <div className="products-container">
         {filtterdItems.map((product) => (
           <div key={product.id}>
+            <Link to={`/product/${product.id}`}>
             <img src={product.image} alt={product.name} width="50" />
             <p>{product.name}</p>
             <input type="button" value="add to cart" onClick={() => handleAddingCart(product.id)} />
+            </Link>
           </div>
         ))}
       </div>

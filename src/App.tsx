@@ -14,6 +14,7 @@ import ManageUsers from './pages/admin/ManageUsers'
 import ManageCategories from './pages/admin/ManageCategories'
 import ManageProducts from './pages/admin/ManageProducts'
 import ListOrders from './pages/admin/ListOrders'
+import ProductDetails from './pages/productPage/ProductDetails'
 
 
 
@@ -25,6 +26,7 @@ function App() {
       <BrowserRouter>
       <Routes>
         <Route path='/' element={<Home/>}/>
+        <Route path='/product/:id' element={<ProductDetails/>}/>
         
         <Route path='login' element={<Login/>}/>
 

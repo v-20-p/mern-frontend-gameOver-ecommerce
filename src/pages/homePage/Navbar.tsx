@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 import { IoSearch } from 'react-icons/io5'
 import { FaRegUser } from 'react-icons/fa6'
@@ -17,6 +17,7 @@ const Navbar = () => {
   const { userLoginData } = useSelector((state: RootState) => state.userReducer)
   const { cart } = useSelector((state: RootState) => state.productsReducer)
   const dispatch = useDispatch<AppDispatch>()
+  const navigate= useNavigate()
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const searchInput = e.target.value
@@ -25,6 +26,7 @@ const Navbar = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     dispatch(searchProduct(searchValue))
+    navigate("/")
     setSearchValue('')
   }
   console.log(userLoginData)
