@@ -14,10 +14,9 @@ import {
 const ManageProducts = () => {
   const dispatch = useDispatch<AppDispatch>()
   const productsAdmin = useSelector((state: RootState) => state.productsReducer)
-  
 
-  const initialValue:Product = {
-    id:0,
+  const initialValue: Product = {
+    id: 0,
     name: '',
     image: '',
     description: '',
@@ -33,17 +32,15 @@ const ManageProducts = () => {
 
   const handleDeleteItem = (id: number) => {
     dispatch(removeProduct({ productId: id }))
-
   }
   const handleEditItem = (id: number) => {
-    const editedItem=productsAdmin.items.find((item)=>item.id ==id)
-    if(editedItem){
+    const editedItem = productsAdmin.items.find((item) => item.id == id)
+    if (editedItem) {
       console.log(editedItem)
-      setproductForm({...editedItem ,id:editedItem.id})
+      setproductForm({ ...editedItem, id: editedItem.id })
     }
-
   }
-  
+
   const onChaneHandleItem = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
 
@@ -57,24 +54,24 @@ const ManageProducts = () => {
     }
 
     setproductForm({
-      ...productForm,[name]: value
+      ...productForm,
+      [name]: value
     })
   }
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
 
-       if (productForm.id) {
-        
-     dispatch(updateProduct(productForm)); 
+    if (productForm.id) {
+      dispatch(updateProduct(productForm))
     } else {
-      setproductForm({...productForm,id:productsAdmin.items[productsAdmin.items.length-1].id+1,})
-  
-      dispatch(addProduct(productForm));
+      setproductForm({
+        ...productForm,
+        id: productsAdmin.items[productsAdmin.items.length - 1].id + 1
+      })
 
+      dispatch(addProduct(productForm))
     }
   }
-
-  
 
   return (
     <>
@@ -134,7 +131,7 @@ const ManageProducts = () => {
             onChange={onChaneHandleItem}
           />
           <br />
-          <button type="submit" >{productForm.id?"edit":"add"}</button>
+          <button type="submit">{productForm.id ? 'edit' : 'add'}</button>
         </form>
       </div>
       <div>
