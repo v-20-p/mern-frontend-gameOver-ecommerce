@@ -28,11 +28,17 @@ const handleSubmit=(e:React.FormEvent)=>{
     const usersExists=users.find((user)=>user.email===userInput.email && user.password === userInput.password )
     
     if(usersExists){
-        dispatch(loginUser(usersExists))
-         navigate('/')
+      
+        if(usersExists.ban){
+          console.log('you are ban')
+        }else{
+          dispatch(loginUser(usersExists))
+          navigate('/')
+        }
+
     }else{
         invalidMessage=<p>the email or password is uncorrect</p>
-        console.log("noooooooo")
+        
     }
 }
   return (

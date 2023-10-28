@@ -4,7 +4,7 @@ import api from '../../../api'
 export const fetchUsers = createAsyncThunk('users/fetchUsers', async () => {
   try {
     const response = await api.get('/mock/e-commerce/users.json')
-    return response.data
+    return response.data.map((user:UserObject)=>({...user,ban:false}))
   } catch (error) {
     console.log(error)
     throw error
@@ -18,6 +18,7 @@ type UserObject = {
   email: string
   password: string
   role: string
+  ban:boolean
 }
 
 type UsersState = {
@@ -53,7 +54,20 @@ const usersSlice = createSlice({
     logoutUser: (state) => {
       state.userLoginData = null
       localStorage.setItem('userLoginData', JSON.stringify(state.userLoginData))
-    }
+    },
+    removeUser: (state, action: { payload: { userId: number } }) => {
+      const filteredUsers = state.users.filter((user) => user.id !== action.payload.userId)
+      state.users = filteredUsers
+    },
+    updateUserBan:(state, action:  PayloadAction<UserObject>) => {
+      const index = state.users.findIndex((user) => user.id === action.payload.id);
+
+      if (index !== -1) {
+        state.users[index] = {...action.payload,ban:!(action.payload.ban)};
+      }
+
+    },
+
   },
   extraReducers: (builder) => {
     builder
@@ -72,4 +86,4 @@ const usersSlice = createSlice({
 })
 
 export default usersSlice.reducer
-export const { loginUser, logoutUser } = usersSlice.actions
+export const { loginUser, logoutUser,removeUser,updateUserBan } = usersSlice.actions

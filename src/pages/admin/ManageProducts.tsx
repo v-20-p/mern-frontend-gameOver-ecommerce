@@ -4,17 +4,20 @@ import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '../../redux/store'
 
 import {
+  Product,
   addProduct,
   fetchProductItem,
-  removeProduct
+  removeProduct,
+  updateProduct
 } from '../../redux/slices/products/productsSlice'
 
 const ManageProducts = () => {
   const dispatch = useDispatch<AppDispatch>()
   const productsAdmin = useSelector((state: RootState) => state.productsReducer)
-  const categories = useSelector((state: RootState) => state.categoryReducer)
+  
 
-  const initialValue = {
+  const initialValue:Product = {
+    id:0,
     name: '',
     image: '',
     description: '',
@@ -30,8 +33,16 @@ const ManageProducts = () => {
 
   const handleDeleteItem = (id: number) => {
     dispatch(removeProduct({ productId: id }))
+
   }
-  const handleEditItem = (id: number) => {}
+  const handleEditItem = (id: number) => {
+    const editedItem=productsAdmin.items.find((item)=>item.id ==id)
+    if(editedItem){
+      console.log(editedItem)
+      setproductForm({...editedItem ,id:editedItem.id})
+    }
+
+  }
   
   const onChaneHandleItem = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
@@ -46,14 +57,25 @@ const ManageProducts = () => {
     }
 
     setproductForm({
-      ...productForm,
-      [name]: value
+      ...productForm,[name]: value
     })
   }
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    dispatch(addProduct(productForm))
+
+       if (productForm.id) {
+        
+     dispatch(updateProduct(productForm)); 
+    } else {
+      setproductForm({...productForm,id:productsAdmin.items[productsAdmin.items.length-1].id+1,})
+  
+      dispatch(addProduct(productForm));
+
+    }
   }
+
+  
+
   return (
     <>
       <div>
@@ -82,7 +104,7 @@ const ManageProducts = () => {
             type="text"
             name="categories"
             id=""
-            value={productForm.categories}
+            value={productForm.categories.join(',')}
             onChange={onChaneHandleItem}
           />
           <br />
@@ -112,7 +134,7 @@ const ManageProducts = () => {
             onChange={onChaneHandleItem}
           />
           <br />
-          <input type="submit" value="submit" />
+          <button type="submit" >{productForm.id?"edit":"add"}</button>
         </form>
       </div>
       <div>
@@ -120,6 +142,7 @@ const ManageProducts = () => {
           <div key={product.id}>
             <img src={product.image} alt={product.name} width="50" />
             <p>{product.name}</p>
+            <p>{product.id}</p>
             <input type="button" value="delete" onClick={() => handleDeleteItem(product.id)} />
             <input type="button" value="edit" onClick={() => handleEditItem(product.id)} />
           </div>

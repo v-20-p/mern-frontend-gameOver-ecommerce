@@ -1,4 +1,3 @@
-import { ProductsManager } from './adminComponents/ProductsManager'
 import {BrowserRouter , Routes , Route} from 'react-router-dom'
 
 import './App.css'
@@ -11,6 +10,10 @@ import VistorProfile from './pages/profile/VistorProfile'
 
 import ProtectedLoginRoute from './protectedRoutes/ProtectedLoginRoute'
 import ProtectedRoleRoute from './protectedRoutes/ProtectedRoleRoute '
+import ManageUsers from './pages/admin/ManageUsers'
+import ManageCategories from './pages/admin/ManageCategories'
+import ManageProducts from './pages/admin/ManageProducts'
+import ListOrders from './pages/admin/ListOrders'
 
 
 
@@ -32,8 +35,17 @@ function App() {
         <Route path='cart' element={<Cart/>}/>
 
         <Route path='/dashboard' element={<ProtectedRoleRoute/>}>
-          <Route path='/dashboard/admin' element={<Admin/>}/>
-        </Route> 
+          <Route path='/dashboard/admin' element={<Admin/>}>
+            <Route path='/dashboard/admin/users' element={<ManageUsers/>}/>
+            <Route path='/dashboard/admin/categories' element={<ManageCategories/>}/>
+            <Route path='/dashboard/admin/products' element={<ManageProducts/>}/>
+            <Route path='/dashboard/admin/orders' element={<ListOrders/>}/>
+            </Route>
+        
+   
+
+          </Route>
+    
       </Routes>
       </BrowserRouter>
     </div>

@@ -73,7 +73,15 @@ const productVisitorSlice = createSlice({
     removeProduct: (state, action: { payload: { productId: number } }) => {
       const filteredItems = state.items.filter((product) => product.id !== action.payload.productId)
       state.items = filteredItems
-    }
+    },
+    updateProduct:(state, action:  PayloadAction<Product>) => {
+      const index = state.items.findIndex((product) => product.id === action.payload.id);
+
+      if (index !== -1) {
+        state.items[index] = action.payload;
+      }
+
+    },
 
   },
   extraReducers: (builder) => {
@@ -92,5 +100,5 @@ const productVisitorSlice = createSlice({
   }
 })
 export default productVisitorSlice.reducer
-export const { searchProduct, sortProduct, addItemCart, deleteItemCart,addProduct,removeProduct } =
+export const { searchProduct, sortProduct, addItemCart, deleteItemCart,addProduct,removeProduct,updateProduct } =
   productVisitorSlice.actions
