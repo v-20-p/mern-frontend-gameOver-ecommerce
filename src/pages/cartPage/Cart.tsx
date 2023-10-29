@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '../../redux/store'
 
 import { deleteItemCart } from '../../redux/slices/products/productsSlice'
+import Navbar from './../homePage/Navbar';
 
 const Cart = () => {
   const { cart } = useSelector((state: RootState) => state.productsReducer)
@@ -18,6 +19,7 @@ const Cart = () => {
 
   return (
     <div>
+      <Navbar/>
       <h1>cart</h1>
       <div>
         {cart.length > 0 ? (

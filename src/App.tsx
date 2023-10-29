@@ -15,6 +15,7 @@ import ManageCategories from './pages/admin/ManageCategories'
 import ManageProducts from './pages/admin/ManageProducts'
 import ListOrders from './pages/admin/ListOrders'
 import ProductDetails from './pages/productPage/ProductDetails'
+import Register from './pages/registrationPages/Register'
 
 
 
@@ -28,13 +29,14 @@ function App() {
         <Route path='/' element={<Home/>}/>
         <Route path='/product/:id' element={<ProductDetails/>}/>
         
-        <Route path='login' element={<Login/>}/>
+        <Route path='/login' element={<Login/>}/>
+        <Route path='/register' element={<Register/>}/>
 
         <Route path='/dashboard' element={<ProtectedLoginRoute/>} >
             <Route path='/dashboard/profile' element={<VistorProfile/>} />
         </Route>
 
-        <Route path='cart' element={<Cart/>}/>
+        <Route path='/cart' element={<Cart/>}/>
 
         <Route path='/dashboard' element={<ProtectedRoleRoute/>}>
           <Route path='/dashboard/admin' element={<Admin/>}>

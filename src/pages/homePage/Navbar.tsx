@@ -29,7 +29,7 @@ const Navbar = () => {
     navigate("/")
     setSearchValue('')
   }
-  console.log(userLoginData)
+
   const handleLogout = () => {
     dispatch(logoutUser())
   }
@@ -41,13 +41,13 @@ const Navbar = () => {
       <div>
         <ul>
           <li>
-            <Link to={''}>home</Link>
+            <Link to={'/'}>home</Link>
           </li>
           <li>
-            <Link to={''}>product</Link>
+            <Link to={'/'}>product</Link>
           </li>
           <li>
-            <Link to={''}>contact</Link>
+            <Link to={'/'}>contact</Link>
           </li>
         </ul>
       </div>
@@ -71,7 +71,11 @@ const Navbar = () => {
             </Link>
           </div>
         ) : (
+          <>
           <input type="button" value={'logout'} onClick={handleLogout} />
+          <div><Link to={"/dashboard/profile"}>profile</Link></div>
+          
+          </>
         )}
 
         <div>

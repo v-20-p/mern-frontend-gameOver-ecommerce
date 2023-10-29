@@ -1,5 +1,5 @@
 import React,{useEffect} from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { AppDispatch, RootState } from '../../redux/store'
 import { useDispatch, useSelector } from 'react-redux'
 import { addItemCart, getSingleProduct } from '../../redux/slices/products/productsSlice'
@@ -10,6 +10,9 @@ import Navbar from './../homePage/Navbar';
 const ProductDetails = () => {
     const {id}= useParams()
     const dispatch = useDispatch<AppDispatch>()
+    const {categories} = useSelector((state: RootState) => state.categoryReducer)
+    const {singleProduct} = useSelector((state: RootState) => state.productsReducer)
+    const navigate=useNavigate()
 
 
     useEffect(()=>{
@@ -21,8 +24,7 @@ const ProductDetails = () => {
         fetchdata()
         
     },[dispatch])
-    const {categories} = useSelector((state: RootState) => state.categoryReducer)
-    const {singleProduct} = useSelector((state: RootState) => state.productsReducer)
+
     const findCategory = () => {
         if (singleProduct && singleProduct.categories) {
           return singleProduct.categories.map((category) => {
@@ -37,6 +39,10 @@ const ProductDetails = () => {
         return null; 
       };
 
+      const handleAddingCart=()=>{
+        dispatch(addItemCart(singleProduct))
+        navigate("/cart")
+      }
 
       
   return (
@@ -47,7 +53,7 @@ const ProductDetails = () => {
         <p>category -- {findCategory()}</p>
         <h2>description</h2>
         <p>{singleProduct.description}</p>
-        <input type="button" value="add to cart" onClick={() => dispatch(addItemCart(singleProduct.id))} />
+        <input type="button" value="add to cart" onClick={handleAddingCart} />
 
     </div>
   )

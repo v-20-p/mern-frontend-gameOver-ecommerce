@@ -20,12 +20,13 @@ type UserObject = {
   role: string
   ban:boolean
 }
+export type TypeUserLoginData= { firstName?: string; lastName?: string; id?: number | undefined; email?: string | undefined; password?: string | undefined; role?: string | undefined; ban?: boolean | undefined; }
 
 type UsersState = {
   users: UserObject[]
   error: string
   isLoading: boolean
-  userLoginData: UserObject | null
+  userLoginData: TypeUserLoginData | undefined |null
   userRole: string
 }
 const userData =
@@ -67,6 +68,18 @@ const usersSlice = createSlice({
       }
 
     },
+    editProfile: (state, action) => {
+      const user= action.payload
+      state.userLoginData ={...state.userLoginData,firstName:user.firstName,lastName:user.lastName}
+      localStorage.setItem('userLoginData', JSON.stringify(state.userLoginData))
+    },
+    register: (state, action) => {
+      const newuser= {id:state.users[state.users.length-1].id+1,...action.payload,ban:false,role:"visitor"}
+      state.users =[...state.users,newuser]
+      console.log(state.users)
+    },
+
+    
 
   },
   extraReducers: (builder) => {
@@ -86,4 +99,4 @@ const usersSlice = createSlice({
 })
 
 export default usersSlice.reducer
-export const { loginUser, logoutUser,removeUser,updateUserBan } = usersSlice.actions
+export const { loginUser, logoutUser,removeUser,updateUserBan,editProfile,register } = usersSlice.actions
