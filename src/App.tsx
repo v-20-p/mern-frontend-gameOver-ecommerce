@@ -1,7 +1,7 @@
 import {BrowserRouter , Routes , Route} from 'react-router-dom'
 
-import './App.css'
-
+import './App.scss'
+import {useEffect} from 'react'
 import Cart from './pages/cartPage/Cart'
 import Admin from './pages/admin/Admin'
 import Home from './pages/homePage/Home'
@@ -17,16 +17,40 @@ import ListOrders from './pages/admin/ListOrders'
 import ProductDetails from './pages/productPage/ProductDetails'
 import Register from './pages/registrationPages/Register'
 
+import { useDispatch } from 'react-redux'
+import { AppDispatch } from './redux/store'
+import { fetchUsers } from './redux/slices/products/usersSlice'
+import { fetchProductItem } from './redux/slices/products/productsSlice'
+import { fetchCategories } from './redux/slices/products/categorySlice'
+
+import Products from './pages/productPage/Products'
+
+import { AiFillFacebook, AiFillLinkedin } from 'react-icons/ai'
+import {FaTwitterSquare} from 'react-icons/fa'
+
+
 
 
 
 function App() {
+  const dispatch = useDispatch<AppDispatch>()
+  useEffect(() => {
+    dispatch(fetchUsers())
+    dispatch(fetchProductItem())
+    dispatch(fetchCategories())
+  },[dispatch])
+
   return (
     <div className="App">
-
+      
+      
+      
       <BrowserRouter>
+      
       <Routes>
-        <Route path='/' element={<Home/>}/>
+
+        <Route path='/' element={<Home />} />
+        <Route path='/products' element={<Products/>}/>
         <Route path='/product/:id' element={<ProductDetails/>}/>
         
         <Route path='/login' element={<Login/>}/>
@@ -52,6 +76,40 @@ function App() {
     
       </Routes>
       </BrowserRouter>
+      <footer>
+  <hr />
+  <div  className='footer-content'>
+    <div>
+      <h3>Powered by</h3>
+      <p>GAME over</p>
+    </div>
+
+    <div style={{width:'20vw'}}>
+      <h3>About Us</h3>
+      <p>We are a passionate team of gamers who love to provide you with the best gaming experience.</p>
+    </div>
+
+    <div>
+      <h3>Products</h3>
+      <ul style={{display:'block'}}>
+        <li>Games</li>
+        <li>Gaming Consoles</li>
+        <li>Accessories</li>
+      </ul>
+    </div>
+
+    <div>
+      <h3>Contact Us</h3>
+      <p>Feel free to reach out to us on social media:</p>
+      <div style={{ display: 'flex', justifyContent: 'space-around', fontSize: '30px' }}>
+        <AiFillFacebook />
+        <FaTwitterSquare />
+        <AiFillLinkedin />
+      </div>
+    </div>
+  </div>
+</footer>
+
     </div>
   )
 }

@@ -17,8 +17,9 @@ const ProductDetails = () => {
 
     useEffect(()=>{
         const fetchdata= async()=>{
-            await dispatch(getSingleProduct(id))
+            
             await dispatch(fetchCategories())
+            await dispatch(getSingleProduct(id))
 
         }
         fetchdata()

@@ -1,42 +1,66 @@
 [
   {
     "id": 1,
-    "name": "Electronics"
+    "name": "Action"
   },
   {
     "id": 2,
-    "name": "Computers"
+    "name": "Shooter"
   },
   {
     "id": 3,
-    "name": "Mobile Phones"
+    "name": "RPG"
   },
   {
     "id": 4,
-    "name": "Gaming"
+    "name": "Adventure"
   },
   {
     "id": 5,
-    "name": "Photography"
+    "name": "Strategy"
   },
   {
     "id": 6,
-    "name": "Health & Fitness"
+    "name": "Simulation"
   },
   {
     "id": 7,
-    "name": "Home Entertainment"
+    "name": "Sports"
   },
   {
     "id": 8,
-    "name": "Home Appliances"
+    "name": "Racing"
   },
   {
     "id": 9,
-    "name": "Audio"
+    "name": "Platformer"
   },
   {
     "id": 10,
-    "name": "Storage"
+    "name": "Puzzle"
+  },
+  {
+    "id": 11,
+    "name": "Horror"
+  },
+  {
+    "id": 12,
+    "name": "Survival"
+  },
+  {
+    "id": 13,
+    "name": "Party"
+  },
+  {
+    "id": 14,
+    "name": "Multiplayer"
+  },
+  {
+    "id": 15,
+    "name": "Sandbox"
+  },
+  {
+    "id": 16,
+    "name": "Battle Royale"
   }
 ]

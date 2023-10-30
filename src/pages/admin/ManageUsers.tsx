@@ -7,9 +7,6 @@ const ManageUsers = () => {
   const { users } = useSelector((state: RootState) => state.userReducer)
   const dispatch = useDispatch<AppDispatch>()
 
-  useEffect(() => {
-    dispatch(fetchUsers())
-  }, [])
 
   const handleBan = (id: number) => {
     const editedbanuser = users.find((user) => user.id == id)

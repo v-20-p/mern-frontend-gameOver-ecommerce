@@ -11,9 +11,7 @@ const Register = () => {
     const [userInput,setUserInput]=useState({firstName:'',lastName:'',email:'',password:''})
     const navigate=useNavigate()
 
-    useEffect(() => {
-        dispatch(fetchUsers())
-      },[dispatch])
+
 
       const handleSubmit=(e:React.FormEvent)=>{
         e.preventDefault()

@@ -14,7 +14,7 @@ import { AppDispatch, RootState } from '../../redux/store'
 import { searchProduct } from '../../redux/slices/products/productsSlice'
 import { logoutUser } from '../../redux/slices/products/usersSlice'
 
-const Navbar = () => {
+const NavAll = () => {
   const [searchValue, setSearchValue] = useState('')
   const { userLoginData } = useSelector((state: RootState) => state.userReducer)
   const { cart } = useSelector((state: RootState) => state.productsReducer)
@@ -38,7 +38,7 @@ const Navbar = () => {
 
   return (
     <>
-    <nav>
+    <nav className='nav-all'>
       <p>logo</p>
 
       <div>
@@ -106,9 +106,9 @@ const Navbar = () => {
       </div>
       
     </nav>
-    <hr />
+    <hr className='hr-black' />
     </>
   )
 }
 
-export default Navbar
+export default NavAll

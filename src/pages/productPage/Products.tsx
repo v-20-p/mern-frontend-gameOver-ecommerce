@@ -6,21 +6,20 @@ import { AppDispatch, RootState } from '../../redux/store'
 import {
   Product,
   addItemCart,
-  fetchProductItem,
   sortProduct
 } from '../../redux/slices/products/productsSlice'
 
-import Category from './Category'
+import Category from '../homePage/Category'
 import { Link } from 'react-router-dom'
+import Navbar from './../homePage/Navbar';
+import NavAll from '../homePage/NavAll'
 
 const Products = () => {
   const dispatch = useDispatch<AppDispatch>()
   const productsVistor = useSelector((state: RootState) => state.productsReducer)
   const categories = useSelector((state: RootState) => state.categoryReducer)
 
-  useEffect(() => {
-    dispatch(fetchProductItem())
-  }, [])
+
 
   //searching
   let searchItems: Product[] = []
@@ -29,7 +28,7 @@ const Products = () => {
       const searchValue = productsVistor.searchTirm.toString().toLowerCase()
       return item.name.toLowerCase().includes(searchValue)
     })
-    console.log(fetchProductItem)
+    
   }
 
   let filtterdItems = productsVistor.items
@@ -52,6 +51,7 @@ const Products = () => {
 
   return (
     <section>
+      <NavAll/>
       {productsVistor.isLoading && <h3> Loading products...</h3>}
       {productsVistor.searchTirm && <p> search : {productsVistor.searchTirm}</p>}
 

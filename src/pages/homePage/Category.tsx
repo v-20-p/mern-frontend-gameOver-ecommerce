@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useState} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '../../redux/store'
 
@@ -8,19 +8,12 @@ import {
   filterByCategories
 } from '../../redux/slices/products/categorySlice'
 
-type CheckedCategory = {
-  ischecked: boolean
-  id: number
-  name: string
-}
+
 
 const Category = () => {
-  const { categories, filter } = useSelector((state: RootState) => state.categoryReducer)
+  const { categories} = useSelector((state: RootState) => state.categoryReducer)
+  const [isCheckboxVisible, setIsCheckboxVisible] = useState(false);
   const dispatch = useDispatch<AppDispatch>()
-
-  useEffect(() => {
-    dispatch(fetchCategories())
-  }, [])
 
   const categoryCheckBoxHandle = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { checked, id } = e.target
@@ -31,17 +24,56 @@ const Category = () => {
     dispatch(changeHandle(updatedCategories))
     dispatch(filterByCategories())
   }
+  const handleCategoryButtonHover = () => {
+    setIsCheckboxVisible(true);
+  };
+
+  const handleCategoryButtonLeave = () => {
+    setIsCheckboxVisible(false);
+  };
+
+  const handleCheckboxMouseEnter = () => {
+    setIsCheckboxVisible(true);
+  };
+
+  const handleCheckboxMouseLeave = () => {
+    setIsCheckboxVisible(false);
+  };
 
   return (
-    <div>
-      {categories.map(({ id, name }) => (
-        <div key={id}>
-          <label htmlFor="category">{name}</label>
-          <input type="checkbox" onChange={categoryCheckBoxHandle} value={name} id={String(id)} />
-        </div>
-      ))}
+    <div className="category-container">
+    <div
+      className="category-hover"
+      onMouseEnter={handleCategoryButtonHover}
+      onMouseLeave={handleCategoryButtonLeave}
+    >
+      category
     </div>
+    {isCheckboxVisible && (
+      <div          
+      className="checkbox"
+      onMouseEnter={handleCheckboxMouseEnter}
+      onMouseLeave={handleCheckboxMouseLeave}
+      >
+        {categories.map(({ id, name }) => (
+          <article key={id}>
+            <input
+              type="checkbox"
+              onChange={categoryCheckBoxHandle}
+              value={name}
+              id={String(id)}
+            />
+            <div>
+              <span>{name}</span>
+            </div>
+          </article>
+        ))}
+      </div>
+    )}
+  </div>
+
   )
+
 }
 
 export default Category

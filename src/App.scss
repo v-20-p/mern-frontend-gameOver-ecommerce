@@ -2,9 +2,13 @@ $main-theme: #121315;
 $secondary-theme: #18191d;
 $font-color: #e8e8e8;
 $secondary-font-color: #77818b;
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@700&display=swap');
 :root {
-  color: $font-color;
-  background-color: $main-theme;
+  color: $main-theme;
+  background-color: #e5e5e5;
+
+  font-family: 'Montserrat', sans-serif;
 }
 a,
 li {
@@ -13,41 +17,65 @@ li {
   color: $secondary-font-color;
   list-style-type: none;
   transition: all 0.3s ease-in-out;
+  z-index: 2;
+  
+}
+hr {
+  margin: 0 200px;
+  border: 0;
+  height: 0.5px;
+  background-image: linear-gradient(
+    to right,
+    rgba(255, 252, 252, 0),
+    rgba(253, 250, 250, 0.5),
+    rgba(246, 243, 243, 0)
+  );
 }
 ul {
   display: flex;
-  gap: 150px;
+  justify-content: center;
+  gap: 20%;
 }
+
 
 nav {
   display: flex;
   justify-content: space-between;
 
   align-items: center;
-  padding: 10px 100px;
+  padding: 5px 100px;
+  p{
+    color: $font-color;
+  }
+
+  
   a:hover {
     color: $font-color;
+ 
   }
   .search-container {
     display: flex;
     align-items: center;
-      
+    justify-content: center;
+    color: $font-color;
+  
+
     input[type='search'] {
       border-radius: 20px;
       height: 40px;
 
-      width: 70px;
+      width: 85%;
+      padding: 10px;
       background-color: $secondary-theme;
       border-width: 0px;
       border: none;
       outline: none;
-      color: $font-color;
-      transition: all 0.3s ease-in-out;
+
+      
+
     }
-    input[type='search']:focus {
-      width: 250px;
-      padding: 0 20px;
-      border-radius: 20px;
+    a{
+      color: $font-color;
     }
     .icon {
       font-size: larger;
@@ -55,13 +83,18 @@ nav {
 
       right: 25px;
       top: 5px;
+      z-index: 2;
+      color: #e8e8e8;
     }
     div{
-        margin: 0 10px;
-        padding: 10px;
+        margin: 0 5px;
+        padding: 12px;
         background-color: $secondary-theme;
         border-radius: 50%;
         font-size: large;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
   }
 }
@@ -97,6 +130,460 @@ nav {
     background-color: $secondary-font-color;
   }
 }
+
+.hero{
+  background-image: url('https://wallpapercave.com/wp/wp7816532.jpg');
+  min-height: 95vh;
+  width: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  
+ 
+}
+
+.hero-shadow {
+  content: ''; /* Create a pseudo-element */
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 95vh;
+  background: linear-gradient( 90deg, rgba(0, 0, 0, .8) 40%, transparent 110%);
+  .hero-content{
+    margin:20vh;
+    h1{
+      
+      width: 70%;
+      margin: 0;
+      font-size: 4vw;
+      
+      font-family: 'Rubik', sans-serif;
+      background: -webkit-linear-gradient(100deg,#eee, #28c3c3);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      @media only screen and (max-width: 570px) {
+        font-size: 4vw;
+      }  
+      
+    }
+    p{
+      color: $font-color;
+      margin-bottom: 4vh;
+      @media only screen and (max-width: 570px) {
+        font-size: 2vw;
+        
+
+      }  
+    }
+    .explore{
+      background-color: #28c3c3;
+      margin-top: 25px;
+      margin-left: 20px;
+      color: $main-theme;
+      padding: 10px;
+      border-radius: 10px;
+      background: #28c3c3;
+      border: 1px solid #28c3c3;
+      -webkit-animation: test 4s infinite; /* Chrome, Safari, Opera */
+      animation: test 4s infinite;
+      @media only screen and (max-width: 570px) {
+        font-size: 2vw;
+        
+
+      }  
+      @-webkit-keyframes test {
+        50% {box-shadow: 2px 8px 10px #28c3c3;}
+    }
+    /* Standard syntax */
+    @keyframes test {
+        50% {box-shadow: 2px 8px 16px #28c3c3;}
+    }
+
+    }
+  }
+  
+ 
+}
+.featured-games{
+  margin-top: 40px;
+  margin-left: 10px;
+  h2{
+    border-left:  6px solid #28c3c3;
+    padding-left: 20px;
+    margin-left: 40px;
+  }
+  .Carousel{
+   
+    padding: 50px;
+    margin: 0 40px;
+    ul{
+      
+      gap: 1%;
+
+    }
+    .product{
+      box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+      border-radius: 7px;
+      overflow: hidden;
+      width: 17vw;
+      @media only screen and (max-width: 1028px) {
+        width: 44vw;
+      }  
+      
+      transition: all .2s ease-in-out;
+
+      img{
+        width:100%;
+        height: 200px;
+      }
+      h3,span{
+        color:$main-theme;
+        padding: 7px;
+      }
+      p{
+        font-size: 13px;
+      }
+      div{
+        display: flex;
+        justify-content: space-between;
+        
+      }
+      .center-plus{
+        display: flex;
+        justify-content: center;
+      }
+      .plus{
+        text-align: center;
+        margin: 0;
+        padding: 0;
+        left: 105px;
+       
+        color: #121315;
+        font-size: 40px;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out ;
+        border-radius: 100%;
+      }
+      .plus:hover{
+        font-size: 50.1px;
+        box-shadow: 1px 1px 10px #121315;
+      }
+
+    }
+    .product:hover{
+      transform: scale(1.07);
+    }
+
+  }
+}
+
+
+.newest-container{
+  margin: 50px 70px;
+  margin-bottom: 500px;
+  @media only screen and (max-width: 676px) {
+    margin-bottom: 1200px;
+    
+  
+  }
+  .new-release{
+    height: 200px;
+    background-image: url('https://www.psu.com/wp/wp-content/uploads/2018/04/god-of-war-theme.jpg');
+    background-size:100% 230%;
+    background-repeat: no-repeat;
+  
+    
+  }
+  .darker{
+    height: 200px;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: space-between;
+    padding: 0 50px;
+    align-items: center;
+    div{
+      p{
+        font-size: 50px;
+      font-family: 'Rubik', sans-serif;
+      background: -webkit-linear-gradient(40deg,#eee, #28c3c3);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      }
+      button{
+        border: 1px solid rgb(255, 255, 255);
+        background-color: rgba(0, 0, 0, 0);
+        color: rgb(255, 255, 255);
+        padding: 1.5vh 1vw;
+        font-size: 16px;
+        cursor: pointer;
+        border-radius: 20px;
+      }
+    }
+  }
+
+}
+
+.nav-all{
+  background-color: $main-theme;
+  padding-bottom: 10px;
+  
+  a{
+    color: $secondary-font-color;
+  }
+  a:hover{
+  
+      color:$font-color
+  }
+  .search-container {
+
+    color:#e8e8e8;
+    input[type='search'] {
+      background-color: #292a30;
+      color: $font-color;
+    }
+    div{
+      background-color: #292a30;
+    }
+  }
+
+}
+.category-container {
+  position: relative;
+  display: inline-block;
+.category-hover{
+  background-color: #151719;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+
+}
+.checkbox{
+  display: flex;
+  flex-wrap: wrap;
+  
+  
+ 
+  align-items: center;
+  justify-content: center;
+  
+  width: 35vw;
+  position: absolute;
+  z-index: 2;
+  background-color: $font-color;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.6);
+article {
+  position: relative;
+  width: 80px;
+  height: 10vh;
+  margin: 5px;
+  border-radius: 20px;
+  text-align: center;
+  font-size: 11px;
+  border: 1px solid $main-theme;
+  box-sizing: border-box;
+  color: #121315;
+
+  div {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    line-height: 25px;
+    transition: .3s linear;
+    border-radius: 20px;
+  }
+   input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 6vw;
+    height: 10vh;
+    opacity: 0;
+  
+    cursor: pointer;
+  }
+}
+  input[type=checkbox]:checked ~ div {
+  background-color: $main-theme;
+  border-radius: 20px;
+  color: #e5e5e5;
+  }
+  
+}
+}
+.hr-black{
+  margin: 0 0px;
+  border: 0;
+  height: .5px;
+  background-image: linear-gradient(
+    to right,
+    rgba(255, 252, 252, 0),
+    rgba(0, 0, 0, 0.824),
+    rgba(246, 243, 243, 0));
+
+}
+
+
+.newGame{
+  display: flex;
+ 
+  
+
+
+  @media only screen and (max-width: 676px) {
+    flex-direction: column;
+    align-items: center;
+    
+  
+  }
+
+}
+.product2{
+  // box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  margin: 12px 3px ;
+  
+  overflow: hidden;
+  width: 33%;
+  height: 320px;
+  background-color: white;
+  @media only screen and (max-width: 676px) {
+    width: 70%;
+  }
+  transition: all .2s ease-in-out;
+
+  img{
+    width:100%;
+    height: 60%;
+    border-bottom-left-radius: 7px;
+    
+    border-bottom-right-radius: 7px;
+  }
+  h3,span{
+    color:$main-theme;
+    padding: 7px;
+  }
+  p{
+    font-size: 13px;
+  }
+  div{
+
+    display: flex;
+  
+ 
+    justify-content: space-between;
+    
+  }
+
+
+}
+footer{
+  height:  200px;
+  padding-bottom: 10px;
+  margin: 0 30px;
+  .footer-content{
+    display: flex;
+    justify-content: space-between;
+    @media only screen and (max-width: 926px) {
+      flex-direction: column;
+      align-items: center;
+    }
+
+  }
+
+
+  hr {
+    margin: 0 0px;
+    border: 0;
+    height: 1.5px;
+    background-image: linear-gradient(
+      to right,
+      rgba(255, 252, 252, 0),
+      rgba(0, 0, 0, 0.824),
+      rgba(246, 243, 243, 0)
+    );
+  }
+
+}
+
+
+
+
+
+
+
+@media only screen and (max-width: 926px) {
+
+  ul {
+    display: flex;
+    justify-content: center;
+    gap: 5%;
+  }
+
+  nav {
+    display: block;
+    justify-content: center;
+
+    align-items: center;
+    padding: 5px 0vw;
+    p{
+      text-align: center;
+    }
+
+    a:hover {
+      color: $font-color;
+    }
+    .search-container {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      width: 100%;
+    
+      
+      input[type='search'] {
+        border-radius: 20px;
+        height: 40px;
+        position: relative;
+        left: 9px;
+        width: 16vw;
+        padding: 1vh;
+        background-color: $secondary-theme;
+        border-width: 0px;
+        border: none;
+        outline: none;
+        color: $font-color;
+        
+      }
+   
+      .icon {
+        font-size:large;
+        position: relative;
+  
+        right: 15px;
+        top: 5px;
+       
+      }
+      div{
+          margin: 1px 1px;
+          padding: 10px;
+          background-color: $secondary-theme;
+          border-radius: 40%;
+          height: 20px;
+
+          font-size:large;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+      }
+    }
+  }
+
+}
+
+
 // #root {
 //     max-width: 1880px;
 //     margin: 0 auto;

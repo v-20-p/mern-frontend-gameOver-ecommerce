@@ -14,9 +14,8 @@ const ManageCategories = () => {
   const dispatch = useDispatch<AppDispatch>()
   const initialValue = { id: 0, name: '', ischecked: false }
   const [categoryForm, setCategoryForm] = useState(initialValue)
-  useEffect(() => {
-    dispatch(fetchCategories())
-  }, [])
+
+  
   const handleEdit = (id: number) => {
     const editedCategory = categories.find((category) => category.id == id)
     if (editedCategory) {

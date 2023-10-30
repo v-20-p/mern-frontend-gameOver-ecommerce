@@ -2,11 +2,10 @@
 
 import { Link, Outlet } from 'react-router-dom'
 
-import ListOrders from './ListOrders'
-
 function Admin() {
   return (
     <div>
+     
 
 
       <ul>
@@ -21,6 +20,9 @@ function Admin() {
         </li>
         <li>
           <Link to="/dashboard/admin/orders">orders</Link>
+        </li>
+        <li>
+          <Link to="/">home</Link>
         </li>
       </ul>
       <Outlet />

@@ -11,10 +11,7 @@ const Login = () => {
   const dispatch = useDispatch<AppDispatch>()
   const [userInput,setUserInput]=useState({email:'',password:''})
   const navigate=useNavigate()
-  
-  useEffect(() => {
-    dispatch(fetchUsers())
-  },[])
+
   console.log(isLoading)
   console.log(users)
   const handleChangeInput=(e:React.ChangeEvent<HTMLInputElement>)=>{

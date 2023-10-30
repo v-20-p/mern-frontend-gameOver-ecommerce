@@ -22,13 +22,12 @@ const ManageProducts = () => {
     description: '',
     categories: [],
     variants: [],
-    sizes: []
+    sizes: [],
+    price:0,
+    rate:0
   }
   const [productForm, setproductForm] = useState(initialValue)
 
-  useEffect(() => {
-    dispatch(fetchProductItem())
-  }, [])
 
   const handleDeleteItem = (id: number) => {
     dispatch(removeProduct({ productId: id }))

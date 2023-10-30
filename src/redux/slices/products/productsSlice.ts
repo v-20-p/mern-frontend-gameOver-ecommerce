@@ -10,6 +10,8 @@ export type Product = {
   categories: number[]
   variants: string[]
   sizes: string[]
+  price:number
+  rate:number
 }
 
 export type ProductState = {
