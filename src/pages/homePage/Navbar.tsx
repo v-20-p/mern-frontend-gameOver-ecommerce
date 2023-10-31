@@ -28,7 +28,7 @@ const Navbar = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     dispatch(searchProduct(searchValue))
-    navigate("/")
+    navigate("/products")
     setSearchValue('')
   }
 
@@ -70,6 +70,7 @@ const Navbar = () => {
             name="searchPrpduct"
             value={searchValue}
             id=""
+            style={{color:"white"}}
             onChange={handleSearchChange}
           />
           <IoSearch className="icon" />

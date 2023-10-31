@@ -28,7 +28,7 @@ const NavAll = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     dispatch(searchProduct(searchValue))
-    navigate("/")
+    navigate("/products")
     setSearchValue('')
   }
 

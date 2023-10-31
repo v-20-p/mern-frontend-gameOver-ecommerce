@@ -87,7 +87,8 @@ const productVisitorSlice = createSlice({
 
     },
     getSingleProduct: (state, action) => {
-      const foundProduct = state.items.find((product) => product.id !== action.payload)
+      const id = action.payload
+      const foundProduct = state.items.find((product) => product.id === id)
       if(foundProduct){
         state.singleProduct=foundProduct
       }

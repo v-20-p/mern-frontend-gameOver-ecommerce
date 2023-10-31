@@ -5,7 +5,7 @@
     "image": "https://images.logicalincrements.com/gallery/1920/822/witcher3-wallpaper-1.webp",
     "description": "An open-world action RPG with a rich story.",
     "categories": [1, 12, 4],
-    "variants": ["PC", "PS5", "Xbox Series X"],
+    "variants": ["PC", "PS5", "Xbox One"],
     "sizes": [],
     "price": 29.99,
     "rate": 4.8
@@ -16,7 +16,7 @@
     "image": "https://www.nvidia.com/content/dam/en-zz/Solutions/geforce/news/cyberpunk-2077-30-series-4k-rtx-on-trailer/cyberpunk-2077-key-visual-ogimage.jpg",
     "description": "A futuristic RPG in the open world of Night City.",
     "categories": [1, 2],
-    "variants": ["PC", "PS5", "Xbox Series X"],
+    "variants": ["PC", "PS5", "Xbox One"],
     "sizes": [],
     "price": 39.99,
     "rate": 4.2
@@ -27,7 +27,7 @@
     "image": "https://images7.alphacoders.com/105/1054152.jpg",
     "description": "An epic tale of life in America's unforgiving heartland.",
     "categories": [1, 2,14],
-    "variants": ["PC", "PS5", "Xbox Series X"],
+    "variants": ["PC", "PS5", "Xbox One"],
     "sizes": [],
     "price": 49.99,
     "rate": 4.7
@@ -38,7 +38,7 @@
     "image": "https://static.actugaming.net/media/2020/04/assassins-creed-valhalla-key-art-e1588261446136.jpg",
     "description": "Become Eivor, a Viking raider raised to be a fearless warrior.",
     "categories": [1, 4],
-    "variants": ["PC", "PS5", "Xbox Series X"],
+    "variants": ["PC", "PS5", "Xbox One"],
     "sizes": [],
     "price": 44.99,
     "rate": 4.5
@@ -60,7 +60,7 @@
     "image": "https://www.pcwelt.de/wp-content/uploads/2023/04/4337273_original.jpg?quality=50&strip=all",
     "description": "A game about placing blocks and going on adventures.",
     "categories": [4,14],
-    "variants": ["PC", "PS4", "Xbox One"],
+    "variants": ["PC", "PS5", "Xbox One"],
     "sizes": [],
     "price": 19.99,
     "rate": 4.4
@@ -71,7 +71,7 @@
     "image": "https://wallpaperswide.com/download/the_elder_scrolls_v_skyrim-wallpaper-1600x1200.jpg",
     "description": "An open-world action RPG with dragons and magic.",
     "categories": [4,12],
-    "variants": ["PC", "PS5", "Xbox Series X"],
+    "variants": ["PC", "PS5", "Xbox One"],
     "sizes": [],
     "price": 29.99,
     "rate": 4.7
@@ -82,7 +82,7 @@
     "image": "https://4kwallpapers.com/images/wallpapers/call-of-duty-warzone-xbox-one-playstation-4-pc-games-2020-4644x2886-224.jpg",
     "description": "A popular free-to-play battle royale game.",
     "categories": [14,2,16],
-    "variants": ["PC", "PS4", "Xbox One"],
+    "variants": ["PC", "PS5", "Xbox One"],
     "sizes": [],
     "price": 0.00,
     "rate": 4.6
@@ -93,7 +93,7 @@
     "image": "https://cdn.wccftech.com/wp-content/uploads/2017/09/fortnite_art.jpg",
     "description": "A free-to-play battle royale game with building mechanics.",
     "categories": [16,2],
-    "variants": ["PC", "PS4", "Xbox One"],
+    "variants": ["PC", "PS5", "Xbox One"],
     "sizes": [],
     "price": 0.00,
     "rate": 4.4
@@ -104,7 +104,7 @@
     "image": "https://tech4gamers.com/wp-content/uploads/2022/09/wp9624346-fuga-melodies-of-steel-wallpapers.jpg",
     "description": "An anime action RPG set in a futuristic world.",
     "categories": [3],
-    "variants": ["PC", "PS4", "Xbox One"],
+    "variants": ["PC", "PS5", "Xbox One"],
     "sizes": [],
     "price": 39.99,
     "rate": 4.3
@@ -115,7 +115,7 @@
     "image": "https://images.logicalincrements.com/gallery/1920/822/destiny2-wallpaper-1.jpeg",
     "description": "A multiplayer online shooter with epic battles.",
     "categories": [1],
-    "variants": ["PC", "PS4", "Xbox One"],
+    "variants": ["PC", "PS5", "Xbox One"],
     "sizes": [],
     "price": 19.99,
     "rate": 4.6
@@ -137,7 +137,7 @@
     "image": "https://i.redd.it/rd5pfsapbhc51.png",
     "description": "The next chapter in the legendary Halo series.",
     "categories": [1, 2],
-    "variants": ["PC", "Xbox Series X"],
+    "variants": ["PC", "Xbox One"],
     "sizes": [],
     "price": 49.99,
     "rate": 4.5
@@ -148,7 +148,7 @@
     "image": "https://arabgamerz.com/wp-content/uploads/2023/09/EA-FC-24.webp",
     "description": "The latest installment of the FIFA football game series.",
     "categories": [7],
-    "variants": ["PC", "PS5", "Xbox Series X"],
+    "variants": ["PC", "PS5", "Xbox One"],
     "sizes": [],
     "price": 59.99,
     "rate": 4.7
@@ -159,7 +159,7 @@
     "image": "https://wallpapercg.com/download/nba-2k24-3840x2160-16318.jpg",
     "description": "The ultimate basketball simulation game.",
     "categories": [7],
-    "variants": ["PC", "PS5", "Xbox Series X"],
+    "variants": ["PC", "PS5", "Xbox One"],
     "sizes": [],
     "price": 59.99,
     "rate": 4.4
@@ -181,7 +181,7 @@
     "image": "https://s25.q4cdn.com/103200307/files/doc_multimedia/MASTER-16-9-STANDARD-EDITION-FINAL-4k_3layers.jpg",
     "description": "A first-person shooter game with large-scale battles.",
     "categories": [2,14],
-    "variants": ["PC", "PS5", "Xbox Series X"],
+    "variants": ["PC", "PS5", "Xbox One"],
     "sizes": [],
     "price": 59.99,
     "rate": 4.3
@@ -192,7 +192,7 @@
     "image": "https://wallpapers.com/images/featured/apex-legends-4k-ufuh3yiyskde5os6.jpg",
     "description": "A popular battle royale game with unique characters.",
     "categories": [2,14],
-    "variants": ["PC", "PS4", "Xbox One"],
+    "variants": ["PC", "PS5", "Xbox One"],
     "sizes": [],
     "price": 0.00,
     "rate": 4.7
@@ -203,7 +203,7 @@
     "image": "https://cdn1.epicgames.com/b4565296c22549e4830c13bc7506642d/offer/TETRA_PREORDER_STANDARD%20EDITION_EPIC_Store_Landscape_2560x1440-2560x1440-827a9d1823ad230a0ea5a2efc7936370.jpg",
     "description": "Join the revolution and push back against a corrupt dictator.",
     "categories": [4,12],
-    "variants": ["PC", "PS5", "Xbox Series X"],
+    "variants": ["PC", "PS5", "Xbox One"],
     "sizes": [],
     "price": 49.99,
     "rate": 4.6

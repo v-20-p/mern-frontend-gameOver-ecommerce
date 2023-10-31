@@ -7,7 +7,9 @@ import {
   fetchCategories,
   filterByCategories
 } from '../../redux/slices/products/categorySlice'
-
+import { BiSolidDownArrow } from 'react-icons/bi';
+import { fetchProductItem } from './../../redux/slices/products/productsSlice';
+// BiSolidDownArrow
 
 
 const Category = () => {
@@ -24,44 +26,39 @@ const Category = () => {
     dispatch(changeHandle(updatedCategories))
     dispatch(filterByCategories())
   }
-  const handleCategoryButtonHover = () => {
+  const handleCategoryHover = () => {
     setIsCheckboxVisible(true);
   };
 
-  const handleCategoryButtonLeave = () => {
+  const handleCategoryLeave = () => {
     setIsCheckboxVisible(false);
   };
 
-  const handleCheckboxMouseEnter = () => {
-    setIsCheckboxVisible(true);
-  };
 
-  const handleCheckboxMouseLeave = () => {
-    setIsCheckboxVisible(false);
-  };
 
   return (
     <div className="category-container">
     <div
       className="category-hover"
-      onMouseEnter={handleCategoryButtonHover}
-      onMouseLeave={handleCategoryButtonLeave}
+      onMouseEnter={handleCategoryHover}
+      onMouseLeave={handleCategoryLeave}
     >
-      category
+      category <BiSolidDownArrow style={{position:"relative",top:"3px",left:"5px",fontSize:"15px"}}/>
     </div>
     {isCheckboxVisible && (
       <div          
       className="checkbox"
-      onMouseEnter={handleCheckboxMouseEnter}
-      onMouseLeave={handleCheckboxMouseLeave}
+      onMouseEnter={handleCategoryHover}
+      onMouseLeave={handleCategoryLeave}
       >
-        {categories.map(({ id, name }) => (
+        {categories.map(({ id, name ,ischecked}) => (
           <article key={id}>
             <input
               type="checkbox"
               onChange={categoryCheckBoxHandle}
               value={name}
               id={String(id)}
+              checked={ischecked}
             />
             <div>
               <span>{name}</span>

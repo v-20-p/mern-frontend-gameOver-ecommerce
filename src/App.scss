@@ -101,34 +101,12 @@ nav {
 
 
 .products-container{
-  display: grid;
-  grid-template-columns: auto auto auto auto auto auto;
-  place-items: center;
-  margin: 0 160px;
-  div{
-    
-    width: 80%;
-    margin-top: 2px;
-    text-align: center;
-    padding: 5px;
-    
-    
-    img{
-      width: 100%;
-      border-radius: 10px;
-      height: 160px;
-      
-
-    }
-    p{
-      margin: 0;
-    }
-
-  }
-
-  div:hover{
-    background-color: $secondary-font-color;
-  }
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+ 
+  margin: 0 60px;
+  margin-bottom:40px ;
 }
 
 .hero{
@@ -204,8 +182,44 @@ nav {
     }
   }
   
- 
+
 }
+
+.h2-title{
+  border-left:  6px solid #28c3c3;
+  padding-left: 20px;
+  margin-left: 40px;
+  
+  .filter{
+    position: relative;
+    top: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+  }
+  .filter:hover{
+    color:#28c3c3;
+  }
+}
+.filter-items{
+  transition: all 1.3s ease-out;
+  width: 90vw;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-left: 35px;
+  height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: height .9s, opacity .9s;
+
+}
+.filter-items.show {
+  height: auto;
+  opacity: 1;
+  overflow: visible;
+  margin-bottom: 20px;
+}
+
 .featured-games{
   margin-top: 40px;
   margin-left: 10px;
@@ -289,7 +303,7 @@ nav {
   
   }
   .new-release{
-    height: 200px;
+    height: 300px;
     background-image: url('https://www.psu.com/wp/wp-content/uploads/2018/04/god-of-war-theme.jpg');
     background-size:100% 230%;
     background-repeat: no-repeat;
@@ -297,7 +311,7 @@ nav {
     
   }
   .darker{
-    height: 200px;
+    height: 300px;
     background: rgba(0, 0, 0, 0.5);
     display: flex;
     justify-content: space-between;
@@ -352,12 +366,14 @@ nav {
 .category-container {
   position: relative;
   display: inline-block;
+  
 .category-hover{
   background-color: #151719;
   color: #fff;
   border: none;
-  padding: 10px 20px;
+  padding: 14px 25px;
   cursor: pointer;
+  border-radius: 2px;
 
 }
 .checkbox{
@@ -377,7 +393,7 @@ nav {
 article {
   position: relative;
   width: 80px;
-  height: 10vh;
+  height: 5vh;
   margin: 5px;
   border-radius: 20px;
   text-align: center;
@@ -418,7 +434,7 @@ article {
 .hr-black{
   margin: 0 0px;
   border: 0;
-  height: .5px;
+  height: 1.3px;
   background-image: linear-gradient(
     to right,
     rgba(255, 252, 252, 0),
@@ -442,6 +458,41 @@ article {
   }
 
 }
+.custom-select {
+  display: flex;
+  background-color: black;
+  color: white;
+  padding: 10px;
+  border-radius: 2px;
+  width: 210px;
+
+  label {
+   
+    margin-bottom: 5px;
+    margin-right: 2px;
+    font-size: 16px;
+  }
+
+  select {
+    
+    background-color: transparent;
+    color: white;
+    border: none;
+    border-bottom: 1px solid white;
+    appearance: none;
+    width: 70%;
+
+    &:focus {
+      outline: none; 
+      border: none; 
+    }
+    option{
+      background-color: black;
+      
+    }
+  }
+}
+
 .product2{
   // box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
   margin: 12px 3px ;
@@ -480,6 +531,8 @@ article {
 
 
 }
+
+
 footer{
   height:  200px;
   padding-bottom: 10px;
@@ -508,6 +561,176 @@ footer{
   }
 
 }
+.product3{
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  border-radius: 7px;
+  overflow: hidden;
+  width: 17vw;
+  margin: 10px;
+  height: 400px;
+  @media only screen and (max-width: 1028px) {
+    width: 44vw;
+  }  
+  
+  transition: all .2s ease-in-out;
+
+  img{
+    width:100%;
+    height: 200px;
+  }
+  h3,span{
+    color:$main-theme;
+    padding: 7px;
+  }
+  p{
+    font-size: 13px;
+  }
+  div{
+    display: flex;
+    justify-content: space-between;
+    
+  }
+  .center-plus{
+    display: flex;
+    justify-content: center;
+  }
+  .plus{
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    left: 105px;
+   
+    color: #121315;
+    font-size: 40px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out ;
+    border-radius: 100%;
+  }
+  .plus:hover{
+    font-size: 50.1px;
+    box-shadow: 1px 1px 10px #121315;
+  }
+
+}
+.product3:hover{
+  transform: scale(1.07);
+}
+.pagination{
+  display: flex;
+  justify-content: center;
+  margin-bottom:80px;
+  margin-top:10px;
+  button{
+    background-color: $main-theme;
+    color: $font-color;
+    padding: 5px;
+    border-radius: 10%;
+    height: 30px;
+    width: 30px;
+    margin: 2px;
+    cursor: pointer;
+  }
+  button:hover{
+    color:#28c3c3;
+    background-color: $font-color;
+  }
+}
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+.image-container {
+  position: relative;
+  width: 100%; 
+ 
+  overflow: hidden;
+  .image-theme {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 110%;
+    height: 110%;
+    object-fit: cover; 
+  
+    z-index: -1; 
+    
+  
+    filter: blur(30.4px) brightness(0.3) ;
+  }
+  .game{
+    margin: 20px;
+    display: flex;
+    color: $font-color;
+    font-weight: bolder;
+    gap: 20px;
+    span{
+      margin: 5px;
+      padding: 10px;
+      background-color: #1c1e21;
+      border-radius: 20px;
+    }
+    .price{
+      font-size: 31px;
+    }
+    img{
+      border-radius: 7px;
+    }
+  }
+  .description{
+    color: $font-color;
+    
+    margin: 40px 0;
+    margin-left: 30px;
+    h3{
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 25px;
+      margin: 0;
+
+    }
+    ul{
+      display: block;
+      margin: 2px;
+      padding: 2px;
+      li{
+        font-size: 10px;
+
+      }
+    }
+  }
+  .dawn-game{
+    display: flex;
+    color: $font-color;
+    justify-content: space-between;
+     margin-top: 120px;
+
+    div{
+      background-color: #1c1e21;
+      height: 100px;
+      width: 25vw;
+      font-size: 40px;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      border-top-left-radius:100px ;  
+    }
+    button{
+      background-color: #1c1e21;
+      color: $font-color;
+      border: none;
+      width: 25vw;
+      border-top-right-radius: 100px;
+      font-size: 40px;
+      font-family: 'Bebas Neue', sans-serif;
+      cursor: pointer;
+      transition: all .2s ease-in-out ;
+    }
+    button:hover{
+      background-color: #28c3c3;
+    }
+
+
+  }
+  
+}
+
+// Style the image within the container
 
 
 
