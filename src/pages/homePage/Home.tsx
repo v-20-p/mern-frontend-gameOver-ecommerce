@@ -15,7 +15,6 @@ const Home = () => {
   const dispatch = useDispatch<AppDispatch>()
   const { items } = useSelector((state: RootState) => state.productsReducer)
 
-
   const handleAddingCart = (id: number) => {
     const itemToCart = items.find((product) => product.id === id)
     if (itemToCart) {
@@ -109,7 +108,7 @@ const Home = () => {
                   />
                 </div>
                 <div>
-                <span>price : ${item.price==0 ? "free ": item.price}</span>
+                  <span>price : ${item.price == 0 ? 'free ' : item.price}</span>
                   <span>⭐ {item.rate}</span>
                 </div>
               </div>
@@ -131,7 +130,7 @@ const Home = () => {
                 </Link>
               </div>
             </div>
-            <div className='newGame'>
+            <div className="newGame">
               {items.slice(16, 19).map((item) => (
                 <div key={item.id} className="product2">
                   <Link to={`/product/${item.id}`}>
@@ -139,17 +138,15 @@ const Home = () => {
                   </Link>
 
                   <h3>{item.name}</h3>
-                  
 
                   <div>
-                  <span>price: {item.price==0 ? "free": item.price}$</span>
-                  <span>⭐ {item.rate}</span>
+                    <span>price: {item.price == 0 ? 'free' : item.price}$</span>
+                    <span>⭐ {item.rate}</span>
                   </div>
                 </div>
               ))}
             </div>
           </div>
-          
         </div>
       </section>
     </>

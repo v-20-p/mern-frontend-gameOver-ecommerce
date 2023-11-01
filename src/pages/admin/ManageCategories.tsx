@@ -14,9 +14,8 @@ const ManageCategories = () => {
   const dispatch = useDispatch<AppDispatch>()
   const initialValue = { id: 0, name: '', ischecked: false }
   const [categoryForm, setCategoryForm] = useState(initialValue)
-  const [formErrors, setFormErrors] = useState('');
+  const [formErrors, setFormErrors] = useState('')
 
-  
   const handleEdit = (id: number) => {
     const editedCategory = categories.find((category) => category.id == id)
     if (editedCategory) {
@@ -35,8 +34,7 @@ const ManageCategories = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     if (!categoryForm.name) {
-      
-      return setFormErrors('Name is required');
+      return setFormErrors('Name is required')
     }
 
     if (categoryForm.id) {
@@ -52,8 +50,8 @@ const ManageCategories = () => {
 
   return (
     <div className="admin-content">
-      <h2 className='h2'>categories</h2>
-      <div className='form' style={{height:"250px"}}>
+      <h2 className="h2">categories</h2>
+      <div className="form" style={{ height: '250px' }}>
         <form action="" onSubmit={handleSubmit}>
           <label htmlFor="">name of Pruduct</label>
           <input
@@ -68,23 +66,25 @@ const ManageCategories = () => {
         </form>
       </div>
       <div>
-      <div className="table">
-      <div className="table-header">
+        <div className="table">
+          <div className="table-header">
             <p>Name</p>
-            
+
             <p>Action 1</p>
             <p>Action 2</p>
-            
           </div>
-        {categories.map(({ id, name }) => (
-          <div key={id} className="table-row">
-            <p>{name}</p>
-          
-            <p style={{color:'darkblue',cursor:'pointer'}} onClick={() => handleEdit(id)}>edit</p>
-            <p style={{color:'red',cursor:'pointer' }} onClick={() => handleDelete(id)}>delete</p>
-        
-          </div>
-        ))}
+          {categories.map(({ id, name }) => (
+            <div key={id} className="table-row">
+              <p>{name}</p>
+
+              <p style={{ color: 'darkblue', cursor: 'pointer' }} onClick={() => handleEdit(id)}>
+                edit
+              </p>
+              <p style={{ color: 'red', cursor: 'pointer' }} onClick={() => handleDelete(id)}>
+                delete
+              </p>
+            </div>
+          ))}
         </div>
       </div>
     </div>

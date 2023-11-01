@@ -18,7 +18,7 @@ const Products = () => {
   const categories = useSelector((state: RootState) => state.categoryReducer)
   const [show, setShow] = useState(false)
 
-  const itemsPerPage =8
+  const itemsPerPage = 8
   const [currentPage, setCurrentPage] = useState(1)
 
   //searching
@@ -51,19 +51,15 @@ const Products = () => {
       filtterdItems = productsVistor.items
     }
     currentItems = filtterdItems.slice(indexOfFirstItem, indexOfLastItem)
-    
   }
-
 
   const handleSorting = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const sortingSelect = e.target.value
     dispatch(sortProduct(sortingSelect))
   }
   const handleAddingCart = (id: number) => {
-      dispatch(addItemCart(id))
+    dispatch(addItemCart(id))
   }
-
-
 
   const renderPageNumbers = pageNumbers.map((number) => (
     <button key={number} onClick={() => handlePageChange(number)}>
@@ -74,37 +70,42 @@ const Products = () => {
   return (
     <section>
       <NavAll />
-      <div style={{margin:"0 80px"}}>
-      {productsVistor.isLoading && <h3> Loading products...</h3>}
-      {productsVistor.error && <h3> error to fetch products...</h3>}
-      {productsVistor.searchTirm && <p> result search of (<strong>{productsVistor.searchTirm}</strong>) </p>}
-
+      <div style={{ margin: '0 80px' }}>
+        {productsVistor.isLoading && <h3> Loading products...</h3>}
+        {productsVistor.error && <h3> error to fetch products...</h3>}
+        {productsVistor.searchTirm && (
+          <p>
+            {' '}
+            result search of (<strong>{productsVistor.searchTirm}</strong>){' '}
+          </p>
+        )}
       </div>
 
       {searchItems.length > 0 && (
         <>
           <div className="products-container">
             {searchItems.map((item) => (
-          <div key={item.id} className="product3">
-          <Link to={`/product/${item.id}`}>
-            <img src={item.image} alt={item.name} width={200} />
-          </Link>
+              <div key={item.id} className="product3">
+                <Link to={`/product/${item.id}`}>
+                  <img src={item.image} alt={item.name} width={200} />
+                </Link>
 
-          <h3>
-            {item.name} 
-          </h3>
-          <p>{item.description.slice(0, 15)}..read more</p>
-          <div className="center-plus">
-            <BsFillPlusCircleFill className="plus" onClick={() => handleAddingCart(item.id)} />
-          </div>
-          <div>
-            <span>price : ${item.price == 0 ? 'free ' : item.price}</span>
-            <span>⭐ {item.rate}</span>
-          </div>
-        </div>
+                <h3>{item.name}</h3>
+                <p>{item.description.slice(0, 15)}..read more</p>
+                <div className="center-plus">
+                  <BsFillPlusCircleFill
+                    className="plus"
+                    onClick={() => handleAddingCart(item.id)}
+                  />
+                </div>
+                <div>
+                  <span>price : ${item.price == 0 ? 'free ' : item.price}</span>
+                  <span>⭐ {item.rate}</span>
+                </div>
+              </div>
             ))}
           </div>
-          <hr className='hr-black' />
+          <hr className="hr-black" />
         </>
       )}
       <h2 className="h2-title">
@@ -131,9 +132,7 @@ const Products = () => {
               <img src={item.image} alt={item.name} width={200} />
             </Link>
 
-            <h3>
-              {item.name} 
-            </h3>
+            <h3>{item.name}</h3>
             <p>{item.description.slice(0, 15)}..read more</p>
             <div className="center-plus">
               <BsFillPlusCircleFill className="plus" onClick={() => handleAddingCart(item.id)} />
@@ -144,9 +143,8 @@ const Products = () => {
             </div>
           </div>
         ))}
-        
       </div>
-      <hr  className='hr-black'/>
+      <hr className="hr-black" />
       <div className="pagination">{renderPageNumbers}</div>
     </section>
   )

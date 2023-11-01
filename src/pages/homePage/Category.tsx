@@ -1,4 +1,4 @@
-import React, { useState} from 'react'
+import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '../../redux/store'
 
@@ -7,14 +7,13 @@ import {
   fetchCategories,
   filterByCategories
 } from '../../redux/slices/products/categorySlice'
-import { BiSolidDownArrow } from 'react-icons/bi';
-import { fetchProductItem } from './../../redux/slices/products/productsSlice';
+import { BiSolidDownArrow } from 'react-icons/bi'
+import { fetchProductItem } from './../../redux/slices/products/productsSlice'
 // BiSolidDownArrow
 
-
 const Category = () => {
-  const { categories} = useSelector((state: RootState) => state.categoryReducer)
-  const [isCheckboxVisible, setIsCheckboxVisible] = useState(false);
+  const { categories } = useSelector((state: RootState) => state.categoryReducer)
+  const [isCheckboxVisible, setIsCheckboxVisible] = useState(false)
   const dispatch = useDispatch<AppDispatch>()
 
   const categoryCheckBoxHandle = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -27,50 +26,47 @@ const Category = () => {
     dispatch(filterByCategories())
   }
   const handleCategoryHover = () => {
-    setIsCheckboxVisible(true);
-  };
+    setIsCheckboxVisible(true)
+  }
 
   const handleCategoryLeave = () => {
-    setIsCheckboxVisible(false);
-  };
-
-
+    setIsCheckboxVisible(false)
+  }
 
   return (
     <div className="category-container">
-    <div
-      className="category-hover"
-      onMouseEnter={handleCategoryHover}
-      onMouseLeave={handleCategoryLeave}
-    >
-      category <BiSolidDownArrow style={{position:"relative",top:"3px",left:"5px",fontSize:"15px"}}/>
-    </div>
-    {isCheckboxVisible && (
-      <div          
-      className="checkbox"
-      onMouseEnter={handleCategoryHover}
-      onMouseLeave={handleCategoryLeave}
-      >
-        {categories.map(({ id, name ,ischecked}) => (
-          <article key={id}>
-            <input
-              type="checkbox"
-              onChange={categoryCheckBoxHandle}
-              value={name}
-              id={String(id)}
-              checked={ischecked}
-            />
-            <div>
-              <span>{name}</span>
-            </div>
-          </article>
-        ))}
+      <div
+        className="category-hover"
+        onMouseEnter={handleCategoryHover}
+        onMouseLeave={handleCategoryLeave}>
+        category{' '}
+        <BiSolidDownArrow
+          style={{ position: 'relative', top: '3px', left: '5px', fontSize: '15px' }}
+        />
       </div>
-    )}
-  </div>
-
+      {isCheckboxVisible && (
+        <div
+          className="checkbox"
+          onMouseEnter={handleCategoryHover}
+          onMouseLeave={handleCategoryLeave}>
+          {categories.map(({ id, name, ischecked }) => (
+            <article key={id}>
+              <input
+                type="checkbox"
+                onChange={categoryCheckBoxHandle}
+                value={name}
+                id={String(id)}
+                checked={ischecked}
+              />
+              <div>
+                <span>{name}</span>
+              </div>
+            </article>
+          ))}
+        </div>
+      )}
+    </div>
   )
-
 }
 
 export default Category

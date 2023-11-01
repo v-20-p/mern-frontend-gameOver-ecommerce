@@ -23,13 +23,12 @@ const ManageProducts = () => {
     categories: [],
     variants: [],
     sizes: [],
-    price:0,
-    rate:0,
-    cartId:0
+    price: 0,
+    rate: 0,
+    cartId: 0
   }
   const [productForm, setproductForm] = useState(initialValue)
-  const [errors, setErrors] = useState('');
-
+  const [errors, setErrors] = useState('')
 
   const handleDeleteItem = (id: number) => {
     dispatch(removeProduct({ productId: id }))
@@ -52,9 +51,7 @@ const ManageProducts = () => {
         ...productForm,
         [name]: value.split(',')
       })
-      
     }
-
 
     setproductForm({
       ...productForm,
@@ -63,7 +60,7 @@ const ManageProducts = () => {
   }
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    if (!productForm.name || !productForm.description){
+    if (!productForm.name || !productForm.description) {
       return setErrors('ALl field should be fill')
     }
 
@@ -78,15 +75,13 @@ const ManageProducts = () => {
       dispatch(addProduct(productForm))
     }
     setErrors('')
-
   }
 
   return (
-   
     <div className="admin-content">
-        <h2 className='h2'>products</h2>
-        <div className='form' style={{height:"550px"}} >
-        <form action="" onSubmit={handleSubmit} >
+      <h2 className="h2">products</h2>
+      <div className="form" style={{ height: '550px' }}>
+        <form action="" onSubmit={handleSubmit}>
           <label htmlFor="">name of Pruduct</label>
           <input
             type="text"
@@ -143,32 +138,39 @@ const ManageProducts = () => {
           {errors && <p className="error-message">{errors}</p>}
           <button type="submit">{productForm.id ? 'edit' : 'add'}</button>
         </form>
-        </div>
-        <div className="table">
+      </div>
+      <div className="table">
         <div className="table-header">
-            <p>id</p>
-            <p>image</p>
-            <p>name</p>
-            
-            <p>Actions 1</p>
-            <p>Actions 2</p>
-          </div>
-     
-     
+          <p>id</p>
+          <p>image</p>
+          <p>name</p>
+
+          <p>Actions 1</p>
+          <p>Actions 2</p>
+        </div>
+
         {productsAdmin.items.map((product) => (
           <div key={product.id} className="table-row">
             <p>{product.id}</p>
-            <p><img src={product.image} alt={product.name} width="50" /></p>
+            <p>
+              <img src={product.image} alt={product.name} width="50" />
+            </p>
             <p>{product.name}</p>
-            
-            <p style={{color:'darkblue',cursor:'pointer'}} onClick={() => handleDeleteItem(product.id)} >delete</p>
-            <p style={{color:'red',cursor:'pointer'}} onClick={() => handleEditItem(product.id)} >edit</p>
+
+            <p
+              style={{ color: 'darkblue', cursor: 'pointer' }}
+              onClick={() => handleDeleteItem(product.id)}>
+              delete
+            </p>
+            <p
+              style={{ color: 'red', cursor: 'pointer' }}
+              onClick={() => handleEditItem(product.id)}>
+              edit
+            </p>
           </div>
         ))}
-        </div>
-     
+      </div>
     </div>
-
   )
 }
 

@@ -10,9 +10,9 @@ export type Product = {
   categories: number[]
   variants: string[]
   sizes: string[]
-  price:number
-  rate:number
-  cartId:number
+  price: number
+  rate: number
+  cartId: number
 }
 
 export type ProductState = {
@@ -22,9 +22,10 @@ export type ProductState = {
   searchTirm: string
   sortState: string
   cart: Product[]
-  singleProduct:Product
+  singleProduct: Product
 }
-const cartData=localStorage.getItem('cart')!=null?JSON.parse(String(localStorage.getItem('cart'))):[]
+const cartData =
+  localStorage.getItem('cart') != null ? JSON.parse(String(localStorage.getItem('cart'))) : []
 const initialState: ProductState = {
   items: [],
   error: '',
@@ -32,7 +33,7 @@ const initialState: ProductState = {
   searchTirm: '',
   sortState: '',
   cart: cartData,
-  singleProduct:{} as Product
+  singleProduct: {} as Product
 }
 
 export const fetchProductItem = createAsyncThunk('product/fetchProductItem', async () => {
@@ -55,60 +56,52 @@ const productVisitorSlice = createSlice({
     sortProduct: (state, action) => {
       const sortingInput = action.payload
       if (sortingInput == 'name') state.items.sort((a, b) => a.name.localeCompare(b.name))
-      else if (sortingInput == 'price')
-      state.items.sort((a, b) => b.price - a.price).reverse();
+      else if (sortingInput == 'price') state.items.sort((a, b) => b.price - a.price).reverse()
       else state.items
     },
 
     addItemCart: (state, action) => {
-
       const id = action.payload
       const itemToCart = state.items.find((product) => product.id === id)
-    
+
       if (itemToCart) {
-        const newIdForCartItem={...itemToCart,cartId:state.cart.length+1}
+        const newIdForCartItem = { ...itemToCart, cartId: state.cart.length + 1 }
         state.cart = [...state.cart, newIdForCartItem]
-        localStorage.setItem('cart',JSON.stringify(state.cart))
+        localStorage.setItem('cart', JSON.stringify(state.cart))
       }
     },
     deleteItemCart: (state, action) => {
       state.cart = action.payload
       state.cart = state.cart.map((item, index) => ({
         ...item,
-        cartId: index + 1,
-      }));
-      localStorage.setItem('cart',JSON.stringify(state.cart))
-      
-
-
+        cartId: index + 1
+      }))
+      localStorage.setItem('cart', JSON.stringify(state.cart))
     },
     addProduct: (state, action) => {
       const newProduct = action.payload
-      if(newProduct){
-        state.items=[...state.items,newProduct]
+      if (newProduct) {
+        state.items = [...state.items, newProduct]
       }
     },
     removeProduct: (state, action: { payload: { productId: number } }) => {
       const filteredItems = state.items.filter((product) => product.id !== action.payload.productId)
       state.items = filteredItems
     },
-    updateProduct:(state, action:  PayloadAction<Product>) => {
-      const index = state.items.findIndex((product) => product.id === action.payload.id);
+    updateProduct: (state, action: PayloadAction<Product>) => {
+      const index = state.items.findIndex((product) => product.id === action.payload.id)
 
       if (index !== -1) {
-        state.items[index] = action.payload;
+        state.items[index] = action.payload
       }
-
     },
     getSingleProduct: (state, action) => {
       const id = action.payload
       const foundProduct = state.items.find((product) => product.id === id)
-      if(foundProduct){
-        state.singleProduct=foundProduct
+      if (foundProduct) {
+        state.singleProduct = foundProduct
       }
-      
-    },
-
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -126,5 +119,13 @@ const productVisitorSlice = createSlice({
   }
 })
 export default productVisitorSlice.reducer
-export const { searchProduct, sortProduct, addItemCart, deleteItemCart,addProduct,removeProduct,updateProduct,getSingleProduct } =
-  productVisitorSlice.actions
+export const {
+  searchProduct,
+  sortProduct,
+  addItemCart,
+  deleteItemCart,
+  addProduct,
+  removeProduct,
+  updateProduct,
+  getSingleProduct
+} = productVisitorSlice.actions

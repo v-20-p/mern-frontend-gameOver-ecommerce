@@ -71,17 +71,16 @@ const ProductDetails = () => {
           </button>
 
           <div>
-            {
-              singleProduct.variants &&
-              singleProduct.variants.some((va) => va === 'PS5') && <FaPlaystation />}
-            {
-              singleProduct.variants &&
-              singleProduct.variants.some((va) => va === 'Xbox One') && <FaXbox />}
-            {
-              singleProduct.variants &&
-              singleProduct.variants.some((va) => va === 'PC') && <FaComputer />}
-            {
-              singleProduct.variants &&
+            {singleProduct.variants && singleProduct.variants.some((va) => va === 'PS5') && (
+              <FaPlaystation />
+            )}
+            {singleProduct.variants && singleProduct.variants.some((va) => va === 'Xbox One') && (
+              <FaXbox />
+            )}
+            {singleProduct.variants && singleProduct.variants.some((va) => va === 'PC') && (
+              <FaComputer />
+            )}
+            {singleProduct.variants &&
               singleProduct.variants.some((va) => va === 'Nintendo Switch') && <BsNintendoSwitch />}
           </div>
         </div>

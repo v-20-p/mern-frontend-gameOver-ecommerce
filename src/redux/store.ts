@@ -10,7 +10,7 @@ export const store = configureStore({
     productsReducer: productsSlice,
     categoryReducer: categorySlice,
     userReducer: usersSlice,
-    orderReducer:ordersSlice
+    orderReducer: ordersSlice
   }
 })
 

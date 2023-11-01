@@ -19,7 +19,7 @@ const ManageUsers = () => {
   return (
     <div className="admin-content">
       <div>
-        <h2 className='h2'>Users</h2>
+        <h2 className="h2">Users</h2>
         <div className="table">
           <div className="table-header">
             <p>Name</p>
@@ -31,16 +31,21 @@ const ManageUsers = () => {
           </div>
           {users.map((user) => (
             <div key={user.id} className="table-row">
-              <p >
+              <p>
                 {user.firstName} {user.lastName}
               </p>
-              <p style={{maxWidth:"13.5vw"}}>{user.email}</p>
+              <p style={{ maxWidth: '13.5vw' }}>{user.email}</p>
               <p>{user.role}</p>
               <p>{user.ban ? 'Yes' : 'No'}</p>
-             
-                <p style={{color:'darkblue',cursor:'pointer'}} onClick={() => handleBan(user.id)}>{user.ban ? 'Unban' : 'Ban'}</p>
-                <p style={{color:'red',cursor:'pointer'}} onClick={() => handleDelete(user.id)}>Delete</p>
-             
+
+              <p
+                style={{ color: 'darkblue', cursor: 'pointer' }}
+                onClick={() => handleBan(user.id)}>
+                {user.ban ? 'Unban' : 'Ban'}
+              </p>
+              <p style={{ color: 'red', cursor: 'pointer' }} onClick={() => handleDelete(user.id)}>
+                Delete
+              </p>
             </div>
           ))}
         </div>

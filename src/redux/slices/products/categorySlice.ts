@@ -25,7 +25,7 @@ export const fetchCategories = createAsyncThunk('product/fetchCategories', async
     const response = await api.get('/mock/e-commerce/categories.json')
     return response.data.map((category: TypeCategories) => ({
       ...category,
-      ischecked: false 
+      ischecked: false
     }))
   } catch (error) {
     console.log(error)
@@ -47,22 +47,23 @@ const categorySlice = createSlice({
     },
     addCategory: (state, action) => {
       const newCategory = action.payload
-      if(newCategory){
-        state.categories=[...state.categories,newCategory]
+      if (newCategory) {
+        state.categories = [...state.categories, newCategory]
       }
     },
     removeCategory: (state, action: { payload: { categoryId: number } }) => {
-      const filteredCatgories = state.categories.filter((category) => category.id !== action.payload.categoryId)
+      const filteredCatgories = state.categories.filter(
+        (category) => category.id !== action.payload.categoryId
+      )
       state.categories = filteredCatgories
     },
-    updateCategory:(state, action:  PayloadAction<TypeCategories>) => {
-      const index = state.categories.findIndex((category) => category.id === action.payload.id);
+    updateCategory: (state, action: PayloadAction<TypeCategories>) => {
+      const index = state.categories.findIndex((category) => category.id === action.payload.id)
 
       if (index !== -1) {
-        state.categories[index] = action.payload;
+        state.categories[index] = action.payload
       }
-
-    },
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -80,4 +81,5 @@ const categorySlice = createSlice({
   }
 })
 export default categorySlice.reducer
-export const { changeHandle, filterByCategories ,addCategory,removeCategory,updateCategory } = categorySlice.actions
+export const { changeHandle, filterByCategories, addCategory, removeCategory, updateCategory } =
+  categorySlice.actions
