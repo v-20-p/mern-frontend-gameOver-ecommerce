@@ -1,13 +1,14 @@
 
 
 import { Link, Outlet } from 'react-router-dom'
+import NavAll from './../homePage/NavAll';
 
 function Admin() {
   return (
-    <div>
-     
-
-
+    <>
+    <NavAll/>
+    <div className='admin'>
+    <div className='admin-nav'>
       <ul>
         <li>
           <Link to="/dashboard/admin/users">users</Link>
@@ -25,8 +26,12 @@ function Admin() {
           <Link to="/">home</Link>
         </li>
       </ul>
-      <Outlet />
+     
     </div>
+    <Outlet />
+    
+    </div>
+    </>
   )
 }
 

@@ -14,6 +14,8 @@ import { AppDispatch, RootState } from '../../redux/store'
 import { searchProduct } from '../../redux/slices/products/productsSlice'
 import { logoutUser } from '../../redux/slices/products/usersSlice'
 
+import { SiGamejolt } from 'react-icons/si';
+
 const NavAll = () => {
   const [searchValue, setSearchValue] = useState('')
   const { userLoginData } = useSelector((state: RootState) => state.userReducer)
@@ -39,7 +41,7 @@ const NavAll = () => {
   return (
     <>
     <nav className='nav-all'>
-      <p>logo</p>
+      <p className='logo'>GAME<SiGamejolt/>OVER</p>
 
       <div>
         <ul>
@@ -51,13 +53,16 @@ const NavAll = () => {
           </li>
           {userLoginData?.role=="admin"&& 
           <li>
-          <Link to="/dashboard/admin">
+          <Link to="/dashboard/admin/users">
           admin 
         </Link>
         </li>
         }
         {userLoginData &&
         <li><Link to={"/dashboard/profile"}>profile</Link></li>
+        }
+        {!userLoginData &&
+        <li><Link to={"/register"}>register</Link></li>
         }
         
         </ul>
@@ -78,7 +83,7 @@ const NavAll = () => {
 
         {!userLoginData ? (
           <div>
-            <Link to="login">
+            <Link to="/login">
               <FaRegUser />
             </Link>
           </div>
@@ -95,7 +100,7 @@ const NavAll = () => {
           <Link to="/cart">
             <AiOutlineShoppingCart />
           </Link>
-          <span>{cart.length > 0 && cart.length}</span>
+          <span className='numberCart'>{cart.length > 0 && cart.length}</span>
         </div>
         
 
@@ -106,7 +111,7 @@ const NavAll = () => {
       </div>
       
     </nav>
-    <hr className='hr-black' />
+
     </>
   )
 }

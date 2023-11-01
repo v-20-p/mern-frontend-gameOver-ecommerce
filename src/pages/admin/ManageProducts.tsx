@@ -24,9 +24,11 @@ const ManageProducts = () => {
     variants: [],
     sizes: [],
     price:0,
-    rate:0
+    rate:0,
+    cartId:0
   }
   const [productForm, setproductForm] = useState(initialValue)
+  const [errors, setErrors] = useState('');
 
 
   const handleDeleteItem = (id: number) => {
@@ -44,13 +46,15 @@ const ManageProducts = () => {
     const { name, value } = e.target
 
     const isList = name === 'categories' || name === 'variants' || name === 'sizes'
+
     if (isList) {
       setproductForm({
         ...productForm,
         [name]: value.split(',')
       })
-      return
+      
     }
+
 
     setproductForm({
       ...productForm,
@@ -59,6 +63,9 @@ const ManageProducts = () => {
   }
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
+    if (!productForm.name || !productForm.description){
+      return setErrors('ALl field should be fill')
+    }
 
     if (productForm.id) {
       dispatch(updateProduct(productForm))
@@ -70,13 +77,16 @@ const ManageProducts = () => {
 
       dispatch(addProduct(productForm))
     }
+    setErrors('')
+
   }
 
   return (
-    <>
-      <div>
-        <h1>admin</h1>
-        <form action="" onSubmit={handleSubmit}>
+   
+    <div className="admin-content">
+        <h2 className='h2'>products</h2>
+        <div className='form' style={{height:"550px"}} >
+        <form action="" onSubmit={handleSubmit} >
           <label htmlFor="">name of Pruduct</label>
           <input
             type="text"
@@ -130,21 +140,35 @@ const ManageProducts = () => {
             onChange={onChaneHandleItem}
           />
           <br />
+          {errors && <p className="error-message">{errors}</p>}
           <button type="submit">{productForm.id ? 'edit' : 'add'}</button>
         </form>
-      </div>
-      <div>
+        </div>
+        <div className="table">
+        <div className="table-header">
+            <p>id</p>
+            <p>image</p>
+            <p>name</p>
+            
+            <p>Actions 1</p>
+            <p>Actions 2</p>
+          </div>
+     
+     
         {productsAdmin.items.map((product) => (
-          <div key={product.id}>
-            <img src={product.image} alt={product.name} width="50" />
-            <p>{product.name}</p>
+          <div key={product.id} className="table-row">
             <p>{product.id}</p>
-            <input type="button" value="delete" onClick={() => handleDeleteItem(product.id)} />
-            <input type="button" value="edit" onClick={() => handleEditItem(product.id)} />
+            <p><img src={product.image} alt={product.name} width="50" /></p>
+            <p>{product.name}</p>
+            
+            <p style={{color:'darkblue',cursor:'pointer'}} onClick={() => handleDeleteItem(product.id)} >delete</p>
+            <p style={{color:'red',cursor:'pointer'}} onClick={() => handleEditItem(product.id)} >edit</p>
           </div>
         ))}
-      </div>
-    </>
+        </div>
+     
+    </div>
+
   )
 }
 

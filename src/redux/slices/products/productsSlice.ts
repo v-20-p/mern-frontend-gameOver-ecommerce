@@ -12,6 +12,7 @@ export type Product = {
   sizes: string[]
   price:number
   rate:number
+  cartId:number
 }
 
 export type ProductState = {
@@ -23,14 +24,14 @@ export type ProductState = {
   cart: Product[]
   singleProduct:Product
 }
-
+const cartData=localStorage.getItem('cart')!=null?JSON.parse(String(localStorage.getItem('cart'))):[]
 const initialState: ProductState = {
   items: [],
   error: '',
   isLoading: false,
   searchTirm: '',
   sortState: '',
-  cart: [],
+  cart: cartData,
   singleProduct:{} as Product
 }
 
@@ -53,20 +54,33 @@ const productVisitorSlice = createSlice({
     },
     sortProduct: (state, action) => {
       const sortingInput = action.payload
-      if (sortingInput == 'asc') state.items.sort((a, b) => a.name.localeCompare(b.name))
-      else if (sortingInput == 'desc')
-        state.items.sort((a, b) => a.name.localeCompare(b.name)).reverse()
+      if (sortingInput == 'name') state.items.sort((a, b) => a.name.localeCompare(b.name))
+      else if (sortingInput == 'price')
+      state.items.sort((a, b) => b.price - a.price).reverse();
       else state.items
     },
 
     addItemCart: (state, action) => {
-      const item = action.payload
-      if (item) {
-        state.cart = [...state.cart, item]
+
+      const id = action.payload
+      const itemToCart = state.items.find((product) => product.id === id)
+    
+      if (itemToCart) {
+        const newIdForCartItem={...itemToCart,cartId:state.cart.length+1}
+        state.cart = [...state.cart, newIdForCartItem]
+        localStorage.setItem('cart',JSON.stringify(state.cart))
       }
     },
     deleteItemCart: (state, action) => {
       state.cart = action.payload
+      state.cart = state.cart.map((item, index) => ({
+        ...item,
+        cartId: index + 1,
+      }));
+      localStorage.setItem('cart',JSON.stringify(state.cart))
+      
+
+
     },
     addProduct: (state, action) => {
       const newProduct = action.payload

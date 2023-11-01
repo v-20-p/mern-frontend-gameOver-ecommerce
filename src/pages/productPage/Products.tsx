@@ -18,7 +18,7 @@ const Products = () => {
   const categories = useSelector((state: RootState) => state.categoryReducer)
   const [show, setShow] = useState(false)
 
-  const itemsPerPage =10
+  const itemsPerPage =8
   const [currentPage, setCurrentPage] = useState(1)
 
   //searching
@@ -60,10 +60,7 @@ const Products = () => {
     dispatch(sortProduct(sortingSelect))
   }
   const handleAddingCart = (id: number) => {
-    const itemToCart = productsVistor.items.find((product) => product.id === id)
-    if (itemToCart) {
-      dispatch(addItemCart(itemToCart))
-    }
+      dispatch(addItemCart(id))
   }
 
 
@@ -77,21 +74,37 @@ const Products = () => {
   return (
     <section>
       <NavAll />
+      <div style={{margin:"0 80px"}}>
       {productsVistor.isLoading && <h3> Loading products...</h3>}
-      {productsVistor.searchTirm && <p> search : {productsVistor.searchTirm}</p>}
+      {productsVistor.error && <h3> error to fetch products...</h3>}
+      {productsVistor.searchTirm && <p> result search of (<strong>{productsVistor.searchTirm}</strong>) </p>}
+
+      </div>
 
       {searchItems.length > 0 && (
         <>
-          <div className="productsVistor-container">
-            {searchItems.map((product) => (
-              <div key={product.id}>
-                <img src={product.image} alt={product.name} width="50" />
-                <p>{product.name}</p>
-                <input type="button" value="add to cart" />
-              </div>
+          <div className="products-container">
+            {searchItems.map((item) => (
+          <div key={item.id} className="product3">
+          <Link to={`/product/${item.id}`}>
+            <img src={item.image} alt={item.name} width={200} />
+          </Link>
+
+          <h3>
+            {item.name} 
+          </h3>
+          <p>{item.description.slice(0, 15)}..read more</p>
+          <div className="center-plus">
+            <BsFillPlusCircleFill className="plus" onClick={() => handleAddingCart(item.id)} />
+          </div>
+          <div>
+            <span>price : ${item.price == 0 ? 'free ' : item.price}</span>
+            <span>⭐ {item.rate}</span>
+          </div>
+        </div>
             ))}
           </div>
-          <hr />
+          <hr className='hr-black' />
         </>
       )}
       <h2 className="h2-title">
@@ -105,8 +118,8 @@ const Products = () => {
           <label htmlFor="sorting">sort by : </label>
           <select name="sorting" onChange={handleSorting}>
             <option value="">none</option>
-            <option value="asc">asc</option>
-            <option value="desc">desc</option>
+            <option value="name">name</option>
+            <option value="price">price</option>
           </select>
         </div>
       </div>
@@ -119,7 +132,7 @@ const Products = () => {
             </Link>
 
             <h3>
-              {item.name} {item.id}
+              {item.name} 
             </h3>
             <p>{item.description.slice(0, 15)}..read more</p>
             <div className="center-plus">
