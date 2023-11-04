@@ -61,7 +61,7 @@ const NavAll = () => {
             )}
             {userLoginData && (
               <li>
-                <Link to={'/dashboard/profile'}>profile</Link>
+                <Link to={'/dashboard/vistor'}>profile</Link>
               </li>
             )}
             {!userLoginData && (

@@ -44,11 +44,11 @@ function App() {
           <Route path="/products" element={<Products />} />
           <Route path="/product/:id" element={<ProductDetails />} />
 
-          <Route path="/login" element={<Login />} />
+          <Route path="/login" element={<Login />} ></Route>
           <Route path="/register" element={<Register />} />
 
           <Route path="/dashboard" element={<ProtectedLoginRoute />}>
-            <Route path="/dashboard/profile" element={<VistorProfile />} />
+            <Route path="/dashboard/vistor" element={<VistorProfile />} />
           </Route>
 
           <Route path="/cart" element={<Cart />} />

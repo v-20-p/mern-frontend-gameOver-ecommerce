@@ -7,7 +7,7 @@ import { loginUser } from '../../redux/slices/products/usersSlice'
 import NavAll from './../homePage/NavAll'
 import { SiGamejolt } from 'react-icons/si'
 
-const Login = () => {
+const Login = ({ pathName }: { pathName?: string }) => {
   const { users, isLoading, userLoginData, error } = useSelector(
     (state: RootState) => state.userReducer
   )

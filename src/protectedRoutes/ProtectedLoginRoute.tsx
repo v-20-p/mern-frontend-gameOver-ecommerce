@@ -1,13 +1,14 @@
 import { useSelector } from 'react-redux'
 import { RootState } from '../redux/store'
 
-import { Outlet } from 'react-router-dom'
+import { Outlet, useLocation } from 'react-router-dom'
 
 import Login from '../pages/registrationPages/Login'
 
 const ProtectedLoginRoute = () => {
   const { userLoginData } = useSelector((state: RootState) => state.userReducer)
-  return userLoginData ? <Outlet /> : <Login />
+  const location = useLocation()
+  return userLoginData ? <Outlet /> : <Login pathName={location.pathname} />
 }
 
 export default ProtectedLoginRoute

@@ -110,7 +110,7 @@ const Cart = () => {
             </div>
           </>
         ) : (
-          <div>nothing in cart</div>
+          <div style={{height:'90vh',display:'flex',justifyContent:"center",alignItems:'center'}}> <h1>nothing in cart</h1>  </div>
         )}
       </div>
     </div>
