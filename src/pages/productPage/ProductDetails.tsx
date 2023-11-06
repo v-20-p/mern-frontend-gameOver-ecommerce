@@ -8,6 +8,8 @@ import NavAll from '../homePage/NavAll'
 import { FaPlaystation, FaXbox } from 'react-icons/fa'
 import { FaComputer } from 'react-icons/fa6'
 import { BsNintendoSwitch } from 'react-icons/bs'
+
+
 const ProductDetails = () => {
   const { id } = useParams()
   const dispatch = useDispatch<AppDispatch>()
@@ -17,7 +19,7 @@ const ProductDetails = () => {
 
   useEffect(() => {
     dispatch(getSingleProduct(Number(id)))
-  }, [dispatch])
+  }, [id])
 
   const findCategory = () => {
     if (singleProduct && singleProduct.categories) {

@@ -9,6 +9,7 @@ import NavAll from '../homePage/NavAll'
 import { BsFillTrashFill } from 'react-icons/bs'
 import { MdOutlinePayment } from 'react-icons/md'
 import { FaCcApplePay, FaCcPaypal, FaCcAmazonPay } from 'react-icons/fa'
+
 const Cart = () => {
   const { cart } = useSelector((state: RootState) => state.productsReducer)
   const dispatch = useDispatch<AppDispatch>()
@@ -24,9 +25,7 @@ const Cart = () => {
 
   const calculateTotalPrice = () => {
     let subtotal = 0
-    cart.forEach((item) => {
-      subtotal += item.price
-    })
+    cart.reduce((total, item) => total + item.price, 0);
 
     const tax = (subtotal * 0.15).toFixed(2) // 15% tax
 
