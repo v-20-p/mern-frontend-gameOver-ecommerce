@@ -1,80 +1,136 @@
-import React, { useState, useEffect } from 'react'
-
+import React, { useState, useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import Select from 'react-select'
+
 import { AppDispatch, RootState } from '../../redux/store'
 
-import {
-  Product,
-  addProduct,
-  fetchProductItem,
-  removeProduct,
-  updateProduct
-} from '../../redux/slices/products/productsSlice'
+interface Category {
+  _id: string
+  title: string
+}
+interface initialValue{
+  description: string;
+  discounts?: never[];
+  image?: string;
+  price: number;
+  quantity?: number;
+  shipping?: number;
+  slug?: string;
+  sold?: number;
+  title: string;
+  categoryId:TypeCategories[] |[]
+  updatedAt?: string;
+  _id?: string;
+}
+import {  deleteProduct, fetchProductItem, newProduct, updateProduct } from '../../redux/slices/products/productsSlice'
+import { baseURL } from '../../api'
+import { TypeCategories } from '../../redux/slices/products/categorySlice'
 
 const ManageProducts = () => {
   const dispatch = useDispatch<AppDispatch>()
   const productsAdmin = useSelector((state: RootState) => state.productsReducer)
+  const { categories } = useSelector((state: RootState) => state.categoryReducer)
 
-  const initialValue: Product = {
-    id: 0,
-    name: '',
+  const initialValue :initialValue = {
+    _id: '',
+    title: '',
     image: '',
     description: '',
-    categories: [],
-    variants: [],
-    sizes: [],
+    categoryId: [],
+    // variants: [],
+    // sizes: [],
     price: 0,
-    rate: 0,
-    cartId: 0
+    quantity:10,
+    discounts:[]
+    // rate: 0,
+    // cart_Id: 0
   }
   const [productForm, setproductForm] = useState(initialValue)
   const [errors, setErrors] = useState('')
 
-  const handleDeleteItem = (id: number) => {
-    dispatch(removeProduct({ productId: id }))
+
+  const handleDeleteItem = (_id: string) => {
+    dispatch(deleteProduct(_id))
+    dispatch(fetchProductItem())
+    
+
   }
-  const handleEditItem = (id: number) => {
-    const editedItem = productsAdmin.items.find((item) => item.id == id)
+  const handleEditItem = (_id: string) => {
+    const editedItem = productsAdmin.items.find((item) => item._id == _id)
     if (editedItem) {
       console.log(editedItem)
-      setproductForm({ ...editedItem, id: editedItem.id })
+      setproductForm({ ...editedItem, _id: String(editedItem._id ),categoryId:(editedItem.categoryId.map((cat)=>cat._id) as [])})
     }
   }
 
-  const onChaneHandleItem = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target
+  const onChaneHandleItem = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement >
+  ) => {
+    const { name, value ,} = e.target
+    const isList = name === 'categoryId' || name === 'variants' || name === 'sizes'
+    const isImage= name=== 'image'
 
-    const isList = name === 'categories' || name === 'variants' || name === 'sizes'
-
-    if (isList) {
+    if (!isList && !isImage) {
       setproductForm({
         ...productForm,
-        [name]: value.split(',')
+        [name]: value
       })
-    }
 
-    setproductForm({
-      ...productForm,
-      [name]: value
-    })
+    } 
   }
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]; 
+    setproductForm((productForm:any) => ({
+      ...productForm,
+      image: file,
+    }));
+  };
+
+  const onChangeListHandleItem = (categoryId: string) => {
+    setproductForm((productForm: any) => ({
+      ...productForm,
+      categoryId: [...productForm.categoryId, categoryId]
+    }))
+  }
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    if (!productForm.name || !productForm.description) {
+
+    if (!productForm.title || !productForm.description) {
       return setErrors('ALl field should be fill')
     }
 
-    if (productForm.id) {
-      dispatch(updateProduct(productForm))
+    if (productForm._id) {
+      
+      dispatch(updateProduct({id:productForm._id,data:productForm}))
+      dispatch(fetchProductItem())
     } else {
-      setproductForm({
-        ...productForm,
-        id: productsAdmin.items[productsAdmin.items.length - 1].id + 1
-      })
-
-      dispatch(addProduct(productForm))
+      dispatch(newProduct(productForm))
+      dispatch(fetchProductItem())
+      
     }
     setErrors('')
+  }
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+  const dropdownRef = useRef<HTMLDivElement>(null)
+  const toggleDropdown = () => {
+    setIsDropdownOpen((prev) => !prev)
+  }
+
+  const closeDropdown = () => {
+    setIsDropdownOpen(false)
+  }
+  const onRemoveHandleItem = (categoryId: string) => {
+    setproductForm((productForm: any) => ({
+      ...productForm,
+      categoryId: productForm.categoryId.filter((id: string) => id !== categoryId)
+    }))
+  }
+
+  const titleOfcategory = (categoryIds: string[]) => {
+    const titles = categories.filter((cat) => categoryIds.includes(cat._id)).map((cat) => cat.title)
+
+    return titles.join(' , ')
   }
 
   return (
@@ -85,47 +141,89 @@ const ManageProducts = () => {
           <label htmlFor="">name of Pruduct</label>
           <input
             type="text"
-            name="name"
+            name="title"
             id=""
-            value={productForm.name}
+            value={productForm.title}
+            onChange={onChaneHandleItem}
+          />
+          <br />
+          <label htmlFor="">price</label>
+          <input
+            type="text"
+            name="price"
+            value={productForm.price}
+            onChange={onChaneHandleItem}
+          />
+          <br />
+          <label htmlFor="">price</label>
+          <input
+            type="text"
+            name="quantity"
+     
+            value={productForm.quantity}
             onChange={onChaneHandleItem}
           />
           <br />
           <label htmlFor="">image url</label>
           <input
-            type="text"
+            type="file"
             name="image"
-            id=""
-            value={productForm.image}
-            onChange={onChaneHandleItem}
+            accept="image/*"
+            onChange={handleImageChange}
           />
           <br />
-          <label htmlFor="">categories</label>
-          <input
-            type="text"
-            name="categories"
-            id=""
-            value={productForm.categories.join(',')}
-            onChange={onChaneHandleItem}
-          />
+          <span>
+            {categories.map(
+              (cat) => productForm.categoryId.find((cate: Category) => cat._id == cate._id)?.title
+            )}
+          </span>
+          <div className="custom-dropdown" onBlur={closeDropdown} tabIndex={0} ref={dropdownRef}>
+            <label htmlFor="categories">Categories</label>
+            <div
+              className={`dropdown-trigger ${isDropdownOpen ? 'open' : ''}`}
+              onClick={toggleDropdown}>
+              {productForm.categoryId.length > 0
+                ? titleOfcategory((productForm.categoryId as string []))
+                : 'Select Categories'}
+            </div>
+            {isDropdownOpen && (
+              <div className="dropdown-content">
+                {categories.map((category) => (
+                  <div
+                    key={category._id}
+                    className={`dropdown-option ${
+                      productForm.categoryId.includes(category._id as never) ? 'selected' : ''
+                    }`}
+                    onClick={() =>
+                      productForm.categoryId.includes(category._id as never)
+                        ? onRemoveHandleItem(category._id)
+                        : onChangeListHandleItem(category._id)
+                    }>
+                    {category.title}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
           <br />
           <label htmlFor="">sizes</label>
-          <input
+          {/* <input
             type="text"
             name="sizes"
             id=""
             value={productForm.sizes.join(',')}
             onChange={onChaneHandleItem}
-          />
+          /> */}
           <br />
           <label htmlFor="">variants</label>
-          <input
+          {/* <input
             type="text"
             name="variants"
             id=""
             value={productForm.variants.join(',')}
             onChange={onChaneHandleItem}
-          />
+          /> */}
           <br />
           <label htmlFor="">description</label>
           <textarea
@@ -136,12 +234,12 @@ const ManageProducts = () => {
           />
           <br />
           {errors && <p className="error-message">{errors}</p>}
-          <button type="submit">{productForm.id ? 'edit' : 'add'}</button>
+          <button type="submit">{productForm._id ? 'edit' : 'add'}</button>
         </form>
       </div>
       <div className="table">
         <div className="table-header">
-          <p>id</p>
+          <p>_id</p>
           <p>image</p>
           <p>name</p>
 
@@ -150,21 +248,21 @@ const ManageProducts = () => {
         </div>
 
         {productsAdmin.items.map((product) => (
-          <div key={product.id} className="table-row">
-            <p>{product.id}</p>
+          <div key={product._id} className="table-row">
+            <p>{product._id}</p>
             <p>
-              <img src={product.image} alt={product.name} width="50" />
+              <img src={baseURL + product.image} alt={product.title} width="50" />
             </p>
-            <p>{product.name}</p>
+            <p>{product.title}</p>
 
             <p
               style={{ color: 'darkblue', cursor: 'pointer' }}
-              onClick={() => handleDeleteItem(product.id)}>
+              onClick={() => handleDeleteItem(String(product._id))}>
               delete
             </p>
             <p
               style={{ color: 'red', cursor: 'pointer' }}
-              onClick={() => handleEditItem(product.id)}>
+              onClick={() => handleEditItem(String(product._id))}>
               edit
             </p>
           </div>

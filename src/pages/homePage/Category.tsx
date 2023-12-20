@@ -8,7 +8,7 @@ import {
   filterByCategories
 } from '../../redux/slices/products/categorySlice'
 import { BiSolidDownArrow } from 'react-icons/bi'
-import { fetchProductItem } from './../../redux/slices/products/productsSlice'
+
 // BiSolidDownArrow
 
 const Category = () => {
@@ -19,9 +19,8 @@ const Category = () => {
   const categoryCheckBoxHandle = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { checked, id } = e.target
     const updatedCategories = categories.map((category) =>
-      category.id === Number(id) ? { ...category, ischecked: checked } : category
+      category._id === id ? { ...category, ischecked: checked } : category
     )
-
     dispatch(changeHandle(updatedCategories))
     dispatch(filterByCategories())
   }
@@ -49,17 +48,17 @@ const Category = () => {
           className="checkbox"
           onMouseEnter={handleCategoryHover}
           onMouseLeave={handleCategoryLeave}>
-          {categories.map(({ id, name, ischecked }) => (
-            <article key={id}>
+          {categories.map(({ _id, title, ischecked }) => (
+            <article key={_id}>
               <input
                 type="checkbox"
                 onChange={categoryCheckBoxHandle}
-                value={name}
-                id={String(id)}
+                value={title}
+                id={String(_id)}
                 checked={ischecked}
               />
               <div>
-                <span>{name}</span>
+                <span>{title}</span>
               </div>
             </article>
           ))}

@@ -20,13 +20,14 @@ const Products = () => {
 
   const itemsPerPage = 8
   const [currentPage, setCurrentPage] = useState(1)
+  const urlimage="http://localhost:5050/"
 
   //searching
   let searchItems: Product[] = []
   if (productsVistor.searchTirm) {
     searchItems = productsVistor.items.filter((item) => {
       const searchValue = productsVistor.searchTirm.toString().toLowerCase()
-      return item.name.toLowerCase().includes(searchValue)
+      return item.title.toLowerCase().includes(searchValue)
     })
   }
   let filtterdItems = productsVistor.items
@@ -44,9 +45,14 @@ const Products = () => {
     pageNumbers.push(i)
   }
   if (categories.filter) {
+    
     filtterdItems = productsVistor.items.filter((item) =>
-      item.categories.some((cat) => categories.filter!.includes(cat))
+    item.categoryId.some((cat) => categories.filter!.includes((cat._id))
+      
     )
+    )
+   
+
     if (filtterdItems.length == 0) {
       filtterdItems = productsVistor.items
     }
@@ -85,22 +91,22 @@ const Products = () => {
         <>
           <div className="products-container">
             {searchItems.map((item) => (
-              <div key={item.id} className="product3">
-                <Link to={`/product/${item.id}`}>
-                  <img src={item.image} alt={item.name} width={200} />
+              <div key={item._id} className="product3">
+                <Link to={`/product/${item.slug}`}>
+                  <img src={urlimage+item.image} alt={item.title} width={200} />
                 </Link>
 
-                <h3>{item.name}</h3>
+                <h3>{item.title}</h3>
                 <p>{item.description.slice(0, 15)}..read more</p>
                 <div className="center-plus">
                   <BsFillPlusCircleFill
                     className="plus"
-                    onClick={() => handleAddingCart(item.id)}
+                    onClick={() => handleAddingCart(Number(item._id))}
                   />
                 </div>
                 <div>
                   <span>price : ${item.price == 0 ? 'free ' : item.price}</span>
-                  <span>⭐ {item.rate}</span>
+
                 </div>
               </div>
             ))}
@@ -127,19 +133,19 @@ const Products = () => {
       <hr className="hr-black" />
       <div className="products-container">
         {currentItems.map((item) => (
-          <div key={item.id} className="product3">
-            <Link to={`/product/${item.id}`}>
-              <img src={item.image} alt={item.name} width={200} />
+          <div key={item._id} className="product3">
+            <Link to={`/product/${item.slug}`}>
+              <img src={urlimage+item.image} alt={item.title} width={200} />
             </Link>
 
-            <h3>{item.name}</h3>
+            <h3>{item.title}</h3>
             <p>{item.description.slice(0, 15)}..read more</p>
             <div className="center-plus">
-              <BsFillPlusCircleFill className="plus" onClick={() => handleAddingCart(item.id)} />
+              <BsFillPlusCircleFill className="plus" onClick={() => handleAddingCart(Number(item._id))} />
             </div>
             <div>
               <span>price : ${item.price == 0 ? 'free ' : item.price}</span>
-              <span>⭐ {item.rate}</span>
+    
             </div>
           </div>
         ))}

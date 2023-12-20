@@ -750,10 +750,10 @@ footer{
   font-family: 'Bebas Neue', sans-serif;
   font-size: 35px;
   margin: 0;
-  *{
-    color: #28c3c3;
-  }
+
 }
+
+
 .form{
   height: 90vh;
   display: flex;
@@ -765,6 +765,53 @@ footer{
     padding: 20px 7vw;
     border-radius: 20px;
     max-width: 300px;
+    /* YourComponent.scss */
+.custom-dropdown {
+  position: relative;
+  width: 200px;
+  margin-top: 10px;
+}
+
+.dropdown-trigger {
+  padding: 8px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+}
+
+.dropdown-content {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  border: 1px solid #ccc;
+  border-top: none;
+  display: flex;
+  flex-direction: column;
+}
+
+.dropdown-option {
+  padding: 8px;
+  cursor: pointer;
+}
+
+.dropdown-option.selected {
+  background-color: #ccc;
+}
+
+.selected-box {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 5px;
+}
+
+.selected-item {
+  background-color: #ccc;
+  padding: 4px 8px;
+  margin: 2px;
+  border-radius: 4px;
+}
+
+
     h2{
       text-align: center;
     }

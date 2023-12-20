@@ -16,10 +16,10 @@ const Home = () => {
   const { items } = useSelector((state: RootState) => state.productsReducer)
 
   const handleAddingCart = (id: number) => {
-    const itemToCart = items.find((product) => product.id === id)
-    if (itemToCart) {
-      dispatch(addItemCart(itemToCart))
-    }
+    // const itemToCart = items.find((product) => product.id === id)
+    // if (itemToCart) {
+    //   dispatch(addItemCart(itemToCart))
+    // }
   }
   return (
     <>
@@ -94,22 +94,22 @@ const Home = () => {
             slidesToSlide={1}
             swipeable>
             {items.slice(0, 10).map((item) => (
-              <div key={item.id} className="product">
-                <Link to={`/product/${item.id}`}>
-                  <img src={item.image} alt={item.name} width={200} />
+              <div key={item._id} className="product">
+                <Link to={`/product/${item._id}`}>
+                  <img src={"http://localhost:5050/"+item.image} alt={item.title} width={200} />
                 </Link>
 
-                <h3>{item.name}</h3>
+                <h3>{item.title}</h3>
                 <p>{item.description.slice(0, 15)}..read more</p>
                 <div className="center-plus">
                   <BsFillPlusCircleFill
                     className="plus"
-                    onClick={() => handleAddingCart(item.id)}
+                    onClick={() => handleAddingCart(Number(item._id))}
                   />
                 </div>
                 <div>
                   <span>price : ${item.price == 0 ? 'free ' : item.price}</span>
-                  <span>⭐ {item.rate}</span>
+                  
                 </div>
               </div>
             ))}
@@ -132,16 +132,16 @@ const Home = () => {
             </div>
             <div className="newGame">
               {items.slice(16, 19).map((item) => (
-                <div key={item.id} className="product2">
-                  <Link to={`/product/${item.id}`}>
-                    <img src={item.image} alt={item.name} width={200} />
+                <div key={item._id} className="product2">
+                  <Link to={`/product/${item._id}`}>
+                    <img src={item.image} alt={item.title} width={200} />
                   </Link>
 
-                  <h3>{item.name}</h3>
+                  <h3>{item.title}</h3>
 
                   <div>
                     <span>price: {item.price == 0 ? 'free' : item.price}$</span>
-                    <span>⭐ {item.rate}</span>
+       
                   </div>
                 </div>
               ))}

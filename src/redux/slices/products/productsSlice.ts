@@ -1,18 +1,21 @@
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
 import api from '../../../api'
+import { TypeCategories } from './categorySlice';
 
 export type Product = {
-  id: number
-  name: string
-  image: string
-  description: string
-  categories: number[]
-  variants: string[]
-  sizes: string[]
-  price: number
-  rate: number
-  cartId: number
+  description: string;
+  discounts?: never[];
+  image?: string;
+  price: number;
+  quantity?: number;
+  shipping?: number;
+  slug?: string;
+  sold?: number;
+  title: string;
+  categoryId:TypeCategories[] |[]
+  updatedAt?: string;
+  _id?: string;
 }
 
 export type ProductState = {
@@ -23,6 +26,7 @@ export type ProductState = {
   sortState: string
   cart: Product[]
   singleProduct: Product
+  
 }
 const cartData =
   localStorage.getItem('cart') != null ? JSON.parse(String(localStorage.getItem('cart'))) : []
@@ -36,15 +40,61 @@ const initialState: ProductState = {
   singleProduct: {} as Product
 }
 
+
 export const fetchProductItem = createAsyncThunk('product/fetchProductItem', async () => {
   try {
-    const response = await api.get('/mock/e-commerce/products.json')
-    return response.data
+    const response = await api.get('/api/products')
+    console.log(response.data.payload.products)
+    
+    return response.data.payload.products
   } catch (error) {
     console.log(error)
     throw error
   }
 })
+export const fetchSingleProduct = createAsyncThunk('product/singleProducts', async (slug:string) => {
+  try {
+    const response = await api.get(`/api/products/${slug}`)
+    console.log(response.data.payload)
+    return response.data.payload
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+})
+export const newProduct = createAsyncThunk('product/newProduct', async (data:Product) => {
+  try {
+    const response = await api.post('/api/products',data,{
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    return response.data
+
+  } catch (error) {
+    throw error
+  }
+})
+export const deleteProduct = createAsyncThunk('product/deleteProduct', async (id:string) => {
+  try {
+    const response = await api.delete(`/api/products/${id}`);
+    return response.data
+
+  } catch (error) {
+    throw error
+  }
+})
+export const updateProduct = createAsyncThunk(
+  'product/updateProduct',
+  async ({ id, data }: { id: string; data: Product }) => {
+    try {
+      const response = await api.put(`/api/products/update-product-info/${id}`, data);
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  }
+);
 
 const productVisitorSlice = createSlice({
   name: 'products',
@@ -54,15 +104,15 @@ const productVisitorSlice = createSlice({
       state.searchTirm = action.payload
     },
     sortProduct: (state, action) => {
-      const sortingInput = action.payload
-      if (sortingInput == 'name') state.items.sort((a, b) => a.name.localeCompare(b.name))
-      else if (sortingInput == 'price') state.items.sort((a, b) => b.price - a.price).reverse()
-      else state.items
+      // const sortingInput = action.payload
+      // if (sortingInput == 'name') state.items.sort((a, b) => a.name.localeCompare(b.name))
+      // else if (sortingInput == 'price') state.items.sort((a, b) => b.price - a.price).reverse()
+      // else state.items
     },
 
     addItemCart: (state, action) => {
       const id = action.payload
-      const itemToCart = state.items.find((product) => product.id === id)
+      const itemToCart = state.items.find((product) => product._id === id)
 
       if (itemToCart) {
         const newIdForCartItem = { ...itemToCart, cartId: state.cart.length + 1 }
@@ -78,44 +128,65 @@ const productVisitorSlice = createSlice({
       }))
       localStorage.setItem('cart', JSON.stringify(state.cart))
     },
-    addProduct: (state, action) => {
-      const newProduct = action.payload
-      if (newProduct) {
-        state.items = [...state.items, newProduct]
-      }
-    },
-    removeProduct: (state, action: { payload: { productId: number } }) => {
-      const filteredItems = state.items.filter((product) => product.id !== action.payload.productId)
-      state.items = filteredItems
-    },
-    updateProduct: (state, action: PayloadAction<Product>) => {
-      const index = state.items.findIndex((product) => product.id === action.payload.id)
 
-      if (index !== -1) {
-        state.items[index] = action.payload
-      }
-    },
-    getSingleProduct: (state, action) => {
-      const id = action.payload
-      const foundProduct = state.items.find((product) => product.id === id)
-      if (foundProduct) {
-        state.singleProduct = foundProduct
-      }
-    }
+
+    // updateProduct: (state, action: PayloadAction<Product>) => {
+      // const index = state.items.findIndex((product) => product.id === action.payload.id)
+
+      // if (index !== -1) {
+      //   state.items[index] = action.payload
+      // }
+    // },
+    // getSingleProduct: (state, action) => {
+    //   // const id = action.payload
+    //   // const foundProduct = state.items.find((product) => product.id === id)
+    //   // if (foundProduct) {
+    //   //   state.singleProduct = foundProduct
+    //   // }
+    // }
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchProductItem.pending, (state) => {
-        state.isLoading = true
-      })
       .addCase(fetchProductItem.fulfilled, (state, action: PayloadAction<Product[]>) => {
         state.items = action.payload
         state.isLoading = false
       })
-      .addCase(fetchProductItem.rejected, (state, action) => {
-        state.error = action.error.message || 'error to fetch the data'
+      .addCase(fetchSingleProduct.fulfilled, (state, action: PayloadAction<Product[]>) => {
+          const product = action.payload
+         const foundProduct = state.items.find((product) => product._id === product._id)
+         if (foundProduct) {
+          state.singleProduct = foundProduct
+         }
         state.isLoading = false
       })
+      .addCase(updateProduct.fulfilled, (state, action: PayloadAction<Product>) => {
+      const index = state.items.findIndex((product) => product._id === action.payload._id)
+
+      if (index !== -1) {
+        state.items[index] = action.payload
+      }
+      state.isLoading = false
+    })
+      .addCase(newProduct.fulfilled, (state, action: PayloadAction<Product>) => {
+       const newProduct = action.payload
+        state.isLoading = false
+      })
+      .addCase(deleteProduct.fulfilled, (state, action: PayloadAction<Product>) => {
+      const filteredItems = state.items.filter((product) => product._id !== action.payload._id)
+      state.items = filteredItems
+         state.isLoading = false
+       })
+      .addMatcher((action)=>action.type.endsWith("/pending"),
+      (state)=>{
+        state.isLoading = true
+      }
+      )
+      .addMatcher((action)=>action.type.endsWith("/rejected"),
+      (state,action)=>{
+        state.error = action.error.message || 'error to fetch the data'
+        state.isLoading = false
+      }
+      )
   }
 })
 export default productVisitorSlice.reducer
@@ -124,8 +195,7 @@ export const {
   sortProduct,
   addItemCart,
   deleteItemCart,
-  addProduct,
-  removeProduct,
-  updateProduct,
-  getSingleProduct
+
+
+
 } = productVisitorSlice.actions

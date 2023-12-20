@@ -3,46 +3,54 @@ import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '../../redux/store'
 
 import {
-  addCategory,
+  deleteCategory,
   fetchCategories,
-  removeCategory,
+  newCategory,
   updateCategory
 } from '../../redux/slices/products/categorySlice'
 
+interface initialValue {
+  _id: string;
+  title: string;
+  ischecked: boolean;
+  slug: string;
+}
 const ManageCategories = () => {
   const { categories } = useSelector((state: RootState) => state.categoryReducer)
   const dispatch = useDispatch<AppDispatch>()
-  const initialValue = { id: 0, name: '', ischecked: false }
+  const initialValue = { _id: '', title: '', ischecked: false,slug:'' }
   const [categoryForm, setCategoryForm] = useState(initialValue)
   const [formErrors, setFormErrors] = useState('')
 
-  const handleEdit = (id: number) => {
-    const editedCategory = categories.find((category) => category.id == id)
+  const handleEdit = (slug: string) => {
+    const editedCategory = categories.find((category) => category.slug == slug)
     if (editedCategory) {
-      setCategoryForm({ ...editedCategory, name: editedCategory.name })
+      setCategoryForm({ ...(editedCategory as initialValue), title: editedCategory.title })
     }
   }
-  const handleDelete = (id: number) => {
-    dispatch(removeCategory({ categoryId: id }))
+  const handleDelete = (slug: string) => {
+    dispatch(deleteCategory(slug))
   }
 
   const onChaneHandleCategory = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
-    setCategoryForm({ ...categoryForm, name: value })
+    setCategoryForm({ ...categoryForm, title: value })
   }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    if (!categoryForm.name) {
+    if (!categoryForm.title) {
       return setFormErrors('Name is required')
     }
 
-    if (categoryForm.id) {
-      dispatch(updateCategory(categoryForm))
+    if (categoryForm._id) {
+      dispatch(updateCategory({slug:categoryForm.slug,data:{title:categoryForm.title}}))
+      dispatch(fetchCategories())
     } else {
-      setCategoryForm({ ...categoryForm, id: categories[categories.length - 1].id + 1 })
+      
 
-      dispatch(addCategory(categoryForm))
+      dispatch(newCategory({title:categoryForm.title}))
+      dispatch(fetchCategories())
     }
     setCategoryForm(initialValue)
     setFormErrors('')
@@ -58,11 +66,11 @@ const ManageCategories = () => {
             type="text"
             name="name"
             id=""
-            value={categoryForm.name}
+            value={categoryForm.title}
             onChange={onChaneHandleCategory}
           />
           {formErrors && <p className="error-message">{formErrors}</p>}
-          <button type="submit">{categoryForm.id ? 'edit' : 'add'}</button>
+          <button type="submit">{categoryForm._id ? 'edit' : 'add'}</button>
         </form>
       </div>
       <div>
@@ -73,14 +81,14 @@ const ManageCategories = () => {
             <p>Action 1</p>
             <p>Action 2</p>
           </div>
-          {categories.map(({ id, name }) => (
-            <div key={id} className="table-row">
-              <p>{name}</p>
+          {categories.map(({ _id, title,slug }) => (
+            <div key={_id} className="table-row">
+              <p>{title}</p>
 
-              <p style={{ color: 'darkblue', cursor: 'pointer' }} onClick={() => handleEdit(id)}>
+              <p style={{ color: 'darkblue', cursor: 'pointer' }} onClick={() => handleEdit(String(slug))}>
                 edit
               </p>
-              <p style={{ color: 'red', cursor: 'pointer' }} onClick={() => handleDelete(id)}>
+              <p style={{ color: 'red', cursor: 'pointer' }} onClick={() => handleDelete(String(slug))}>
                 delete
               </p>
             </div>

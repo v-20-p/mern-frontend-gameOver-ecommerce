@@ -37,7 +37,7 @@ const Login = ({ pathName }: { pathName?: string }) => {
         (user) => user.email === userInput.email && user.password === userInput.password
       )
       if (userExists) {
-        if (userExists.ban) {
+        if (userExists.isBan) {
           setInvalidMessage('You are banned.')
         } else {
           dispatch(loginUser(userExists))

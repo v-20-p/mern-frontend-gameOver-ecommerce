@@ -2,12 +2,14 @@ import React, { useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { AppDispatch, RootState } from '../../redux/store'
 import { useDispatch, useSelector } from 'react-redux'
-import { addItemCart, getSingleProduct } from '../../redux/slices/products/productsSlice'
+import { addItemCart, fetchSingleProduct } from '../../redux/slices/products/productsSlice'
 
 import NavAll from '../homePage/NavAll'
 import { FaPlaystation, FaXbox } from 'react-icons/fa'
 import { FaComputer } from 'react-icons/fa6'
 import { BsNintendoSwitch } from 'react-icons/bs'
+
+import { baseURL } from './../../api/index';
 
 
 const ProductDetails = () => {
@@ -18,17 +20,17 @@ const ProductDetails = () => {
   const navigate = useNavigate()
 
   useEffect(() => {
-    dispatch(getSingleProduct(Number(id)))
+    dispatch(fetchSingleProduct(String(id)))
   }, [id])
 
   const findCategory = () => {
-    if (singleProduct && singleProduct.categories) {
-      return singleProduct.categories.map((category) => {
-        const foundCategory = categories.find((cat) => cat.id === category)
+    if (singleProduct && singleProduct.categoryId) {
+      return singleProduct.categoryId.map((category) => {
+        const foundCategory = categories.find((cat) => cat._id === category._id)
         if (foundCategory) {
           return (
-            <span key={foundCategory.id} className="game-category">
-              {foundCategory.name}
+            <span key={foundCategory._id} className="game-category">
+              {foundCategory.title}
             </span>
           )
         }
@@ -38,7 +40,7 @@ const ProductDetails = () => {
   }
 
   const handleAddingCart = () => {
-    dispatch(addItemCart(singleProduct.id))
+    dispatch(addItemCart(singleProduct._id))
     navigate('/cart')
   }
 
@@ -46,15 +48,15 @@ const ProductDetails = () => {
     <div>
       <NavAll />
       <div className="image-container">
-        <img src={singleProduct.image} alt={singleProduct.name} className="image-theme" />
+        <img src={`${baseURL}${singleProduct.image}`} alt={singleProduct.title} className="image-theme" />
         <div className="game">
-          <img src={singleProduct.image} alt={singleProduct.name} width={340} />
+          <img src={`${baseURL}${singleProduct.image}`} alt={singleProduct.title} width={340} />
           <div>
-            <h1>{singleProduct.name}</h1>
+            <h1>{singleProduct.title}</h1>
             <p>{findCategory()}</p>
 
             <p className="price">${singleProduct.price != 0 ? singleProduct.price : 'free'}</p>
-            <p>⭐{singleProduct.rate}/5</p>
+            {/* <p>⭐{singleProduct.rate}/5</p> */}
           </div>
         </div>
         <div className="description">
@@ -73,7 +75,7 @@ const ProductDetails = () => {
           </button>
 
           <div>
-            {singleProduct.variants && singleProduct.variants.some((va) => va === 'PS5') && (
+            {/* {singleProduct.variants && singleProduct.variants.some((va) => va === 'PS5') && (
               <FaPlaystation />
             )}
             {singleProduct.variants && singleProduct.variants.some((va) => va === 'Xbox One') && (
@@ -83,7 +85,7 @@ const ProductDetails = () => {
               <FaComputer />
             )}
             {singleProduct.variants &&
-              singleProduct.variants.some((va) => va === 'Nintendo Switch') && <BsNintendoSwitch />}
+              singleProduct.variants.some((va) => va === 'Nintendo Switch') && <BsNintendoSwitch />} */}
           </div>
         </div>
       </div>

@@ -9,7 +9,7 @@ import { register, reigsterUser } from '../../redux/slices/products/usersSlice'
 import NavAll from '../homePage/NavAll'
 import { SiGamejolt } from 'react-icons/si'
 
-const Register = () => {
+const ValidateEmailPage = () => {
   const dispatch = useDispatch<AppDispatch>()
 
   const [userInput, setUserInput] = useState({
@@ -33,10 +33,7 @@ const Register = () => {
     }
   }
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target
-    setUserInput({ ...userInput, [name]: value })
-  }
+
 
   return (
     <>
@@ -49,16 +46,7 @@ const Register = () => {
             OVER
           </p>
           <h2>Register</h2>
-          <label htmlFor="name">name</label>
-          <input type="text" name="name" onChange={handleChange} />
-          <label htmlFor="userName">user name</label>
-          <input type="text" name="userName" onChange={handleChange} />
-          <label htmlFor="email">Email</label>
-          <input type="email" name="email" onChange={handleChange} />
-          <label htmlFor="password">Password</label>
-          <input type="password" name="password" onChange={handleChange} />
-          <p style={{ color: 'red' }}>{invalidMessage}</p>
-          <button type="submit">Register</button>
+          <p>Please verify your email to access the full functionality of the app.</p>
           <span>
             Already have an account? <Link to="/login">Login</Link>
           </span>
@@ -68,4 +56,4 @@ const Register = () => {
   )
 }
 
-export default Register
+export default ValidateEmailPage
