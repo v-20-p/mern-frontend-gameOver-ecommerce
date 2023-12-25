@@ -10,7 +10,7 @@ const ProtectedRoleRoute = () => {
   const { userLoginData } = useSelector((state: RootState) => state.userReducer)
   const location = useLocation()
 
-  return userLoginData && userLoginData!.role == 'admin' ? <Outlet /> : <Login pathName={location.pathname} />
+  return userLoginData && userLoginData!.isAdmin == true ? <Outlet /> : <Login pathName={location.pathname} />
 }
 
 export default ProtectedRoleRoute

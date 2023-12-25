@@ -1,16 +1,19 @@
 import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { ToastContainer, cssTransition, toast } from 'react-toastify';
+import { BsFillPlusCircleFill } from 'react-icons/bs'
+import 'react-toastify/dist/ReactToastify.css';
 
 import { AppDispatch, RootState } from '../../redux/store'
-
-import { Product, addItemCart, sortProduct } from '../../redux/slices/products/productsSlice'
+import { Product, addItemCart, fetchProductItem, quantity, sortProduct } from '../../redux/slices/products/productsSlice'
 
 import Category from '../homePage/Category'
 import { Link } from 'react-router-dom'
-import Navbar from './../homePage/Navbar'
+
 import NavAll from '../homePage/NavAll'
 import { BsFilterLeft } from 'react-icons/bs'
-import { BsFillPlusCircleFill } from 'react-icons/bs'
+
+
 
 const Products = () => {
   const dispatch = useDispatch<AppDispatch>()
@@ -18,9 +21,11 @@ const Products = () => {
   const categories = useSelector((state: RootState) => state.categoryReducer)
   const [show, setShow] = useState(false)
 
-  const itemsPerPage = 8
   const [currentPage, setCurrentPage] = useState(1)
-  const urlimage="http://localhost:5050/"
+
+  useEffect(() => {
+    dispatch(fetchProductItem({ page: currentPage, filter: categories.filter ? categories.filter.join(','):'',sortBy:productsVistor.sortState,limit:8 }));
+  }, [currentPage,categories.filter,productsVistor.sortState]);
 
   //searching
   let searchItems: Product[] = []
@@ -30,41 +35,54 @@ const Products = () => {
       return item.title.toLowerCase().includes(searchValue)
     })
   }
-  let filtterdItems = productsVistor.items
 
-  const totalPages = Math.ceil(filtterdItems.length / itemsPerPage)
 
   const handlePageChange = (page: number) => {
-    setCurrentPage(page)
-  }
-  const indexOfLastItem = currentPage * itemsPerPage
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage
-  let currentItems = filtterdItems.slice(indexOfFirstItem, indexOfLastItem)
+    setCurrentPage(page);
+    
+    
+  };
+
+  
+
+  const handleIncrement = (id:string,count:number) => {
+     dispatch(quantity({id:id,quantity:count+1}))
+  };
+
+  const handleDecrement =  (id:string,count:number) => {
+    if(count!=1)
+    dispatch(quantity({id:id,quantity:count-1}))
+ };
+
+
+
   const pageNumbers = []
-  for (let i = 1; i <= totalPages; i++) {
+ 
+  for (let i = 1; i <= productsVistor.totalPages; i++) {
     pageNumbers.push(i)
   }
-  if (categories.filter) {
-    
-    filtterdItems = productsVistor.items.filter((item) =>
-    item.categoryId.some((cat) => categories.filter!.includes((cat._id))
-      
-    )
-    )
-   
 
-    if (filtterdItems.length == 0) {
-      filtterdItems = productsVistor.items
-    }
-    currentItems = filtterdItems.slice(indexOfFirstItem, indexOfLastItem)
-  }
+  
 
   const handleSorting = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const sortingSelect = e.target.value
     dispatch(sortProduct(sortingSelect))
   }
-  const handleAddingCart = (id: number) => {
-    dispatch(addItemCart(id))
+  const handleAddingCart = (id: string ) => {
+    dispatch(addItemCart(id));
+    dispatch(quantity({id:id,quantity:1}))
+    toast.success('Product add successfully to cart ', {
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+      
+      
+      });
   }
 
   const renderPageNumbers = pageNumbers.map((number) => (
@@ -79,41 +97,24 @@ const Products = () => {
       <div style={{ margin: '0 80px' }}>
         {productsVistor.isLoading && <h3> Loading products...</h3>}
         {productsVistor.error && <h3> error to fetch products...</h3>}
-        {productsVistor.searchTirm && (
-          <p>
-            {' '}
-            result search of (<strong>{productsVistor.searchTirm}</strong>){' '}
-          </p>
-        )}
+        
       </div>
+      <ToastContainer
+position="top-center"
+autoClose={5000}
+hideProgressBar={false}
+newestOnTop={false}
+closeOnClick
+rtl={false}
+pauseOnFocusLoss
+draggable
+pauseOnHover
+theme="dark"
+/>
 
-      {searchItems.length > 0 && (
-        <>
-          <div className="products-container">
-            {searchItems.map((item) => (
-              <div key={item._id} className="product3">
-                <Link to={`/product/${item.slug}`}>
-                  <img src={urlimage+item.image} alt={item.title} width={200} />
-                </Link>
+     
+         
 
-                <h3>{item.title}</h3>
-                <p>{item.description.slice(0, 15)}..read more</p>
-                <div className="center-plus">
-                  <BsFillPlusCircleFill
-                    className="plus"
-                    onClick={() => handleAddingCart(Number(item._id))}
-                  />
-                </div>
-                <div>
-                  <span>price : ${item.price == 0 ? 'free ' : item.price}</span>
-
-                </div>
-              </div>
-            ))}
-          </div>
-          <hr className="hr-black" />
-        </>
-      )}
       <h2 className="h2-title">
         All games <BsFilterLeft className="filter" onClick={() => setShow(!show)} />
       </h2>
@@ -125,27 +126,53 @@ const Products = () => {
           <label htmlFor="sorting">sort by : </label>
           <select name="sorting" onChange={handleSorting}>
             <option value="">none</option>
-            <option value="name">name</option>
+            <option value="title">name</option>
             <option value="price">price</option>
           </select>
         </div>
       </div>
       <hr className="hr-black" />
       <div className="products-container">
-        {currentItems.map((item) => (
+      {productsVistor.searchTirm && (
+          <p>
+            {' '}
+            result search of (<strong>{productsVistor.searchTirm}</strong>){' '}
+          </p>
+        )}
+        {productsVistor.items.map((item) => (
           <div key={item._id} className="product3">
             <Link to={`/product/${item.slug}`}>
-              <img src={urlimage+item.image} alt={item.title} width={200} />
+              <img src={item.image} alt={item.title} width={200} />
             </Link>
 
             <h3>{item.title}</h3>
             <p>{item.description.slice(0, 15)}..read more</p>
-            <div className="center-plus">
-              <BsFillPlusCircleFill className="plus" onClick={() => handleAddingCart(Number(item._id))} />
-            </div>
+
+
             <div>
               <span>price : ${item.price == 0 ? 'free ' : item.price}</span>
     
+            </div>
+            <div className="quantity-controls">
+              <button
+                className="quantity-btn"
+                onClick={() => handleDecrement(String(item._id), Number(item.quantity))}
+              >
+                -
+              </button>
+              <span className="quantity-value">{item.quantity}</span>
+              <button
+                className="quantity-btn"
+                onClick={() => handleIncrement(String(item._id), Number(item.quantity))}
+              >
+                +
+              </button>
+              <button
+                className="add-to-cart-btn"
+                onClick={() => handleAddingCart(String(item._id))}
+              >
+                Add to Cart
+              </button>
             </div>
           </div>
         ))}

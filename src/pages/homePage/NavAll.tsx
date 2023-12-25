@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '../../redux/store'
 
 import { searchProduct } from '../../redux/slices/products/productsSlice'
-import { logoutUser } from '../../redux/slices/products/usersSlice'
+import { logout } from '../../redux/slices/products/usersSlice'
 
 import { SiGamejolt } from 'react-icons/si'
 
@@ -34,7 +34,7 @@ const NavAll = () => {
   }
 
   const handleLogout = () => {
-    dispatch(logoutUser())
+    dispatch(logout())
   }
 
   return (
@@ -54,7 +54,7 @@ const NavAll = () => {
             <li>
               <Link to={'/products'}>product</Link>
             </li>
-            {userLoginData?.role == 'admin' && (
+            {userLoginData?.isAdmin  && (
               <li>
                 <Link to="/dashboard/admin/users">admin</Link>
               </li>

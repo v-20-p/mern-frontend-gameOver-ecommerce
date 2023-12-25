@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import Select from 'react-select'
+
 
 import { AppDispatch, RootState } from '../../redux/store'
 
@@ -23,14 +23,38 @@ interface initialValue{
   _id?: string;
 }
 import {  deleteProduct, fetchProductItem, newProduct, updateProduct } from '../../redux/slices/products/productsSlice'
-import { baseURL } from '../../api'
+
 import { TypeCategories } from '../../redux/slices/products/categorySlice'
+import EditProduct from './EditProduct'
 
 const ManageProducts = () => {
   const dispatch = useDispatch<AppDispatch>()
   const productsAdmin = useSelector((state: RootState) => state.productsReducer)
   const { categories } = useSelector((state: RootState) => state.categoryReducer)
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
 
+    if (!productForm.title || !productForm.description) {
+      return setErrors('ALl field should be fill')
+    }
+
+
+      dispatch(newProduct(productForm))
+      
+      setproductForm(initialValue)
+      
+  
+      
+    
+    setErrors('')
+  }
+  useEffect(() => {
+   
+    dispatch(fetchProductItem({page:0,filter:''}))
+
+  }, [dispatch])
   const initialValue :initialValue = {
     _id: '',
     title: '',
@@ -46,21 +70,18 @@ const ManageProducts = () => {
     // cart_Id: 0
   }
   const [productForm, setproductForm] = useState(initialValue)
+  const [editProductForm, setEditProductForm] = useState<initialValue>(initialValue);
+
+  const[isEditing,setIsEditing]=useState(false)
+  const [editingProductId, setEditingProductId] = useState<string | null>(null);
   const [errors, setErrors] = useState('')
 
 
   const handleDeleteItem = (_id: string) => {
     dispatch(deleteProduct(_id))
-    dispatch(fetchProductItem())
+    dispatch(fetchProductItem({page:0,filter:''}))
     
 
-  }
-  const handleEditItem = (_id: string) => {
-    const editedItem = productsAdmin.items.find((item) => item._id == _id)
-    if (editedItem) {
-      console.log(editedItem)
-      setproductForm({ ...editedItem, _id: String(editedItem._id ),categoryId:(editedItem.categoryId.map((cat)=>cat._id) as [])})
-    }
   }
 
   const onChaneHandleItem = (
@@ -78,12 +99,25 @@ const ManageProducts = () => {
 
     } 
   }
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]; 
-    setproductForm((productForm:any) => ({
+  const onRemoveHandleItem = (categoryId: string) => {
+    setproductForm((productForm: any) => ({
       ...productForm,
-      image: file,
-    }));
+      categoryId: productForm.categoryId.filter((id: string) => id !== categoryId)
+    }))
+  }
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+
+    if (file) {
+      setproductForm((productForm: any) => ({
+        ...productForm,
+        image: file,
+      }));
+
+      const previewURL = URL.createObjectURL(file);
+      setImagePreview(previewURL);
+    }
   };
 
   const onChangeListHandleItem = (categoryId: string) => {
@@ -93,24 +127,8 @@ const ManageProducts = () => {
     }))
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
 
-    if (!productForm.title || !productForm.description) {
-      return setErrors('ALl field should be fill')
-    }
-
-    if (productForm._id) {
-      
-      dispatch(updateProduct({id:productForm._id,data:productForm}))
-      dispatch(fetchProductItem())
-    } else {
-      dispatch(newProduct(productForm))
-      dispatch(fetchProductItem())
-      
-    }
-    setErrors('')
-  }
+  
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
   const toggleDropdown = () => {
@@ -120,12 +138,7 @@ const ManageProducts = () => {
   const closeDropdown = () => {
     setIsDropdownOpen(false)
   }
-  const onRemoveHandleItem = (categoryId: string) => {
-    setproductForm((productForm: any) => ({
-      ...productForm,
-      categoryId: productForm.categoryId.filter((id: string) => id !== categoryId)
-    }))
-  }
+
 
   const titleOfcategory = (categoryIds: string[]) => {
     const titles = categories.filter((cat) => categoryIds.includes(cat._id)).map((cat) => cat.title)
@@ -133,11 +146,27 @@ const ManageProducts = () => {
     return titles.join(' , ')
   }
 
+
+  const handleEditItem = (_id: string) => {
+    const editedItem = productsAdmin.items.find((item) => item._id === _id);
+    if (editedItem) {
+      setEditProductForm({ ...editedItem, _id: String(editedItem._id),categoryId:editedItem.categoryId.map((cat)=>cat._id) as [] });
+      setEditingProductId(_id);
+      setIsEditing(true); 
+    }
+  };
+
+
+
+
+
+
   return (
     <div className="admin-content">
       <h2 className="h2">products</h2>
-      <div className="form" style={{ height: '550px' }}>
+      <div className="form2" >
         <form action="" onSubmit={handleSubmit}>
+          <div>
           <label htmlFor="">name of Pruduct</label>
           <input
             type="text"
@@ -146,7 +175,8 @@ const ManageProducts = () => {
             value={productForm.title}
             onChange={onChaneHandleItem}
           />
-          <br />
+          </div>
+          <div>
           <label htmlFor="">price</label>
           <input
             type="text"
@@ -154,8 +184,9 @@ const ManageProducts = () => {
             value={productForm.price}
             onChange={onChaneHandleItem}
           />
-          <br />
-          <label htmlFor="">price</label>
+          </div>
+         <div>
+          <label htmlFor="">quantity</label>
           <input
             type="text"
             name="quantity"
@@ -163,15 +194,9 @@ const ManageProducts = () => {
             value={productForm.quantity}
             onChange={onChaneHandleItem}
           />
-          <br />
-          <label htmlFor="">image url</label>
-          <input
-            type="file"
-            name="image"
-            accept="image/*"
-            onChange={handleImageChange}
-          />
-          <br />
+          </div>
+
+          
           <span>
             {categories.map(
               (cat) => productForm.categoryId.find((cate: Category) => cat._id == cate._id)?.title
@@ -205,26 +230,19 @@ const ManageProducts = () => {
               </div>
             )}
           </div>
+          <div>
+          <label htmlFor="">image url</label>
+          <input
+            type="file"
+            name="image"
+            accept="image/*"
+            onChange={handleImageChange}
+          />
+          </div>
 
-          <br />
-          <label htmlFor="">sizes</label>
-          {/* <input
-            type="text"
-            name="sizes"
-            id=""
-            value={productForm.sizes.join(',')}
-            onChange={onChaneHandleItem}
-          /> */}
-          <br />
-          <label htmlFor="">variants</label>
-          {/* <input
-            type="text"
-            name="variants"
-            id=""
-            value={productForm.variants.join(',')}
-            onChange={onChaneHandleItem}
-          /> */}
-          <br />
+         
+
+          <div>
           <label htmlFor="">description</label>
           <textarea
             name="description"
@@ -232,42 +250,75 @@ const ManageProducts = () => {
             value={productForm.description}
             onChange={onChaneHandleItem}
           />
-          <br />
+          </div>
           {errors && <p className="error-message">{errors}</p>}
           <button type="submit">{productForm._id ? 'edit' : 'add'}</button>
         </form>
+        <div className='image-area'>
+        {imagePreview ? <img src={imagePreview} alt={productForm.title} />:<h4>no image selected</h4>}
+     
+        </div>
       </div>
+
       <div className="table">
         <div className="table-header">
-          <p>_id</p>
+          {/* <p>_id</p> */}
           <p>image</p>
           <p>name</p>
-
+          <p>price</p>
+          <p>last updated</p>
           <p>Actions 1</p>
           <p>Actions 2</p>
         </div>
 
         {productsAdmin.items.map((product) => (
           <div key={product._id} className="table-row">
-            <p>{product._id}</p>
-            <p>
-              <img src={baseURL + product.image} alt={product.title} width="50" />
-            </p>
-            <p>{product.title}</p>
+            {isEditing && product._id === editingProductId ? (
+            <EditProduct
+            editProductForm={editProductForm}
+            setEditProductForm={setEditProductForm}
+            setEditingProductId={setEditingProductId}
+            setIsEditing={setIsEditing}
+            categories={categories}
 
-            <p
-              style={{ color: 'darkblue', cursor: 'pointer' }}
-              onClick={() => handleDeleteItem(String(product._id))}>
-              delete
-            </p>
-            <p
-              style={{ color: 'red', cursor: 'pointer' }}
-              onClick={() => handleEditItem(String(product._id))}>
-              edit
-            </p>
+            />
+            
+            ) 
+            : (
+              <>
+                {/* <p>{product._id}</p> */}
+                <p>
+                  <img src={product.image} alt={product.title} width="50" />
+                </p>
+                <p>{product.title}</p>
+                <p>${product.price}</p>
+                <p>{product.updatedAt?.slice(0,10)}</p>
+                {/* <p>{product.discounts }</p> */}
+                <div className='table-actions'>
+                <button
+                style={{ backgroundColor: 'red', cursor: 'pointer' }}
+                  // style={{ color: 'darkblue', cursor: 'pointer' }}
+                  onClick={() => handleDeleteItem(String(product._id))}
+                >
+                  delete
+                </button>
+
+                </div>
+
+                <div className='table-actions'>
+                <button
+                  
+                  onClick={() => handleEditItem(String(product._id))}
+                >
+                  edit
+                </button>
+                </div>
+              </>
+            )}
           </div>
         ))}
       </div>
+
     </div>
   )
 }

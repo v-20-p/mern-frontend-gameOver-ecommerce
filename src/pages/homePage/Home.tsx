@@ -5,22 +5,47 @@ import { Link } from 'react-router-dom'
 
 import Carousel from 'react-multi-carousel'
 import 'react-multi-carousel/lib/styles.css'
+import { ToastContainer, cssTransition, toast } from 'react-toastify';
+import { BsFillPlusCircleFill } from 'react-icons/bs'
+import 'react-toastify/dist/ReactToastify.css';
 
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '../../redux/store'
-import { addItemCart, fetchProductItem } from '../../redux/slices/products/productsSlice'
-import { BsFillPlusCircleFill } from 'react-icons/bs'
+import { addItemCart, fetchProductItem, quantity } from '../../redux/slices/products/productsSlice'
+
 
 const Home = () => {
   const dispatch = useDispatch<AppDispatch>()
   const { items } = useSelector((state: RootState) => state.productsReducer)
+  useEffect(()=>{
+    dispatch(fetchProductItem({limit:20,filter:'',}))
+  },[])
 
-  const handleAddingCart = (id: number) => {
-    // const itemToCart = items.find((product) => product.id === id)
-    // if (itemToCart) {
-    //   dispatch(addItemCart(itemToCart))
-    // }
+  const handleAddingCart = (id: string ) => {
+    dispatch(addItemCart(id));
+    dispatch(quantity({id:id,quantity:1}))
+    toast.success('Product add successfully to cart ', {
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+      
+      
+      });
+  
   }
+  const handleIncrement = (id:string,count:number) => {
+    dispatch(quantity({id:id,quantity:count+1}))
+ };
+
+ const handleDecrement =  (id:string,count:number) => {
+   if(count!=1)
+   dispatch(quantity({id:id,quantity:count-1}))
+};
   return (
     <>
       <div className="hero">
@@ -96,21 +121,37 @@ const Home = () => {
             {items.slice(0, 10).map((item) => (
               <div key={item._id} className="product">
                 <Link to={`/product/${item._id}`}>
-                  <img src={"http://localhost:5050/"+item.image} alt={item.title} width={200} />
+                  <img src={item.image} alt={item.title} width={200} />
                 </Link>
 
                 <h3>{item.title}</h3>
                 <p>{item.description.slice(0, 15)}..read more</p>
-                <div className="center-plus">
-                  <BsFillPlusCircleFill
-                    className="plus"
-                    onClick={() => handleAddingCart(Number(item._id))}
-                  />
-                </div>
+
                 <div>
                   <span>price : ${item.price == 0 ? 'free ' : item.price}</span>
                   
                 </div>
+                <div className="quantity-controls">
+              <button
+                className="quantity-btn"
+                onClick={() => handleDecrement(String(item._id), Number(item.quantity))}
+              >
+                -
+              </button>
+              <span className="quantity-value">{item.quantity}</span>
+              <button
+                className="quantity-btn"
+                onClick={() => handleIncrement(String(item._id), Number(item.quantity))}
+              >
+                +
+              </button>
+              <button
+                className="add-to-cart-btn"
+                onClick={() => handleAddingCart(String(item._id))}
+              >
+                Add to Cart
+              </button>
+            </div>
               </div>
             ))}
           </Carousel>

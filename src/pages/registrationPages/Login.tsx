@@ -1,21 +1,30 @@
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
+import { Icon } from '@iconify/react';
 
 import { AppDispatch, RootState } from '../../redux/store'
-import { loginUser } from '../../redux/slices/products/usersSlice'
+
 import NavAll from './../homePage/NavAll'
 import { SiGamejolt } from 'react-icons/si'
+import { forgetPassword, login } from '../../redux/slices/products/usersSlice'
+import PopUp from '../../PopUp'
 
 const Login = ({ pathName }: { pathName?: string }) => {
   const { users, isLoading, userLoginData, error } = useSelector(
     (state: RootState) => state.userReducer
   )
+
+
   const dispatch = useDispatch<AppDispatch>()
   const [userInput, setUserInput] = useState({ email: '', password: '' })
   const navigate = useNavigate()
   const [invalidMessage, setInvalidMessage] = useState('')
-
+  useEffect(()=>{
+    if(userLoginData){
+      navigate('/')
+    }
+  },[userLoginData,navigate])
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
     setUserInput({ ...userInput, [name]: value })
@@ -33,20 +42,28 @@ const Login = ({ pathName }: { pathName?: string }) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     if (validateForm()) {
-      const userExists = users.find(
-        (user) => user.email === userInput.email && user.password === userInput.password
-      )
-      if (userExists) {
-        if (userExists.isBan) {
-          setInvalidMessage('You are banned.')
-        } else {
-          dispatch(loginUser(userExists))
-          navigate('/')
+
+        
+          dispatch(login(userInput))  
         }
-      } else {
+       else {
         setInvalidMessage('The email or password is incorrect.')
-      }
+      
     }
+  }
+  const [send, setSend] = useState('')
+  const handleSendForgetPassword=()=>{
+    const findUser =users.find((user)=>user.email==userInput.email)
+    if(findUser){
+      dispatch(forgetPassword(findUser.email))
+      setSend('check your email to reset password ⭐')
+    }
+    else{
+      setSend('not found this email 😟')
+    }
+  }
+  const handleClear=()=>{
+    setSend('')
   }
 
   return (
@@ -70,7 +87,28 @@ const Login = ({ pathName }: { pathName?: string }) => {
           <span>
             Don't have an account? <Link to="/register">Register</Link>
           </span>
+          <br />
+          <span>
+            Forget password ? click <PopUp nameBtn={'hare'} className='password' span={true}>
+           {!send ?
+                       <div>              
+                       <h2>sorry for hear that 😟</h2>
+                   <label htmlFor="email">Email</label>
+                   <input type="email" name="email" value={userInput.email}  placeholder="xx@xx.com" onChange={handleChangeInput} />
+                   <button type='button' onClick={handleSendForgetPassword}  >send</button>
+                   </div>
+                   :
+                   <>
+                   <h1>{send}</h1>
+                   <div>
+                   <button type='button' onClick={handleClear}  >try Again</button>
+                   </div>
+                   </>
+          } 
+            </PopUp>
+          </span>
         </form>
+
       </div>
     </>
   )

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '../../redux/store'
 import Navbar from '../homePage/Navbar'
 
-import { TypeUserLoginData, editProfile } from '../../redux/slices/products/usersSlice'
+import { TypeUserLoginData, editUser } from '../../redux/slices/products/usersSlice'
 import NavAll from '../homePage/NavAll'
 import { SiGamejolt } from 'react-icons/si'
 
@@ -12,14 +12,13 @@ const VistorProfile = () => {
   const dispatch = useDispatch<AppDispatch>()
   const [enableEdit, setEnableEdit] = useState(false)
   const [userForm, setUserForm] = useState({
-    firstName: userLoginData?.firstName || '',
-    lastName: userLoginData?.lastName || ''
+    name: userLoginData?.name || '',
   })
 
   const handleClick = (e: React.FormEvent) => {
     if (enableEdit) {
       e.preventDefault()
-      dispatch(editProfile(userForm))
+      dispatch(editUser({id: String(userLoginData?._id),data:{...userLoginData,name:userForm.name}}))
     } else {
     }
     setEnableEdit(!enableEdit)
@@ -42,16 +41,14 @@ const VistorProfile = () => {
               OVER
             </p>
             <h2>profile</h2>
-            <label htmlFor="firstName">First Name:</label>
+            <label htmlFor="firstName">Name:</label>
             <input
               type="text"
-              name="firstName"
-              value={userForm.firstName}
+              name="name"
+              value={userForm.name}
               onChange={handleChange}
             />
             <br />
-            <label htmlFor="lastName">Last Name:</label>
-            <input type="text" name="lastName" value={userForm.lastName} onChange={handleChange} />
             <p>Email: {userLoginData?.email}</p>
             <button type="submit">Submit</button>
           </form>
@@ -65,8 +62,8 @@ const VistorProfile = () => {
               OVER
             </p>
             <h2>profile</h2>
-            <p>First Name: {userLoginData?.firstName}</p>
-            <p>Last Name: {userLoginData?.lastName}</p>
+            <p>First Name: {userLoginData?.name}</p>
+            <p>User Name : @{userLoginData?.userName}</p>
             <p>Email: {userLoginData?.email}</p>
             <button onClick={handleClick}>Edit</button>
           </form>

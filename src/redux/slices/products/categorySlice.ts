@@ -1,5 +1,6 @@
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import api from '../../../api'
+import { toast } from 'react-toastify'
 
 export type TypeCategories = {
   _id: string
@@ -33,9 +34,8 @@ export const fetchCategories = createAsyncThunk('product/fetchCategories', async
       ...category,
       ischecked: false
     }))
-  } catch (error) {
-    console.log(error)
-    throw error
+  } catch (error:any) {
+    throw error.response.data.message
   }
 })
 export const newCategory = createAsyncThunk('product/newCategory', async (data:{title:string}) => {
@@ -43,9 +43,8 @@ export const newCategory = createAsyncThunk('product/newCategory', async (data:{
     const response = await api.post('/api/categories',data)
     console.log(response.data.payload)
     return response.data
-  } catch (error) {
-    console.log(error)
-    throw error
+  } catch (error:any) {
+    throw error.response.data.message
   }
 })
 export const updateCategory = createAsyncThunk('product/updateCategory', async ({ slug, data }: { slug: string; data:{title:string} }) => {
@@ -53,19 +52,17 @@ export const updateCategory = createAsyncThunk('product/updateCategory', async (
     const response = await api.put(`/api/categories/${slug}`,data)
     console.log(response.data.payload)
     return response.data.payload
-  } catch (error) {
-    console.log(error)
-    throw error
+  } catch (error:any) {
+    throw error.response.data.message
   }
 })
 export const deleteCategory = createAsyncThunk('product/deleteCategory', async (slug:string) => {
   try {
     const response = await api.delete(`/api/categories/${slug}`)
-    console.log(response.data)
+   
     return slug
-  } catch (error) {
-    console.log(error)
-    throw error
+  } catch (error:any) {
+    throw error.response.data.message
   }
 })
 
@@ -91,6 +88,11 @@ const categorySlice = createSlice({
 
       .addCase(newCategory.fulfilled, (state) => {
         state.isLoading = true
+        toast.success('category is created', {
+          position: "top-right",
+          autoClose: 2000,
+          theme: "dark",
+          });
       })
       .addCase(fetchCategories.fulfilled, (state, action: PayloadAction<TypeCategories[]>) => {
         state.categories = action.payload
@@ -103,6 +105,11 @@ const categorySlice = createSlice({
      if (index !== -1) {
     state.categories[index] = action.payload
      }
+     toast.success('category is updated', {
+      position: "top-right",
+      autoClose: 2000,
+      theme: "dark",
+      });
         
       })
       .addCase(deleteCategory.fulfilled, (state, action) => {
@@ -112,6 +119,11 @@ const categorySlice = createSlice({
         )
         state.categories = filteredCatgories
         state.isLoading = false
+        toast.success('category is deleted', {
+          position: "top-right",
+          autoClose: 2000,
+          theme: "dark",
+          });
       })
       .addMatcher((action)=>action.type.endsWith("/pending"),
       (state)=>{
@@ -122,7 +134,16 @@ const categorySlice = createSlice({
       (state,action)=>{
         state.error = action.error.message || 'error to fetch the data'
         state.isLoading = false
-        console.log(state.error)
+        toast.error(state.error, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+          });
       }
       )
   }

@@ -5,12 +5,13 @@ import { fetchOrders } from '../../redux/slices/products/ordersSlice'
 import { fetchUsers } from '../../redux/slices/products/usersSlice'
 import { fetchProductItem } from '../../redux/slices/products/productsSlice'
 
+
 const ListOrders = () => {
   const { orders } = useSelector((state: RootState) => state.orderReducer)
   const { users } = useSelector((state: RootState) => state.userReducer)
-  const { items } = useSelector((state: RootState) => state.productsReducer)
+  // const { items } = useSelector((state: RootState) => state.productsReducer)
 
-  const [selectedUserId, setSelectedUserId] = useState<number | null>(null)
+  const [selectedUserId, setSelectedUserId] = useState<string | null>(null)
   const [showOrders, setshowOrders] = useState(false)
 
   const dispatch = useDispatch<AppDispatch>()
@@ -20,7 +21,7 @@ const ListOrders = () => {
       try {
         await dispatch(fetchOrders())
         await dispatch(fetchUsers())
-        await dispatch(fetchProductItem())
+        // await dispatch(fetchProductItem({}))
       } catch (error) {
         console.error('Error fetching data:', error)
       }
@@ -28,27 +29,39 @@ const ListOrders = () => {
     fetchData()
   }, [dispatch])
 
-  const findProductByOrder = (productId: number) => {
-    const findProduct = items.find((item) => item.id === productId)
-    if (findProduct) {
-      return (
-        <div className="table-cell">
-          <img src={findProduct.image} alt={findProduct.name} width={50} />
-          <p className="table-cell">{findProduct.name}</p>
+  const findProductByOrder = (orderId: string) => {
+    const findOrder=orders.find((order) => order._id == orderId)
+    if(findOrder){
+      return(
+        <div className='table-cell'>
+          {findOrder.products.map((({product,quantity})=>
+          <div key={product._id} className='order-content' >
+          
+           <span>{product.title}</span>
+           <p><span>quantity : {quantity}</span> <span>price: ${product.price}</span></p>
+
+          </div>))}
+
+          
         </div>
       )
-    } else {
-      return 'none'
+      
     }
-  }
 
-  const findUserByOrder = (userId: number) => {
-    const findUser = users.find((user) => user.id === userId)
+
+
+  }
+  
+
+  const findUserByOrder = (userId: string) => {
+
+    const findUser = users.find((user) => user._id === userId)
+    console.log(users,userId)
     if (findUser) {
       return (
         <div>
           <p className="table-cell">
-            {findUser.firstName} {findUser.lastName}
+            {findUser.name} {'@'+findUser.userName}
           </p>
           <p className="table-cell">{findUser.email}</p>
         </div>
@@ -58,15 +71,15 @@ const ListOrders = () => {
     }
   }
 
-  const findOrdersByUserId = (id: number) => {
-    const findOrders = orders.filter(({ userId }) => userId === id)
+  const findOrdersByUserId = (id: string) => {
+    const findOrders = orders.filter(({ user }) => user === id)
 
     if (findOrders.length > 0) {
       return findOrders.map((order) => (
-        <div key={order.id} className="table-row">
-          {findProductByOrder(order.productId)}
-          <p className="table-cell">{order.purchasedAt}</p>
-          {findUserByOrder(order.userId)}
+        <div key={order._id} className="table-row">
+          {findProductByOrder(String(order._id))}
+          <div className="table-cell"><p className='order-content'>{order.totalPriceOfOrder}1</p><p>{order.createdAt.slice(0)}</p></div>
+          {findUserByOrder(order.user)}
         </div>
       ))
     }
@@ -83,24 +96,27 @@ const ListOrders = () => {
       <div className="flex-tables">
         <div className="table-container">
           {!showOrders &&
+
             orders.map((order) => (
-              <div key={order.id} className="table-row">
-                {findProductByOrder(order.productId)}
-                <p className="table-cell">{order.purchasedAt}</p>
-                {findUserByOrder(order.userId)}
+              <div key={order._id} className="table-row">
+                {findProductByOrder(String(order._id))}
+                <div className="table-cell" style={{display:'block'}}><p >the total price is ${order.totalPriceOfOrder} <br /><br /> Purchase at {order.createdAt.slice(0,10).split("-").reverse().join("-")} </p></div>
+                {findUserByOrder(order.user)}
               </div>
             ))}
+
           {showOrders &&
-            users.map(({ id, firstName, lastName, email }) => (
+            users.map(({ _id, name, userName, email }) => (
               <div
-                key={id}
+                key={_id}
                 style={{ cursor: 'pointer' }}
                 className="table-row"
-                onClick={() => setSelectedUserId(id)}>
+                onClick={() => setSelectedUserId(String(_id))}>
                 <p>
-                  {firstName} {lastName}
+                name  {name}  
                 </p>
-                <p>{email}</p>
+                <p>username {'@'+userName}</p>
+                <p>email {email}</p>
               </div>
             ))}
         </div>

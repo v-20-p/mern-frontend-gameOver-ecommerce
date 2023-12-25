@@ -9,7 +9,6 @@ import { FaPlaystation, FaXbox } from 'react-icons/fa'
 import { FaComputer } from 'react-icons/fa6'
 import { BsNintendoSwitch } from 'react-icons/bs'
 
-import { baseURL } from './../../api/index';
 
 
 const ProductDetails = () => {
@@ -20,13 +19,17 @@ const ProductDetails = () => {
   const navigate = useNavigate()
 
   useEffect(() => {
+
     dispatch(fetchSingleProduct(String(id)))
-  }, [id])
+   
+  }, [id,dispatch])
 
   const findCategory = () => {
     if (singleProduct && singleProduct.categoryId) {
+      
       return singleProduct.categoryId.map((category) => {
-        const foundCategory = categories.find((cat) => cat._id === category._id)
+        const foundCategory = categories.find((cat) => cat._id == category._id)
+        
         if (foundCategory) {
           return (
             <span key={foundCategory._id} className="game-category">
@@ -43,14 +46,17 @@ const ProductDetails = () => {
     dispatch(addItemCart(singleProduct._id))
     navigate('/cart')
   }
+  if (!singleProduct) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div>
       <NavAll />
       <div className="image-container">
-        <img src={`${baseURL}${singleProduct.image}`} alt={singleProduct.title} className="image-theme" />
+        <img src={`${singleProduct.image}`} alt={singleProduct.title} className="image-theme" />
         <div className="game">
-          <img src={`${baseURL}${singleProduct.image}`} alt={singleProduct.title} width={340} />
+          <img src={`${singleProduct.image}`} alt={singleProduct.title} width={340} />
           <div>
             <h1>{singleProduct.title}</h1>
             <p>{findCategory()}</p>
@@ -74,7 +80,7 @@ const ProductDetails = () => {
             add to cart
           </button>
 
-          <div>
+          {/* <div> */}
             {/* {singleProduct.variants && singleProduct.variants.some((va) => va === 'PS5') && (
               <FaPlaystation />
             )}
@@ -86,7 +92,7 @@ const ProductDetails = () => {
             )}
             {singleProduct.variants &&
               singleProduct.variants.some((va) => va === 'Nintendo Switch') && <BsNintendoSwitch />} */}
-          </div>
+          {/* </div> */}
         </div>
       </div>
     </div>
