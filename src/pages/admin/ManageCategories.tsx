@@ -10,15 +10,15 @@ import {
 } from '../../redux/slices/products/categorySlice'
 
 interface initialValue {
-  _id: string;
-  title: string;
-  ischecked: boolean;
-  slug: string;
+  _id: string
+  title: string
+  ischecked: boolean
+  slug: string
 }
 const ManageCategories = () => {
   const { categories } = useSelector((state: RootState) => state.categoryReducer)
   const dispatch = useDispatch<AppDispatch>()
-  const initialValue = { _id: '', title: '', ischecked: false,slug:'' }
+  const initialValue = { _id: '', title: '', ischecked: false, slug: '' }
   const [categoryForm, setCategoryForm] = useState(initialValue)
   const [formErrors, setFormErrors] = useState('')
 
@@ -44,13 +44,10 @@ const ManageCategories = () => {
     }
 
     if (categoryForm._id) {
-      dispatch(updateCategory({slug:categoryForm.slug,data:{title:categoryForm.title}}))
+      dispatch(updateCategory({ slug: categoryForm.slug, data: { title: categoryForm.title } }))
       dispatch(fetchCategories())
     } else {
-      
-
-      dispatch(newCategory({title:categoryForm.title}))
-      
+      dispatch(newCategory({ title: categoryForm.title }))
     }
     setCategoryForm(initialValue)
     setFormErrors('')
@@ -81,14 +78,18 @@ const ManageCategories = () => {
             <p>Action 1</p>
             <p>Action 2</p>
           </div>
-          {categories.map(({ _id, title,slug }) => (
+          {categories.map(({ _id, title, slug }) => (
             <div key={_id} className="table-row">
               <p>{title}</p>
 
-              <p style={{ color: 'darkblue', cursor: 'pointer' }} onClick={() => handleEdit(String(slug))}>
+              <p
+                style={{ color: 'darkblue', cursor: 'pointer' }}
+                onClick={() => handleEdit(String(slug))}>
                 edit
               </p>
-              <p style={{ color: 'red', cursor: 'pointer' }} onClick={() => handleDelete(String(slug))}>
+              <p
+                style={{ color: 'red', cursor: 'pointer' }}
+                onClick={() => handleDelete(String(slug))}>
                 delete
               </p>
             </div>

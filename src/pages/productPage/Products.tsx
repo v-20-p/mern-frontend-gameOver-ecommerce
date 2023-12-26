@@ -34,11 +34,10 @@ const Products = () => {
         filter: categories.filter ? categories.filter.join(',') : '',
         sortBy: productsVistor.sortState,
         limit: 8,
-        search:productsVistor.searchTirm
-        
+        search: productsVistor.searchTirm
       })
     )
-  }, [currentPage, categories.filter, productsVistor.sortState,productsVistor.searchTirm])
+  }, [currentPage, categories.filter, productsVistor.sortState, productsVistor.searchTirm])
 
   //searching
   let searchItems: Product[] = []
@@ -143,7 +142,7 @@ const Products = () => {
             <p>{item.description.slice(0, 15)}..read more</p>
 
             <div>
-              <span> {item.price == 0 ? 'free ' : '$'+item.price}</span>
+              <span> {item.price == 0 ? 'free ' : '$' + item.price}</span>
             </div>
             <div className="quantity-controls">
               <button

@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux'
 import { AppDispatch } from '../../redux/store'
 
 import { Link, useNavigate } from 'react-router-dom'
-import {  reigsterUser } from '../../redux/slices/products/usersSlice'
+import { reigsterUser } from '../../redux/slices/products/usersSlice'
 
 import NavAll from '../homePage/NavAll'
 import { SiGamejolt } from 'react-icons/si'

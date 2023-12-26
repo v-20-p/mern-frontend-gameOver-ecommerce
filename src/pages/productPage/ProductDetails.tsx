@@ -9,8 +9,6 @@ import { FaPlaystation, FaXbox } from 'react-icons/fa'
 import { FaComputer } from 'react-icons/fa6'
 import { BsNintendoSwitch } from 'react-icons/bs'
 
-
-
 const ProductDetails = () => {
   const { id } = useParams()
   const dispatch = useDispatch<AppDispatch>()
@@ -19,17 +17,14 @@ const ProductDetails = () => {
   const navigate = useNavigate()
 
   useEffect(() => {
-
     dispatch(fetchSingleProduct(String(id)))
-   
-  }, [id,dispatch])
+  }, [id, dispatch])
 
   const findCategory = () => {
     if (singleProduct && singleProduct.categoryId) {
-      
       return singleProduct.categoryId.map((category) => {
         const foundCategory = categories.find((cat) => cat._id == category._id)
-        
+
         if (foundCategory) {
           return (
             <span key={foundCategory._id} className="game-category">
@@ -47,7 +42,7 @@ const ProductDetails = () => {
     navigate('/cart')
   }
   if (!singleProduct) {
-    return <div>Loading...</div>;
+    return <div>Loading...</div>
   }
 
   return (
@@ -81,7 +76,7 @@ const ProductDetails = () => {
           </button>
 
           {/* <div> */}
-            {/* {singleProduct.variants && singleProduct.variants.some((va) => va === 'PS5') && (
+          {/* {singleProduct.variants && singleProduct.variants.some((va) => va === 'PS5') && (
               <FaPlaystation />
             )}
             {singleProduct.variants && singleProduct.variants.some((va) => va === 'Xbox One') && (

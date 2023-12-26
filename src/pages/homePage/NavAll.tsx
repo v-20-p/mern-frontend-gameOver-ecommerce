@@ -14,7 +14,7 @@ import { fetchProductItem, searchProduct } from '../../redux/slices/products/pro
 import { logout } from '../../redux/slices/products/usersSlice'
 
 import { SiGamejolt } from 'react-icons/si'
-import { sort } from 'semver';
+import { sort } from 'semver'
 
 const NavAll = () => {
   const [searchValue, setSearchValue] = useState('')
@@ -29,7 +29,7 @@ const NavAll = () => {
   }
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    dispatch(fetchProductItem({search:searchValue}))
+    dispatch(fetchProductItem({ search: searchValue }))
     navigate('/products')
     setSearchValue('')
   }
@@ -55,7 +55,7 @@ const NavAll = () => {
             <li>
               <Link to={'/products'}>product</Link>
             </li>
-            {userLoginData?.isAdmin  && (
+            {userLoginData?.isAdmin && (
               <li>
                 <Link to="/dashboard/admin/users">admin</Link>
               </li>

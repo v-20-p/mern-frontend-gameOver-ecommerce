@@ -54,7 +54,7 @@ const Navbar = () => {
             <li>
               <Link to={'/products'}>product</Link>
             </li>
-            {userLoginData?.isAdmin  && (
+            {userLoginData?.isAdmin && (
               <li>
                 <Link to="/dashboard/admin/users">admin</Link>
               </li>

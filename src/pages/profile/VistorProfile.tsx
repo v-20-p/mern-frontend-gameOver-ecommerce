@@ -12,13 +12,18 @@ const VistorProfile = () => {
   const dispatch = useDispatch<AppDispatch>()
   const [enableEdit, setEnableEdit] = useState(false)
   const [userForm, setUserForm] = useState({
-    name: userLoginData?.name || '',
+    name: userLoginData?.name || ''
   })
 
   const handleClick = (e: React.FormEvent) => {
     if (enableEdit) {
       e.preventDefault()
-      dispatch(editUser({id: String(userLoginData?._id),data:{...userLoginData,name:userForm.name}}))
+      dispatch(
+        editUser({
+          id: String(userLoginData?._id),
+          data: { ...userLoginData, name: userForm.name }
+        })
+      )
     } else {
     }
     setEnableEdit(!enableEdit)
@@ -32,36 +37,28 @@ const VistorProfile = () => {
     <div>
       <NavAll />
       <div className="form">
-      {enableEdit ? (
-        
+        {enableEdit ? (
           <form onSubmit={handleClick}>
-          <div>
-            <p className="logo">
-              GAME
-              <SiGamejolt />
-              OVER
-            </p>
+            <div>
+              <p className="logo">
+                GAME
+                <SiGamejolt />
+                OVER
+              </p>
             </div>
             <div>
-            <h2>profile</h2>
+              <h2>profile</h2>
             </div>
             <div>
-            <label htmlFor="firstName">Name:</label>
-            <input
-              type="text"
-              name="name"
-              value={userForm.name}
-              onChange={handleChange}
-            />
-            <br />
-            <p>Email: {userLoginData?.email}</p>
-            <button type="submit">Submit</button>
+              <label htmlFor="firstName">Name:</label>
+              <input type="text" name="name" value={userForm.name} onChange={handleChange} />
+              <br />
+              <p>Email: {userLoginData?.email}</p>
+              <button type="submit">Submit</button>
             </div>
           </form>
-      
-      ) : (
-        
-          <form action="" >
+        ) : (
+          <form action="">
             <p className="logo">
               GAME
               <SiGamejolt />
@@ -73,9 +70,7 @@ const VistorProfile = () => {
             <p>Email: {userLoginData?.email}</p>
             <button onClick={handleClick}>Edit</button>
           </form>
-          
-        
-      )}
+        )}
       </div>
     </div>
   )

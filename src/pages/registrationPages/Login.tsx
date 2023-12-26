@@ -1,7 +1,7 @@
-import React, { useState,useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
-import { Icon } from '@iconify/react';
+import { Icon } from '@iconify/react'
 
 import { AppDispatch, RootState } from '../../redux/store'
 
@@ -15,30 +15,26 @@ const Login = ({ pathName }: { pathName?: string }) => {
     (state: RootState) => state.userReducer
   )
   const [searchParams, setSearchParams] = useSearchParams()
-  const value =searchParams.get('value')
+  const value = searchParams.get('value')
   const [queryParam, setQueryParam] = useState('')
-  
-  useEffect(()=>{
-    if(value=="1"){
+
+  useEffect(() => {
+    if (value == '1') {
       setQueryParam('the password is change 👌')
-  
-    }else if(value=="2"){
+    } else if (value == '2') {
       setQueryParam('The account is activate ')
     }
-
-  },[])
-
-
+  }, [])
 
   const dispatch = useDispatch<AppDispatch>()
   const [userInput, setUserInput] = useState({ email: '', password: '' })
   const navigate = useNavigate()
   const [invalidMessage, setInvalidMessage] = useState('')
-  useEffect(()=>{
-    if(userLoginData){
+  useEffect(() => {
+    if (userLoginData) {
       navigate('/')
     }
-  },[userLoginData,navigate])
+  }, [userLoginData, navigate])
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
     setUserInput({ ...userInput, [name]: value })
@@ -56,27 +52,22 @@ const Login = ({ pathName }: { pathName?: string }) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     if (validateForm()) {
-
-        
-          dispatch(login(userInput))  
-        }
-       else {
-        setInvalidMessage('The email or password is incorrect.')
-      
+      dispatch(login(userInput))
+    } else {
+      setInvalidMessage('The email or password is incorrect.')
     }
   }
   const [send, setSend] = useState('')
-  const handleSendForgetPassword=()=>{
-    const findUser =users.find((user)=>user.email==userInput.email)
-    if(findUser){
+  const handleSendForgetPassword = () => {
+    const findUser = users.find((user) => user.email == userInput.email)
+    if (findUser) {
       dispatch(forgetPassword(findUser.email))
       setSend('check your email to reset password ⭐')
-    }
-    else{
+    } else {
       setSend('not found this email 😟')
     }
   }
-  const handleClear=()=>{
+  const handleClear = () => {
     setSend('')
   }
 
@@ -91,7 +82,11 @@ const Login = ({ pathName }: { pathName?: string }) => {
             OVER
           </p>
           <h2>Login</h2>
-          {queryParam &&<h4>{queryParam} <span onClick={()=>setQueryParam('')}>X</span></h4>}
+          {queryParam && (
+            <h4>
+              {queryParam} <span onClick={() => setQueryParam('')}>X</span>
+            </h4>
+          )}
           <label htmlFor="email">Email</label>
           <input type="email" name="email" placeholder="xx@xx.com" onChange={handleChangeInput} />
           <br />
@@ -104,26 +99,36 @@ const Login = ({ pathName }: { pathName?: string }) => {
           </span>
           <br />
           <span>
-            Forget password ? click <PopUp nameBtn={'hare'} className='password' span={true}>
-           {!send ?
-                       <div>              
-                       <h2>sorry for hear that 😟</h2>
-                   <label htmlFor="email">Email</label>
-                   <input type="email" name="email" value={userInput.email}  placeholder="xx@xx.com" onChange={handleChangeInput} />
-                   <button type='button' onClick={handleSendForgetPassword}  >send</button>
-                   </div>
-                   :
-                   <>
-                   <h1>{send}</h1>
-                   <div>
-                   <button type='button' onClick={handleClear}  >try Again</button>
-                   </div>
-                   </>
-          } 
+            Forget password ? click{' '}
+            <PopUp nameBtn={'hare'} className="password" span={true}>
+              {!send ? (
+                <div>
+                  <h2>sorry for hear that 😟</h2>
+                  <label htmlFor="email">Email</label>
+                  <input
+                    type="email"
+                    name="email"
+                    value={userInput.email}
+                    placeholder="xx@xx.com"
+                    onChange={handleChangeInput}
+                  />
+                  <button type="button" onClick={handleSendForgetPassword}>
+                    send
+                  </button>
+                </div>
+              ) : (
+                <>
+                  <h1>{send}</h1>
+                  <div>
+                    <button type="button" onClick={handleClear}>
+                      try Again
+                    </button>
+                  </div>
+                </>
+              )}
             </PopUp>
           </span>
         </form>
-
       </div>
     </>
   )

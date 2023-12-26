@@ -6,23 +6,26 @@ import { deleteUser, editUser, fetchUsers, userIsban } from '../../redux/slices/
 const ManageUsers = () => {
   const { users } = useSelector((state: RootState) => state.userReducer)
   const dispatch = useDispatch<AppDispatch>()
-  
+
   const handleBan = (id: string) => {
     const editedbanuser = users.find((user) => user._id == id)
-  
+
     if (editedbanuser) {
       dispatch(userIsban(String(editedbanuser._id)))
       dispatch(fetchUsers())
-   
     }
   }
   const handleRole = (id: string) => {
     const editedbanuser = users.find((user) => user._id == id)
-  
+
     if (editedbanuser) {
-      dispatch(editUser({id: String(editedbanuser._id),data:{...editedbanuser,isAdmin:!editedbanuser.isAdmin}}))
+      dispatch(
+        editUser({
+          id: String(editedbanuser._id),
+          data: { ...editedbanuser, isAdmin: !editedbanuser.isAdmin }
+        })
+      )
       dispatch(fetchUsers())
-   
     }
   }
   const handleDelete = (id: string) => {
@@ -44,12 +47,13 @@ const ManageUsers = () => {
           </div>
           {users.map((user) => (
             <div key={user._id} className="table-row">
-              <p>
-                {user.name} 
-              </p>
+              <p>{user.name}</p>
               <p style={{ maxWidth: '13.5vw' }}>{user.email}</p>
-              <p style={{ color: 'darkblue', cursor: 'pointer' }}
-                onClick={() => handleRole(String(user._id))}>{user.isAdmin?'Admin' : 'User' }</p>
+              <p
+                style={{ color: 'darkblue', cursor: 'pointer' }}
+                onClick={() => handleRole(String(user._id))}>
+                {user.isAdmin ? 'Admin' : 'User'}
+              </p>
               <p>{user.isBan ? 'Yes' : 'No'}</p>
 
               <p
@@ -57,7 +61,9 @@ const ManageUsers = () => {
                 onClick={() => handleBan(String(user._id))}>
                 {user.isBan ? 'Unban' : 'Ban'}
               </p>
-              <p style={{ color: 'red', cursor: 'pointer' }} onClick={() => handleDelete(String(user._id))}>
+              <p
+                style={{ color: 'red', cursor: 'pointer' }}
+                onClick={() => handleDelete(String(user._id))}>
                 Delete
               </p>
             </div>

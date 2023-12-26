@@ -5,47 +5,42 @@ import { Link } from 'react-router-dom'
 
 import Carousel from 'react-multi-carousel'
 import 'react-multi-carousel/lib/styles.css'
-import { ToastContainer, cssTransition, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, cssTransition, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '../../redux/store'
 import { addItemCart, fetchProductItem, quantity } from '../../redux/slices/products/productsSlice'
 import Chat from '../chatbot/Chat'
 
-
 const Home = () => {
   const dispatch = useDispatch<AppDispatch>()
   const { items } = useSelector((state: RootState) => state.productsReducer)
-  useEffect(()=>{
-    dispatch(fetchProductItem({filter:'',}))
-  },[])
+  useEffect(() => {
+    dispatch(fetchProductItem({ filter: '' }))
+  }, [])
 
-  const handleAddingCart = (id: string ) => {
-    dispatch(addItemCart(id));
-    dispatch(quantity({id:id,quantity:1}))
+  const handleAddingCart = (id: string) => {
+    dispatch(addItemCart(id))
+    dispatch(quantity({ id: id, quantity: 1 }))
     toast.success('Product add successfully to cart ', {
-      position: "top-center",
+      position: 'top-center',
       autoClose: 5000,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
       draggable: true,
       progress: undefined,
-      theme: "dark",
-      
-      
-      });
-  
+      theme: 'dark'
+    })
   }
-  const handleIncrement = (id:string,count:number) => {
-    dispatch(quantity({id:id,quantity:count+1}))
- };
+  const handleIncrement = (id: string, count: number) => {
+    dispatch(quantity({ id: id, quantity: count + 1 }))
+  }
 
- const handleDecrement =  (id:string,count:number) => {
-   if(count!=1)
-   dispatch(quantity({id:id,quantity:count-1}))
-};
+  const handleDecrement = (id: string, count: number) => {
+    if (count != 1) dispatch(quantity({ id: id, quantity: count - 1 }))
+  }
   return (
     <>
       <div className="hero">
@@ -129,29 +124,25 @@ const Home = () => {
 
                 <div>
                   <span>price : ${item.price == 0 ? 'free ' : item.price}</span>
-                  
                 </div>
                 <div className="quantity-controls">
-              <button
-                className="quantity-btn"
-                onClick={() => handleDecrement(String(item._id), Number(item.quantity))}
-              >
-                -
-              </button>
-              <span className="quantity-value">{item.quantity}</span>
-              <button
-                className="quantity-btn"
-                onClick={() => handleIncrement(String(item._id), Number(item.quantity))}
-              >
-                +
-              </button>
-              <button
-                className="add-to-cart-btn"
-                onClick={() => handleAddingCart(String(item._id))}
-              >
-                Add to Cart
-              </button>
-            </div>
+                  <button
+                    className="quantity-btn"
+                    onClick={() => handleDecrement(String(item._id), Number(item.quantity))}>
+                    -
+                  </button>
+                  <span className="quantity-value">{item.quantity}</span>
+                  <button
+                    className="quantity-btn"
+                    onClick={() => handleIncrement(String(item._id), Number(item.quantity))}>
+                    +
+                  </button>
+                  <button
+                    className="add-to-cart-btn"
+                    onClick={() => handleAddingCart(String(item._id))}>
+                    Add to Cart
+                  </button>
+                </div>
               </div>
             ))}
           </Carousel>
@@ -172,9 +163,9 @@ const Home = () => {
               </div>
             </div>
             <div className="newGame">
-              {items.slice(16, 19).map((item) => (
+              {items.slice(15, 18).map((item) => (
                 <div key={item._id} className="product2">
-                  <Link to={`/product/${item._id}`}>
+                  <Link to={`/product/${item.slug}`}>
                     <img src={item.image} alt={item.title} width={200} />
                   </Link>
 
@@ -182,14 +173,13 @@ const Home = () => {
 
                   <div>
                     <span>price: {item.price == 0 ? 'free' : item.price}$</span>
-       
                   </div>
                 </div>
               ))}
             </div>
           </div>
         </div>
-        <Chat/>
+        <Chat />
       </section>
     </>
   )
