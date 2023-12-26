@@ -1,4 +1,4 @@
-import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { PayloadAction, createAsyncThunk, createSlice, isPending, isRejected } from '@reduxjs/toolkit'
 
 import api from '../../../api'
 import { TypeCategories } from './categorySlice';
@@ -56,17 +56,20 @@ const initialState: ProductState = {
 }
 // {limit,page,filter}:{limit:number,page:number,filter:string}
 
-export const fetchProductItem = createAsyncThunk('product/fetchProductItem', async (data:{page?:number,filter?:string,sortBy?:string,limit?:number}={page:0,filter:'',sortBy:'',limit:0}) => {
+export const fetchProductItem = createAsyncThunk('product/fetchProductItem', async (data:{page?:number,filter?:string,sortBy?:string,limit?:number,search?:string}={page:0,filter:'',sortBy:'',limit:0,search:''}) => {
   try {
     let response:any={}
-    if( data.page!=0){
-    response = await api.get(`/api/products?limit=${data.limit?data.limit:20}&page=${data.page}&filter=${data.filter}&sort=${data.sortBy}`)
-    console.log(`/api/products?limit=${data.limit?data.limit:''}&page=${data.page}&filter=${data.filter}&sort=${data.sortBy}`)
-    
-    
+  
+    if(data.search){
+      response = await api.get(`/api/products?search=${data.search}`)
+
     }else{
-      response = await api.get(`/api/products`) 
+      response = await api.get(`/api/products?limit=${data.limit?data.limit:''}&page=${data.page?data.page:1}&filter=${data.filter?data.filter:''}&sort=${data.sortBy?data.sortBy:''}`)
+
     }
+
+    
+   
     // console.log(response.data.payload.products)
     
     return response.data.payload
@@ -267,12 +270,12 @@ const productVisitorSlice = createSlice({
          state.isLoading = false
 
        })
-      .addMatcher((action)=>action.type.endsWith("/pending"),
+      .addMatcher(isPending(deleteProduct,newProduct,updateProduct,fetchSingleProduct,searchProduct,fetchProductItem),
       (state)=>{
         state.isLoading = true
       }
       )
-      .addMatcher((action)=>action.type.endsWith("/rejected"),
+      .addMatcher(isRejected(deleteProduct,newProduct,updateProduct,fetchSingleProduct,searchProduct,fetchProductItem),
       (state,action)=>{
         state.error = action.error.message || 'error to fetch the data'
         state.isLoading = false

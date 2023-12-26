@@ -854,13 +854,26 @@ footer{
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 10px;
 
   form{
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
     padding: 20px 7vw;
     border-radius: 20px;
     max-width: 300px;
+
     /* YourComponent.scss */
+    h4{
+      background-color: #33c56d;
+      color: #f5f5f5;
+      padding: 10px;
+      border-radius: 10px;
+      span{
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 900;
+      }
+    }
 
 
 
@@ -912,6 +925,76 @@ footer{
     }
   }
 }
+.order{
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  padding: 20px 7vw;
+  border-radius: 20px;
+  max-width: 300px;
+  /* YourComponent.scss */
+  h4{
+    background-color: #33c56d;
+    color: #f5f5f5;
+    padding: 10px;
+    border-radius: 10px;
+    span{
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 900;
+    }
+  }
+
+
+
+  h2{
+    text-align: center;
+  }
+  .logo{
+    text-align: center;
+  }
+  label{
+    display: block;
+  }
+  input {
+    outline: none;
+    border: none;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 20px;
+    width: 90%;
+    margin-top: 5px;
+    }
+  button{
+    outline: none;
+    border: none;
+    width: 100%;
+    cursor: pointer;
+    background-color: $main-theme;
+    color: $font-color;
+    padding: 10px;
+    border-top-left-radius: 10px; 
+    border-bottom-right-radius: 10px;
+    font-size: 16px;
+    transition: all .2s ease-in-out ;
+    margin-bottom: 20px;
+    &:hover{
+      background-color: #28c3c3;
+      color: #ffffff;
+    }
+  }
+  span,a{
+    
+    font-size: x-small;
+    padding: 0%;
+    margin: 0;
+
+  }
+  a{
+    text-decoration: underline;
+  }
+}
+
+
+
 .form2{
   
   display: flex;
@@ -1113,14 +1196,19 @@ footer{
   .quantity-value {
     font-size: 18px;
     margin: 0 10px;
+    width: 10px;
+    text-align: center;
   }
 
   .add-to-cart-btn {
-    padding: 10px 15px;
+    padding: 8px 15px;
     margin-left: auto;
-    font-size: 16px;
+    font-size: 13px;
     margin-right: 10px;
     border-radius: 3px;
+    width: 100%;
+    
+   
     cursor: pointer;
     background-color: #121315;
 
@@ -1281,6 +1369,7 @@ footer{
   }
   .admin-content {
     width: 100%;
+    min-height: 90vh;
   
     .table {
       width: 100%;
@@ -1417,6 +1506,196 @@ footer{
   }
 }  
 
+
+
+
+$primary-color: #18191d;
+$background-color: #ecf0f1;
+$text-color: #f3f3f3;
+
+$box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+
+$button-color: #fff;
+$button-bg-color: $primary-color;
+
+$chat-button-size: 60px;
+.delete2{
+  background-color: red;
+  border: none;
+  box-shadow: 1px 0 10px rgba(0, 0, 0, 0.3);
+  padding: 10px;
+  color: $text-color;
+  border-radius: 5px;
+  cursor: pointer;
+  
+}
+
+// Chat Container
+.chat-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 350px;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: $box-shadow;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+ 
+}
+
+
+// Chat Header
+.chat-header {
+  background-color: $primary-color;
+  color: $text-color;
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  h2 {
+    margin: 0;
+    font-size: 1.2rem;
+  }
+
+  button {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 1rem;
+    cursor: pointer;
+  }
+}
+
+// Chat Messages
+// Chat Messages
+.chat-messages {
+  padding: 15px;
+  height: 300px;
+  overflow-y: auto;
+  background-color: $background-color;
+  &::-webkit-scrollbar {
+    width: 12px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: $primary-color;
+    border-radius: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: $background-color;
+    border-radius: 8px;
+  }
+
+  p {
+    position: relative;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 8px;
+    font-size: 0.9rem;
+
+    &.bot {
+      background-color: #35c6c6;
+      color: #fff;
+
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -7px;
+        border-width: 8px 15px 8px 0;
+        border-style: solid;
+        border-color: transparent #35c6c6 transparent transparent;
+      }
+    }
+
+    &.user {
+      background-color: #18191d;
+      color: #fff;
+      text-align: right;
+
+      &::before {
+        content: '';
+        position: absolute;
+        bottom:  0;
+        right: -7px;
+        border-width: 8px 0 8px 15px;
+        border-style: solid;
+        border-color: transparent  transparent transparent #18191d;
+      }
+    }
+  }
+}
+
+
+// Chat Input
+.chat-input {
+  display: flex;
+  padding: 15px;
+  background-color: #fff;
+  border-top: 1px solid #eee;
+
+  input {
+    flex-grow: 1;
+    padding: 10px;
+    margin-right: 10px;
+    border: none;
+    border-radius: 5px;
+  }
+
+  button {
+    padding: 10px;
+    background-color: $button-bg-color;
+    color: $button-color;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+}
+.chat-window{
+  position:fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 400px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+// Chat Button
+.chat-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  padding: 15px;
+  background-color: $primary-color;
+  color: $text-color;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  box-shadow: $box-shadow;
+  width: $chat-button-size;
+  height: $chat-button-size;
+  
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 70%;
+    rotate: 180deg;
+    
+    right: 4%;
+    margin-right: -5px; 
+    border-width: 5px 5px 0;
+    border-style: solid;
+    border-color: $primary-color transparent transparent;
+  }
+}
 
 
 

@@ -1,19 +1,23 @@
 import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { ToastContainer, cssTransition, toast } from 'react-toastify';
+import { ToastContainer, cssTransition, toast } from 'react-toastify'
 import { BsFillPlusCircleFill } from 'react-icons/bs'
-import 'react-toastify/dist/ReactToastify.css';
+import 'react-toastify/dist/ReactToastify.css'
 
 import { AppDispatch, RootState } from '../../redux/store'
-import { Product, addItemCart, fetchProductItem, quantity, sortProduct } from '../../redux/slices/products/productsSlice'
+import {
+  Product,
+  addItemCart,
+  fetchProductItem,
+  quantity,
+  sortProduct
+} from '../../redux/slices/products/productsSlice'
 
 import Category from '../homePage/Category'
 import { Link } from 'react-router-dom'
 
 import NavAll from '../homePage/NavAll'
 import { BsFilterLeft } from 'react-icons/bs'
-
-
 
 const Products = () => {
   const dispatch = useDispatch<AppDispatch>()
@@ -24,8 +28,17 @@ const Products = () => {
   const [currentPage, setCurrentPage] = useState(1)
 
   useEffect(() => {
-    dispatch(fetchProductItem({ page: currentPage, filter: categories.filter ? categories.filter.join(','):'',sortBy:productsVistor.sortState,limit:8 }));
-  }, [currentPage,categories.filter,productsVistor.sortState]);
+    dispatch(
+      fetchProductItem({
+        page: currentPage,
+        filter: categories.filter ? categories.filter.join(',') : '',
+        sortBy: productsVistor.sortState,
+        limit: 8,
+        search:productsVistor.searchTirm
+        
+      })
+    )
+  }, [currentPage, categories.filter, productsVistor.sortState,productsVistor.searchTirm])
 
   //searching
   let searchItems: Product[] = []
@@ -36,53 +49,41 @@ const Products = () => {
     })
   }
 
-
   const handlePageChange = (page: number) => {
-    setCurrentPage(page);
-    
-    
-  };
+    setCurrentPage(page)
+  }
 
-  
+  const handleIncrement = (id: string, count: number) => {
+    dispatch(quantity({ id: id, quantity: count + 1 }))
+  }
 
-  const handleIncrement = (id:string,count:number) => {
-     dispatch(quantity({id:id,quantity:count+1}))
-  };
-
-  const handleDecrement =  (id:string,count:number) => {
-    if(count!=1)
-    dispatch(quantity({id:id,quantity:count-1}))
- };
-
-
+  const handleDecrement = (id: string, count: number) => {
+    if (count != 1) dispatch(quantity({ id: id, quantity: count - 1 }))
+  }
 
   const pageNumbers = []
- 
+
   for (let i = 1; i <= productsVistor.totalPages; i++) {
     pageNumbers.push(i)
   }
-
-  
 
   const handleSorting = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const sortingSelect = e.target.value
     dispatch(sortProduct(sortingSelect))
   }
-  const handleAddingCart = (id: string ) => {
-    dispatch(addItemCart(id));
-    dispatch(quantity({id:id,quantity:1}))
+  const handleAddingCart = (id: string) => {
+    dispatch(addItemCart(id))
+    dispatch(quantity({ id: id, quantity: 1 }))
     toast.success('Product add successfully to cart ', {
-      position: "top-center",
+      position: 'top-center',
       autoClose: 5000,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
       draggable: true,
       progress: undefined,
-      theme: "dark",
-      
-      
-      });
+      theme: 'dark'
+    })
   }
 
   const renderPageNumbers = pageNumbers.map((number) => (
@@ -94,26 +95,19 @@ const Products = () => {
   return (
     <section>
       <NavAll />
-      <div style={{ margin: '0 80px' }}>
-        {productsVistor.isLoading && <h3> Loading products...</h3>}
-        {productsVistor.error && <h3> error to fetch products...</h3>}
-        
-      </div>
+      <div style={{ margin: '0 80px' }}></div>
       <ToastContainer
-position="top-center"
-autoClose={5000}
-hideProgressBar={false}
-newestOnTop={false}
-closeOnClick
-rtl={false}
-pauseOnFocusLoss
-draggable
-pauseOnHover
-theme="dark"
-/>
-
-     
-         
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
 
       <h2 className="h2-title">
         All games <BsFilterLeft className="filter" onClick={() => setShow(!show)} />
@@ -133,7 +127,7 @@ theme="dark"
       </div>
       <hr className="hr-black" />
       <div className="products-container">
-      {productsVistor.searchTirm && (
+        {productsVistor.searchTirm && (
           <p>
             {' '}
             result search of (<strong>{productsVistor.searchTirm}</strong>){' '}
@@ -148,29 +142,24 @@ theme="dark"
             <h3>{item.title}</h3>
             <p>{item.description.slice(0, 15)}..read more</p>
 
-
             <div>
-              <span>price : ${item.price == 0 ? 'free ' : item.price}</span>
-    
+              <span> {item.price == 0 ? 'free ' : '$'+item.price}</span>
             </div>
             <div className="quantity-controls">
               <button
                 className="quantity-btn"
-                onClick={() => handleDecrement(String(item._id), Number(item.quantity))}
-              >
+                onClick={() => handleDecrement(String(item._id), Number(item.quantity))}>
                 -
               </button>
               <span className="quantity-value">{item.quantity}</span>
               <button
                 className="quantity-btn"
-                onClick={() => handleIncrement(String(item._id), Number(item.quantity))}
-              >
+                onClick={() => handleIncrement(String(item._id), Number(item.quantity))}>
                 +
               </button>
               <button
                 className="add-to-cart-btn"
-                onClick={() => handleAddingCart(String(item._id))}
-              >
+                onClick={() => handleAddingCart(String(item._id))}>
                 Add to Cart
               </button>
             </div>

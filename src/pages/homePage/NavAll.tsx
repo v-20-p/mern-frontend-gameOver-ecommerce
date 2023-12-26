@@ -10,10 +10,11 @@ import { AiOutlineShoppingCart } from 'react-icons/ai'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '../../redux/store'
 
-import { searchProduct } from '../../redux/slices/products/productsSlice'
+import { fetchProductItem, searchProduct } from '../../redux/slices/products/productsSlice'
 import { logout } from '../../redux/slices/products/usersSlice'
 
 import { SiGamejolt } from 'react-icons/si'
+import { sort } from 'semver';
 
 const NavAll = () => {
   const [searchValue, setSearchValue] = useState('')
@@ -28,7 +29,7 @@ const NavAll = () => {
   }
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    dispatch(searchProduct(searchValue))
+    dispatch(fetchProductItem({search:searchValue}))
     navigate('/products')
     setSearchValue('')
   }

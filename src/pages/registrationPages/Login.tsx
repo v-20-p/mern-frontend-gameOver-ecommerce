@@ -1,6 +1,6 @@
 import React, { useState,useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { Icon } from '@iconify/react';
 
 import { AppDispatch, RootState } from '../../redux/store'
@@ -14,6 +14,20 @@ const Login = ({ pathName }: { pathName?: string }) => {
   const { users, isLoading, userLoginData, error } = useSelector(
     (state: RootState) => state.userReducer
   )
+  const [searchParams, setSearchParams] = useSearchParams()
+  const value =searchParams.get('value')
+  const [queryParam, setQueryParam] = useState('')
+  
+  useEffect(()=>{
+    if(value=="1"){
+      setQueryParam('the password is change 👌')
+  
+    }else if(value=="2"){
+      setQueryParam('The account is activate ')
+    }
+
+  },[])
+
 
 
   const dispatch = useDispatch<AppDispatch>()
@@ -77,6 +91,7 @@ const Login = ({ pathName }: { pathName?: string }) => {
             OVER
           </p>
           <h2>Login</h2>
+          {queryParam &&<h4>{queryParam} <span onClick={()=>setQueryParam('')}>X</span></h4>}
           <label htmlFor="email">Email</label>
           <input type="email" name="email" placeholder="xx@xx.com" onChange={handleChangeInput} />
           <br />

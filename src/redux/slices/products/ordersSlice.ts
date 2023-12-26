@@ -1,4 +1,4 @@
-import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { PayloadAction, createAsyncThunk, createSlice, isPending, isRejected } from '@reduxjs/toolkit'
 import api from '../../../api'
 import { Product } from './productsSlice'
 import { toast } from 'react-toastify'
@@ -7,6 +7,23 @@ export const fetchOrders = createAsyncThunk('orders/fetchOrders', async () => {
   try {
     const response = await api.get('/api/orders')
     return response.data.orders
+  } catch (error:any) {
+    throw error.response.data.message
+  }
+})
+
+export const paymentClientToken = createAsyncThunk('orders/paymentClientToken', async () => {
+  try {
+    const response = await api.get('/api/orders/payment/token')
+    return response.data
+  } catch (error:any) {
+    throw error.response.data.message
+  }
+})
+export const deleteOrder = createAsyncThunk('orders/deleteOrder', async (id:string) => {
+  try {
+    await api.delete(`/api/orders/${id}`)
+    return id
   } catch (error:any) {
     throw error.response.data.message
   }
@@ -52,6 +69,22 @@ const orderSlice = createSlice({
     
         state.isLoading = false
       })
+      .addCase(deleteOrder.fulfilled, (state, action) => {
+        const findOrder=state.orders.find((order)=>order._id==action.payload)
+        if(findOrder){
+          state.orders=state.orders.filter((order)=>order._id!=findOrder._id)
+        }
+          toast.success('order is deleted', {
+          position: "top-right",
+          autoClose: 2000,
+          theme: "dark",
+          });
+  
+
+        
+    
+        state.isLoading = false
+      })
       .addCase(placeOrder.fulfilled, (state, action: PayloadAction<Order[]>) => {
         state.isLoading = false
         toast.success('done 👌', {
@@ -61,12 +94,12 @@ const orderSlice = createSlice({
           });
       })
 
-      .addMatcher((action)=>action.type.endsWith("/pending"),
+      .addMatcher(isPending(placeOrder,fetchOrders),
       (state)=>{
         state.isLoading = true
       }
       )
-      .addMatcher((action)=>action.type.endsWith("/rejected"),
+      .addMatcher(isRejected(deleteOrder,placeOrder,fetchOrders),
       (state,action)=>{
         state.error = action.error.message || 'error to fetch the data'
         state.isLoading = false

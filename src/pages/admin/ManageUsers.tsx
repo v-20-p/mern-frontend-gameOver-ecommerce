@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '../../redux/store'
-import { deleteUser, fetchUsers, userIsban } from '../../redux/slices/products/usersSlice'
+import { deleteUser, editUser, fetchUsers, userIsban } from '../../redux/slices/products/usersSlice'
 
 const ManageUsers = () => {
   const { users } = useSelector((state: RootState) => state.userReducer)
@@ -12,6 +12,15 @@ const ManageUsers = () => {
   
     if (editedbanuser) {
       dispatch(userIsban(String(editedbanuser._id)))
+      dispatch(fetchUsers())
+   
+    }
+  }
+  const handleRole = (id: string) => {
+    const editedbanuser = users.find((user) => user._id == id)
+  
+    if (editedbanuser) {
+      dispatch(editUser({id: String(editedbanuser._id),data:{...editedbanuser,isAdmin:!editedbanuser.isAdmin}}))
       dispatch(fetchUsers())
    
     }
@@ -39,7 +48,8 @@ const ManageUsers = () => {
                 {user.name} 
               </p>
               <p style={{ maxWidth: '13.5vw' }}>{user.email}</p>
-              <p>{user.isAdmin}</p>
+              <p style={{ color: 'darkblue', cursor: 'pointer' }}
+                onClick={() => handleRole(String(user._id))}>{user.isAdmin?'Admin' : 'User' }</p>
               <p>{user.isBan ? 'Yes' : 'No'}</p>
 
               <p

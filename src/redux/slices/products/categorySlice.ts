@@ -1,4 +1,4 @@
-import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { PayloadAction, createAsyncThunk, createSlice, isRejected , } from '@reduxjs/toolkit'
 import api from '../../../api'
 import { toast } from 'react-toastify'
 
@@ -130,7 +130,7 @@ const categorySlice = createSlice({
         state.isLoading = true
       }
       )
-      .addMatcher((action)=>action.type.endsWith("/rejected"),
+      .addMatcher(isRejected(deleteCategory,updateCategory,fetchCategories,fetchCategories,newCategory),
       (state,action)=>{
         state.error = action.error.message || 'error to fetch the data'
         state.isLoading = false

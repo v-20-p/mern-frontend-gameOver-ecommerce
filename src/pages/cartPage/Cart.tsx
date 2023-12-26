@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{useEffect, useState} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Icon } from '@iconify/react';
 import { ToastContainer, cssTransition, toast } from 'react-toastify';
@@ -11,17 +11,37 @@ import NavAll from '../homePage/NavAll'
 import { BsFillTrashFill } from 'react-icons/bs'
 import { MdOutlinePayment } from 'react-icons/md'
 import { FaCcApplePay, FaCcPaypal, FaCcAmazonPay } from 'react-icons/fa'
+import DropIn from "braintree-web-drop-in-react";
+import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router'
 
 import PopUp from '../../PopUp'
-import { useNavigate } from 'react-router'
-import { placeOrder } from '../../redux/slices/products/ordersSlice';
-import { Link } from 'react-router-dom';
+import { paymentClientToken, placeOrder } from '../../redux/slices/products/ordersSlice';
 
 const Cart = () => {
   const { cart } = useSelector((state: RootState) => state.productsReducer)
   const { userLoginData } = useSelector((state: RootState) => state.userReducer)
   const dispatch = useDispatch<AppDispatch>()
   const navigate = useNavigate()
+  const [paymentToken, setPaymentToken] = useState('')
+  const [instance, setinstance] = useState<any>()
+  const getClientToken=async()=>{
+    try {
+      const response= await dispatch(paymentClientToken())
+      setPaymentToken(response.payload.clientToken)
+    } catch (error) {
+      console.log(error)
+      
+    }
+    
+  }
+
+  useEffect(()=>{
+    getClientToken()
+
+  },[])
+
+
   const handleDeleteCart = (cartId: number) => {
     const deletedItem = cart.find((item) => item.cartId === cartId)
 
@@ -49,13 +69,17 @@ const Cart = () => {
   const { subtotal, tax, total } = calculateTotalPrice()
 
 
-  const handleSumbit=()=>{
+  const handleSumbit=async()=>{
+    const {nonce}=await instance?.requestPaymentMethod()
     const order={
 
       products:cart.map((item)=>({product:item._id,quantity:item.quantity})),
       user:userLoginData?._id,
       status:'pending',
+      total,
+      nonce:nonce
     }
+    console.log(nonce)
 
     dispatch(placeOrder(order))
     dispatch(clearCart())
@@ -70,6 +94,7 @@ const Cart = () => {
    if(count!=1)
    dispatch(quantityForCart({id:id,quantity:count-1}))
 };
+
 
   return (
     <div>
@@ -165,24 +190,20 @@ theme="dark"
                   <Icon icon="noto:party-popper" fontSize={50} />
                   <h4>Are you want confirm ?</h4>
                   <div className="Summary" style={{width:'60%'}}>
-                  <div>
-                    <p>subtotal</p>
-                    <p>{subtotal}</p>
-                  </div>
-                  <div>
-                    <p>tax</p>
-                    <p>{tax}</p>
-                  </div>
-                  <div>
-                    <p>shipping</p>
-                    <p>free </p>
-                  </div>
-                  <br />
 
                   <div>
                     <strong>total</strong>
                     <strong>{total}</strong>
                   </div>
+                </div>
+                <div style={{width:'70%'}}>
+{     paymentToken &&           <DropIn
+            options={{ authorization: paymentToken}}
+            onInstance={(instance) => setinstance(instance)}
+            
+          />}
+                  
+
                 </div>
                   
                   <button onClick={handleSumbit} style={{cursor:"pointer"}}>confirm</button>

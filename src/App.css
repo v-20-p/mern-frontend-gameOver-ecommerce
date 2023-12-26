@@ -764,6 +764,17 @@ footer hr {
   max-width: 300px;
   /* YourComponent.scss */
 }
+.form form h4 {
+  background-color: #33c56d;
+  color: #f5f5f5;
+  padding: 10px;
+  border-radius: 10px;
+}
+.form form h4 span {
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 900;
+}
 .form form h2 {
   text-align: center;
 }
@@ -1143,6 +1154,7 @@ footer hr {
 }
 .admin .admin-content {
   width: 100%;
+  min-height: 90vh;
 }
 .admin .admin-content .table {
   width: 100%;

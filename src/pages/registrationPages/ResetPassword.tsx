@@ -40,8 +40,9 @@ const ResetPassword = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     if (validateForm()) {
-      console.log({token:token,newPassword:userInput.password1})
+      
       dispatch(resetpasswordUser({token:token,newPassword:userInput.password1}))
+      navigate(`/login?value=1`)
         }
        else {
         setInvalidMessage('password not match') 

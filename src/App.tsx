@@ -16,26 +16,23 @@ import ManageProducts from './pages/admin/ManageProducts'
 import ListOrders from './pages/admin/ListOrders'
 import ProductDetails from './pages/productPage/ProductDetails'
 import Register from './pages/registrationPages/Register'
+import Products from './pages/productPage/Products'
+import ResetPassword from './pages/registrationPages/ResetPassword'
 
-import { useDispatch, useSelector } from 'react-redux'
-import { AppDispatch, RootState } from './redux/store'
-import { clearErrorUser, fetchUsers } from './redux/slices/products/usersSlice'
+import { ToastContainer ,Slide} from 'react-toastify'
+import { useDispatch } from 'react-redux'
+import { AppDispatch } from './redux/store'
+
+import {  fetchUsers } from './redux/slices/products/usersSlice'
 import { fetchCategories } from './redux/slices/products/categorySlice'
 
-import Products from './pages/productPage/Products'
 
 import { AiFillFacebook, AiFillLinkedin } from 'react-icons/ai'
 import { FaTwitterSquare } from 'react-icons/fa'
-import ResetPassword from './pages/registrationPages/ResetPassword'
-import { fetchProductItem } from './redux/slices/products/productsSlice'
-import { ToastContainer ,Slide, toast} from 'react-toastify'
 
 function App() {
   const dispatch = useDispatch<AppDispatch>()
-  const  users  = useSelector((state: RootState) => state.userReducer)
-  const products = useSelector((state: RootState) => state.productsReducer)
-  const categories = useSelector((state: RootState) => state.categoryReducer)
-  const  orders  = useSelector((state: RootState) => state.orderReducer)
+
   useEffect(() => {
     
     dispatch(fetchUsers())

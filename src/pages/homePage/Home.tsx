@@ -1,24 +1,24 @@
 import React, { useEffect } from 'react'
 import Navbar from './Navbar'
-import Products from '../productPage/Products'
+
 import { Link } from 'react-router-dom'
 
 import Carousel from 'react-multi-carousel'
 import 'react-multi-carousel/lib/styles.css'
 import { ToastContainer, cssTransition, toast } from 'react-toastify';
-import { BsFillPlusCircleFill } from 'react-icons/bs'
 import 'react-toastify/dist/ReactToastify.css';
 
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '../../redux/store'
 import { addItemCart, fetchProductItem, quantity } from '../../redux/slices/products/productsSlice'
+import Chat from '../chatbot/Chat'
 
 
 const Home = () => {
   const dispatch = useDispatch<AppDispatch>()
   const { items } = useSelector((state: RootState) => state.productsReducer)
   useEffect(()=>{
-    dispatch(fetchProductItem({limit:20,filter:'',}))
+    dispatch(fetchProductItem({filter:'',}))
   },[])
 
   const handleAddingCart = (id: string ) => {
@@ -120,7 +120,7 @@ const Home = () => {
             swipeable>
             {items.slice(0, 10).map((item) => (
               <div key={item._id} className="product">
-                <Link to={`/product/${item._id}`}>
+                <Link to={`/product/${item.slug}`}>
                   <img src={item.image} alt={item.title} width={200} />
                 </Link>
 
@@ -189,6 +189,7 @@ const Home = () => {
             </div>
           </div>
         </div>
+        <Chat/>
       </section>
     </>
   )

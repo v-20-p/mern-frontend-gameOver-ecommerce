@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '../../redux/store'
-import { fetchOrders } from '../../redux/slices/products/ordersSlice'
+import { deleteOrder, fetchOrders } from '../../redux/slices/products/ordersSlice'
 import { fetchUsers } from '../../redux/slices/products/usersSlice'
 import { fetchProductItem } from '../../redux/slices/products/productsSlice'
 
@@ -16,6 +16,7 @@ const ListOrders = () => {
 
   const dispatch = useDispatch<AppDispatch>()
 
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -29,27 +30,36 @@ const ListOrders = () => {
     fetchData()
   }, [dispatch])
 
+  const handleDelete=(id:string)=>{
+    dispatch(deleteOrder(id))
+
+  }
+
   const findProductByOrder = (orderId: string) => {
     const findOrder=orders.find((order) => order._id == orderId)
     if(findOrder){
       return(
         <div className='table-cell'>
-          {findOrder.products.map((({product,quantity})=>
-          <div key={product._id} className='order-content' >
           
-           <span>{product.title}</span>
-           <p><span>quantity : {quantity}</span> <span>price: ${product.price}</span></p>
-
-          </div>))}
+          {findOrder.products.map(({ product, quantity }) => (
+  <div key={product?._id} className='order-content'>
+    {product ? (
+      <>
+        <span>{product.title}</span>
+        <p>
+          <span>quantity: {quantity}</span>
+          <span>price: ${product.price}</span>
+        </p>
+      </>
+    ):<h5>the product not found or deleted</h5>}
+  </div>
+))}
 
           
         </div>
       )
       
     }
-
-
-
   }
   
 
@@ -67,7 +77,11 @@ const ListOrders = () => {
         </div>
       )
     } else {
-      return 'none'
+      return <div>
+      <p className="table-cell">
+       user is deleted 
+      </p>
+      </div>
     }
   }
 
@@ -78,8 +92,9 @@ const ListOrders = () => {
       return findOrders.map((order) => (
         <div key={order._id} className="table-row">
           {findProductByOrder(String(order._id))}
-          <div className="table-cell"><p className='order-content'>{order.totalPriceOfOrder}1</p><p>{order.createdAt.slice(0)}</p></div>
+          <div className="table-cell"><p className='order-content'>total pricee: {order.totalPriceOfOrder}</p><p className='order-content'>{order.createdAt.slice(0,10)}</p></div>
           {findUserByOrder(order.user)}
+          
         </div>
       ))
     }
@@ -98,10 +113,11 @@ const ListOrders = () => {
           {!showOrders &&
 
             orders.map((order) => (
-              <div key={order._id} className="table-row">
+              <div key={order._id} className="table-row" >
                 {findProductByOrder(String(order._id))}
                 <div className="table-cell" style={{display:'block'}}><p >the total price is ${order.totalPriceOfOrder} <br /><br /> Purchase at {order.createdAt.slice(0,10).split("-").reverse().join("-")} </p></div>
                 {findUserByOrder(order.user)}
+                <button onClick={()=>handleDelete(String(order._id))} className='delete2'>delete</button>
               </div>
             ))}
 
@@ -109,8 +125,9 @@ const ListOrders = () => {
             users.map(({ _id, name, userName, email }) => (
               <div
                 key={_id}
-                style={{ cursor: 'pointer' }}
+                
                 className="table-row"
+                style={{width:!selectedUserId?'1000px':"100%", cursor: 'pointer'}}
                 onClick={() => setSelectedUserId(String(_id))}>
                 <p>
                 name  {name}  

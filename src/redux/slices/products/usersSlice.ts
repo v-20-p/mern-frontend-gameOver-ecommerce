@@ -1,4 +1,4 @@
-import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { PayloadAction, createAsyncThunk, createSlice, isPending, isRejected } from '@reduxjs/toolkit'
 import api from '../../../api'
 import { toast } from 'react-toastify';
 type UserObject = {
@@ -26,7 +26,7 @@ export type TypeUserLoginData = {
 
 type UsersState = {
   users: UserObject[]
-  error: string
+  error: string |{status:number,data:any}
   isLoading: boolean
   userLoginData: TypeUserLoginData | undefined | null
   isAdmin: boolean
@@ -59,10 +59,21 @@ export const userIsban = createAsyncThunk('users/banUser', async (id:string) => 
     throw error.response.data.message
   }
 })
+//userIsAdmin
+export const userIsAdmin = createAsyncThunk('users/userIsAdmin', async ({id,data}:{id:string,data:object}) => {
+  try {
+    await api.put(`/api/users/${id}`,data)
+   
+    return id
+
+  } catch (error:any) {
+    throw error.response.data.message
+  }
+})
 export const editUser = createAsyncThunk('users/edituser', async ({id,data}:{id:string,data:object}) => {
   try {
     const response =  await api.put(`/api/users/${id}`,data)
-   
+  
     return response.data.user
 
   } catch (error:any) {
@@ -75,7 +86,7 @@ export const deleteUser = createAsyncThunk('users/deleteUser', async (id:string)
     return id
 
   } catch (error:any) {
-    throw error.response.data.message
+    throw error.response.data
   }
 })
 export const forgetPassword = createAsyncThunk('users/forgetPassword', async (email:string) => {
@@ -84,7 +95,7 @@ export const forgetPassword = createAsyncThunk('users/forgetPassword', async (em
     return email
 
   } catch (error:any) {
-    throw error.response.data.message
+    throw error.response.data
   }
 })
 
@@ -94,8 +105,8 @@ export const resetpasswordUser = createAsyncThunk('users/forgetPassword', async 
     const response = await api.put(`/api/users/user/reset-password`,data)
     return response.data
 
-  } catch (error) {
-    throw 'you don\'t have acsess '
+  } catch (error:any) {
+    throw error.response.data
   }
 })
 export const login = createAsyncThunk('users/login', async ({email,password}:{email:string,password:string}) => {
@@ -105,8 +116,8 @@ export const login = createAsyncThunk('users/login', async ({email,password}:{em
 
     return response.data.user
 
-  } catch (error) {
-    throw 'Email or Password is incorrect'
+  } catch (error:any) {
+    throw error.response.data
   }
 })
 export const logout = createAsyncThunk('users/logout', async () => {
@@ -115,8 +126,8 @@ export const logout = createAsyncThunk('users/logout', async () => {
     const response = await api.post('/api/users/logout')
     return response.data.users
 
-  } catch (error) {
-    throw 'you not login'
+  } catch (error:any) {
+    throw error.response.data
   }
 })
 
@@ -138,42 +149,6 @@ const usersSlice = createSlice({
   name: 'users',
   initialState,
   reducers: {
-    clearErrorUser: (state) => {
-      state.error=''
-    },
-    // logoutUser: (state) => {
-    //   state.userLoginData = null
-    //   localStorage.setItem('userLoginData', JSON.stringify(state.userLoginData))
-    // },
-    // removeUser: (state, action: { payload: { userId: string } }) => {
-    //   const filteredUsers = state.users.filter((user) => user._id !== action.payload.userId)
-    //   state.users = filteredUsers
-    // },
-    // updateUserBan: (state, action: PayloadAction<UserObject>) => {
-    //   const index = state.users.findIndex((user) => user._id === action.payload._id)
-
-    //   if (index !== -1) {
-    //     state.users[index] = { ...action.payload, isBan: !action.payload.isBan }
-    //   }
-    // },
-    // editProfile: (state, action) => {
-    //   const user = action.payload
-    //   state.userLoginData = {
-    //     ...state.userLoginData,
-    //     name: user.name,
-    //   }
-    //   localStorage.setItem('userLoginData', JSON.stringify(state.userLoginData))
-    // },
-    // register: (state, action) => {
-      // const newuser = {
-      //   id: state.users[state.users.length - 1]._id+ 1,
-      //   ...action.payload,
-      //   ban: false,
-      //   role: 'visitor'
-      // }
-      // state.users = [...state.users, newuser]
-      // console.log(state.users)
-    // }
   },
   extraReducers: (builder) => {
     builder
@@ -186,6 +161,13 @@ const usersSlice = createSlice({
         const index = state.users.findIndex((user) => user._id == String(action.payload))
         if (index !== -1) {
           state.users[index] = { ...state.users[index], isBan: !state.users[index].isBan }
+        }
+        state.isLoading = false
+      })
+      .addCase(userIsAdmin.fulfilled, (state, action) => {
+        const index = state.users.findIndex((user) => user._id == String(action.payload))
+        if (index !== -1) {
+          state.users[index] = { ...state.users[index], isBan: !state.users[index].isAdmin }
         }
         state.isLoading = false
       })
@@ -217,10 +199,6 @@ const usersSlice = createSlice({
         state.isAdmin = action.payload.isAdmin
         console.log(state.isAdmin)
         localStorage.setItem('userLoginData', JSON.stringify(state.userLoginData))
-        setTimeout(() => {
-          state.userLoginData = null;
-          localStorage.removeItem('userLoginData');
-        }, 15 * 60 * 1000);
 
         state.isLoading = false
       })
@@ -231,30 +209,40 @@ const usersSlice = createSlice({
       })
 
 
-      .addMatcher((action)=>action.type.endsWith("/pending"),
+      .addMatcher(isPending(login,logout,deleteUser,deleteUser,editUser,forgetPassword,reigsterUser,userIsban,fetchUsers),
       (state)=>{
         state.isLoading = true
       }
       )
-      .addMatcher((action)=>action.type.endsWith("/rejected"),
+      .addMatcher(isRejected(login,logout,deleteUser,deleteUser,editUser,forgetPassword,reigsterUser,userIsban,fetchUsers),
       (state,action)=>{
-        state.error = action.error.message || 'error to fetch the data'
+       
+         state.error = action.error.message || 'error to fetch the data'
         state.isLoading = false
-        toast.error(state.error, {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "dark",
-          });
+        if(state.error === "You are not logged in"){
+          
+        state.userLoginData = null
+        localStorage.setItem('userLoginData', JSON.stringify(state.userLoginData))
+
+        }else{
+          toast.error(String(state.error), {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+            });
+
+        }
+        
       }
       )
   }
 })
 
 export default usersSlice.reducer
-export const { clearErrorUser  } =
+export const {   } =
   usersSlice.actions

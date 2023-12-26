@@ -31,16 +31,21 @@ const VistorProfile = () => {
   return (
     <div>
       <NavAll />
-
+      <div className="form">
       {enableEdit ? (
-        <div className="form">
+        
           <form onSubmit={handleClick}>
+          <div>
             <p className="logo">
               GAME
               <SiGamejolt />
               OVER
             </p>
+            </div>
+            <div>
             <h2>profile</h2>
+            </div>
+            <div>
             <label htmlFor="firstName">Name:</label>
             <input
               type="text"
@@ -51,11 +56,12 @@ const VistorProfile = () => {
             <br />
             <p>Email: {userLoginData?.email}</p>
             <button type="submit">Submit</button>
+            </div>
           </form>
-        </div>
+      
       ) : (
-        <div className="form">
-          <form action="">
+        
+          <form action="" >
             <p className="logo">
               GAME
               <SiGamejolt />
@@ -67,8 +73,10 @@ const VistorProfile = () => {
             <p>Email: {userLoginData?.email}</p>
             <button onClick={handleClick}>Edit</button>
           </form>
-        </div>
+          
+        
       )}
+      </div>
     </div>
   )
 }
