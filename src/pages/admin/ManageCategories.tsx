@@ -50,7 +50,7 @@ const ManageCategories = () => {
       
 
       dispatch(newCategory({title:categoryForm.title}))
-      dispatch(fetchCategories())
+      
     }
     setCategoryForm(initialValue)
     setFormErrors('')

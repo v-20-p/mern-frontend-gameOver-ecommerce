@@ -44,9 +44,8 @@ const ManageProducts = () => {
       dispatch(newProduct(productForm))
       
       setproductForm(initialValue)
-      
-  
-      
+      setImagePreview(null)
+
     
     setErrors('')
   }
@@ -166,7 +165,7 @@ const ManageProducts = () => {
       <h2 className="h2">products</h2>
       <div className="form2" >
         <form action="" onSubmit={handleSubmit}>
-          <div>
+          <div className='div'>
           <label htmlFor="">name of Pruduct</label>
           <input
             type="text"
@@ -176,7 +175,7 @@ const ManageProducts = () => {
             onChange={onChaneHandleItem}
           />
           </div>
-          <div>
+          <div className='div'>
           <label htmlFor="">price</label>
           <input
             type="text"
@@ -185,7 +184,7 @@ const ManageProducts = () => {
             onChange={onChaneHandleItem}
           />
           </div>
-         <div>
+         <div  className='div'>
           <label htmlFor="">quantity</label>
           <input
             type="text"
@@ -196,7 +195,7 @@ const ManageProducts = () => {
           />
           </div>
 
-          
+          <div>
           <span>
             {categories.map(
               (cat) => productForm.categoryId.find((cate: Category) => cat._id == cate._id)?.title
@@ -230,7 +229,8 @@ const ManageProducts = () => {
               </div>
             )}
           </div>
-          <div>
+          </div>
+          <div className='div'>
           <label htmlFor="">image url</label>
           <input
             type="file"
@@ -242,7 +242,7 @@ const ManageProducts = () => {
 
          
 
-          <div>
+          <div  className='div'>
           <label htmlFor="">description</label>
           <textarea
             name="description"

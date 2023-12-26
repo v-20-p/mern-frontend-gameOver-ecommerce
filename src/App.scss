@@ -796,9 +796,13 @@ footer{
 }
 
 .custom-dropdown {
+  
   position: relative;
-  width: 200px;
+  
   margin-top: 10px;
+  min-width: 300px;
+  
+  
 }
 
 .dropdown-trigger {
@@ -807,7 +811,8 @@ footer{
   border-radius: 10px;
   background-color: #ffffff;
   min-height: 20px;
-  width: 100%;
+
+  
   
   cursor: pointer;
 }
@@ -817,19 +822,25 @@ footer{
   top: 110%;
   left: 0;
   width: 100%;
+  overflow-y: scroll;
+  height: 150px;
+ 
+  
   
   border-radius: 10px;
-  overflow: hidden;
+ 
+  
   border: 1px solid #ccc;
   border-top: none;
-  display: flex;
-  flex-direction: column;
+
 }
 
 .dropdown-option {
   padding: 8px;
   cursor: pointer;
   background-color: #f3f3f3;
+  
+  
 }
 
 .dropdown-option.selected {
@@ -837,8 +848,6 @@ footer{
 }
 
 .selected-box {
-  display: flex;
-  flex-wrap: wrap;
   margin-top: 5px;
 }
 
@@ -1031,7 +1040,7 @@ footer{
     justify-content: center;
     width: 50%;
     /* YourComponent.scss */
-    div{
+    .div{
       width: 50%;
     }
 

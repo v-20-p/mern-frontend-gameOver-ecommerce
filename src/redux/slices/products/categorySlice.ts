@@ -42,7 +42,8 @@ export const newCategory = createAsyncThunk('product/newCategory', async (data:{
   try {
     const response = await api.post('/api/categories',data)
     console.log(response.data.payload)
-    return response.data
+    console.log(response.data)
+    return data.title
   } catch (error:any) {
     throw error.response.data.message
   }
@@ -86,8 +87,9 @@ const categorySlice = createSlice({
   extraReducers: (builder) => {
     builder
 
-      .addCase(newCategory.fulfilled, (state) => {
+      .addCase(newCategory.fulfilled, (state,action) => {
         state.isLoading = true
+        state.categories.push({title:action.payload,_id:'s'} )
         toast.success('category is created', {
           position: "top-right",
           autoClose: 2000,
