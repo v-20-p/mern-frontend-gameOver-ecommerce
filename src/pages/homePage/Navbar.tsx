@@ -10,7 +10,7 @@ import { AiOutlineShoppingCart } from 'react-icons/ai'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '../../redux/store'
 
-import { searchProduct } from '../../redux/slices/products/productsSlice'
+import { fetchProductItem, searchProduct } from '../../redux/slices/products/productsSlice'
 import { logout } from '../../redux/slices/products/usersSlice'
 
 import { SiGamejolt } from 'react-icons/si'
@@ -28,6 +28,7 @@ const Navbar = () => {
   }
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
+    dispatch(fetchProductItem({ search: searchValue }))
     dispatch(searchProduct(searchValue))
     navigate('/products')
     setSearchValue('')
@@ -97,12 +98,12 @@ const Navbar = () => {
             </div>
           )}
 
-          <div>
+          {!userLoginData?.isAdmin &&<div>
             <Link to="/cart">
               <AiOutlineShoppingCart />
             </Link>
             <span className="numberCart">{cart.length > 0 && cart.length}</span>
-          </div>
+          </div>}
         </div>
       </nav>
       <hr />

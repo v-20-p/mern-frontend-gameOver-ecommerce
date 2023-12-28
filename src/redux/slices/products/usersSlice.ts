@@ -173,6 +173,11 @@ const usersSlice = createSlice({
       .addCase(reigsterUser.fulfilled, (state, action: PayloadAction<UserObject>) => {
         state.users.push(action.payload)
         state.isLoading = false
+        toast.success('please check you email to activate', {
+          position: 'top-right',
+          autoClose: 2000,
+          theme: 'dark'
+        })
       })
       .addCase(forgetPassword.fulfilled, (state, action) => {
         state.isLoading = false

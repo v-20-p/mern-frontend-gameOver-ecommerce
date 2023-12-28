@@ -18,6 +18,7 @@ import { Link } from 'react-router-dom'
 
 import NavAll from '../homePage/NavAll'
 import { BsFilterLeft } from 'react-icons/bs'
+import Chat from '../chatbot/Chat'
 
 const Products = () => {
   const dispatch = useDispatch<AppDispatch>()
@@ -37,7 +38,7 @@ const Products = () => {
         search: productsVistor.searchTirm
       })
     )
-  }, [currentPage, categories.filter, productsVistor.sortState, productsVistor.searchTirm])
+  }, [currentPage, categories.filter, productsVistor.sortState])
 
   //searching
   let searchItems: Product[] = []
@@ -111,6 +112,12 @@ const Products = () => {
       <h2 className="h2-title">
         All games <BsFilterLeft className="filter" onClick={() => setShow(!show)} />
       </h2>
+      {productsVistor.searchTirm && (
+          <p className='h2'>
+            {' '}
+            result search of (<strong>{productsVistor.searchTirm}</strong>){' '}
+          </p>
+        )}
 
       <div className={`filter-items ${show ? 'show' : ''}`}>
         <Category />
@@ -125,20 +132,15 @@ const Products = () => {
         </div>
       </div>
       <hr className="hr-black" />
-      <div className="products-container">
-        {productsVistor.searchTirm && (
-          <p>
-            {' '}
-            result search of (<strong>{productsVistor.searchTirm}</strong>){' '}
-          </p>
-        )}
+      <div className="products-container" style={{minHeight:"400px"}}>
+        {productsVistor.items.length==0 && <h1><br /><br />no product found ! </h1>}
         {productsVistor.items.map((item) => (
           <div key={item._id} className="product3">
             <Link to={`/product/${item.slug}`}>
               <img src={item.image} alt={item.title} width={200} />
             </Link>
 
-            <h3>{item.title}</h3>
+            <h3>{item.title.length<17?item.title:item.title.slice(0,15)+".."}</h3>
             <p>{item.description.slice(0, 15)}..read more</p>
 
             <div>
@@ -167,6 +169,7 @@ const Products = () => {
       </div>
       <hr className="hr-black" />
       <div className="pagination">{renderPageNumbers}</div>
+      <Chat />
     </section>
   )
 }

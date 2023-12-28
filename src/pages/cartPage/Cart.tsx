@@ -77,7 +77,7 @@ const Cart = () => {
       total,
       nonce: nonce
     }
-    console.log(nonce)
+
 
     dispatch(placeOrder(order))
     dispatch(clearCart())
@@ -118,7 +118,7 @@ const Cart = () => {
                 {cart.map(({ cartId, image, title, description, price, quantity, _id }) => (
                   <div key={cartId} className="product4">
                     <img src={image} alt={title} />
-                    <div style={{ display: 'block', width: '450px' }}>
+                    <div style={{ display: 'block', width: '450px',padding:'5px' }}>
                       <h3>{title}</h3>
                       <p>{description.slice(0, 30)}...</p>
                       <h4>${price}</h4>

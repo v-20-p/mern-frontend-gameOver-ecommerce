@@ -91,7 +91,7 @@ export const searchProduct = createAsyncThunk(
   'product/searchProduct',
   async (search: string = '') => {
     try {
-      const response = await api.get(`/api/products?search${search}`)
+      // const response = await api.get(`/api/products?search${search}`)
 
       return search
     } catch (error: any) {

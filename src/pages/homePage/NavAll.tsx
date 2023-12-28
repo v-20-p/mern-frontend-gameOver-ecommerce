@@ -30,6 +30,7 @@ const NavAll = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     dispatch(fetchProductItem({ search: searchValue }))
+    dispatch(searchProduct(searchValue))
     navigate('/products')
     setSearchValue('')
   }
@@ -97,12 +98,12 @@ const NavAll = () => {
             </div>
           )}
 
-          <div>
+          {!userLoginData?.isAdmin &&<div>
             <Link to="/cart">
               <AiOutlineShoppingCart />
             </Link>
             <span className="numberCart">{cart.length > 0 && cart.length}</span>
-          </div>
+          </div>}
         </div>
       </nav>
     </>

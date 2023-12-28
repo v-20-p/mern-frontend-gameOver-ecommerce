@@ -14,10 +14,12 @@ const ChatWindow = ({ onClose }: { onClose: () => void }) => {
     dispatch(fetchChats())
     if (messagesRef.current) {
       messagesRef.current.scrollTop = messagesRef.current.scrollHeight
+      text
     }
   }, [dispatch])
   const handleSubmit = () => {
     dispatch(sendChat(text))
+    setText('')
   }
 
   return (
